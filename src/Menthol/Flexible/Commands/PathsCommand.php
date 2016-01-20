@@ -305,7 +305,13 @@ class PathsCommand extends Command {
     {
         if ($this->option('write-config'))
         {
+            $app = $this->app ?: app();
+            $laravel_version = substr($app::VERSION, 0, strpos($app::VERSION, '.'));
             $configFile = base_path() . '/config/flexible.php';
+            if ($laravel_version == 4)
+            {
+                $configFile = app_path() . '/config/packages/menthol/flexible/config.php';
+            }
 
             if ($this->getLaravel())
             {
@@ -313,7 +319,13 @@ class PathsCommand extends Command {
                 {
                     if ($this->confirm('It appears that you have not yet published the flexible config. Would you like to do this now?', false))
                     {
-                        $this->call('vendor:publish', ['--provider' => 'Menthol\\Flexible\FlexibleServiceProvider', '--tag' => 'config']);
+                        if ($laravel_version == 4)
+                        {
+                            $this->call('config:publish', ['package' => 'iverberk/larasearch']);
+                        }
+                        else {
+                            $this->call('vendor:publish', ['--provider' => 'Menthol\\Flexible\FlexibleServiceProvider', '--tag' => 'config']);
+                        }
                     }
                     else
                     {
