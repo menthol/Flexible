@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch;
+<?php namespace Menthol\Flexible;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -15,10 +15,10 @@ class Observer {
     public function deleted(Model $model)
     {
         // Delete corresponding $model document from Elasticsearch
-        Queue::push('Iverberk\Larasearch\Jobs\DeleteJob', [get_class($model) . ':' . $model->getKey()]);
+        Queue::push('Menthol\Flexible\Jobs\DeleteJob', [get_class($model) . ':' . $model->getKey()]);
 
         // Update all related model documents to reflect that $model has been removed
-        Queue::push('Iverberk\Larasearch\Jobs\ReindexJob', $this->findAffectedModels($model, true));
+        Queue::push('Menthol\Flexible\Jobs\ReindexJob', $this->findAffectedModels($model, true));
     }
 
     /**
@@ -30,7 +30,7 @@ class Observer {
     {
         if ($model::$__es_enable && $model->shouldIndex())
         {
-            Queue::push('Iverberk\Larasearch\Jobs\ReindexJob', $this->findAffectedModels($model));
+            Queue::push('Menthol\Flexible\Jobs\ReindexJob', $this->findAffectedModels($model));
         }
     }
 
@@ -45,7 +45,7 @@ class Observer {
         // Temporary array to store affected models
         $affectedModels = [];
 
-        $paths = Config::get('larasearch.reversedPaths.' . get_class($model), []);
+        $paths = Config::get('flexible.reversedPaths.' . get_class($model), []);
 
         foreach ((array)$paths as $path)
         {
@@ -80,7 +80,7 @@ class Observer {
                                 }
                             } else
                             {
-                                if (in_array('Iverberk\Larasearch\Traits\SearchableTrait', class_uses($record)))
+                                if (in_array('Menthol\Flexible\Traits\SearchableTrait', class_uses($record)))
                                 {
                                     $affectedModels[] = get_class($record) . ':' . $record->getKey();
                                 }
@@ -92,7 +92,7 @@ class Observer {
                 $walk($model->getRelation(array_shift($path)), $path);
             } else if (!$excludeCurrent)
             {
-                if (in_array('Iverberk\Larasearch\Traits\SearchableTrait', class_uses($model)))
+                if (in_array('Menthol\Flexible\Traits\SearchableTrait', class_uses($model)))
                 {
                     $affectedModels[] = get_class($model) . ':' . $model->getKey();
                 }

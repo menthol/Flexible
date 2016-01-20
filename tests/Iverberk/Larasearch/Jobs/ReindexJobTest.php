@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch\Jobs;
+<?php namespace Menthol\Flexible\Jobs;
 
 use Illuminate\Support\Facades\App;
 use Mockery as m;
@@ -24,7 +24,7 @@ class ReindexJobTest extends \PHPUnit_Framework_TestCase {
          *
          */
         App::shouldReceive('make')
-            ->with('iverberk.larasearch.proxy', Mockery::any())
+            ->with('menthol.flexible.proxy', Mockery::any())
             ->once()
             ->andReturn('mock');
 
@@ -43,8 +43,8 @@ class ReindexJobTest extends \PHPUnit_Framework_TestCase {
          */
         $logger->shouldReceive('info')->with('Indexing Husband with ID: 99999');
         $logger->shouldReceive('error')->with('Indexing Husband with ID: 99999 failed: No query results for model [Husband].');
-        $config->shouldReceive('get')->with('larasearch.logger')->andReturn('iverberk.larasearch.logger');
-        $app->shouldReceive('make')->with('iverberk.larasearch.logger')->andReturn($logger);
+        $config->shouldReceive('get')->with('flexible.logger')->andReturn('menthol.flexible.logger');
+        $app->shouldReceive('make')->with('menthol.flexible.logger')->andReturn($logger);
         $job->shouldReceive('delete')->once();
         $job->shouldReceive('release')->with(60)->once();
 
@@ -82,8 +82,8 @@ class ReindexJobTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $logger->shouldReceive('info')->with('Indexing Husband with ID: 999');
-        $config->shouldReceive('get')->with('larasearch.logger')->andReturn('iverberk.larasearch.logger');
-        $app->shouldReceive('make')->with('iverberk.larasearch.logger')->andReturn($logger);
+        $config->shouldReceive('get')->with('flexible.logger')->andReturn('menthol.flexible.logger');
+        $app->shouldReceive('make')->with('menthol.flexible.logger')->andReturn($logger);
         $job = m::mock('Illuminate\Queue\Jobs\Job');
         $job->shouldReceive('delete')->once();
 

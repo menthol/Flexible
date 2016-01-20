@@ -1,14 +1,14 @@
-<?php namespace Iverberk\Larasearch\Response;
+<?php namespace Menthol\Flexible\Response;
 
 use Illuminate\Support\Collection;
-use Iverberk\Larasearch\Response;
+use Menthol\Flexible\Response;
 
 class Results extends Collection {
 
     /**
      * Contains an Elasticsearch response wrapper
      *
-     * @var \Iverberk\Larasearch\Response
+     * @var \Menthol\Flexible\Response
      */
     private $response;
 

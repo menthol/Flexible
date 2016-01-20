@@ -1,12 +1,12 @@
-<?php namespace Iverberk\Larasearch\Traits;
+<?php namespace Menthol\Flexible\Traits;
 
 use Illuminate\Database\Eloquent\Model;
-use Iverberk\Larasearch\Observer;
+use Menthol\Flexible\Observer;
 
 trait CallableTrait {
 
     /**
-     * Boot the trait by registering the Larasearch observer with the model
+     * Boot the trait by registering the Flexible observer with the model
      */
     public static function bootCallableTrait()
     {

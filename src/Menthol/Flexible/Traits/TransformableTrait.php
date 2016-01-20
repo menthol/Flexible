@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch\Traits;
+<?php namespace Menthol\Flexible\Traits;
 
 use Illuminate\Support\Facades\Config;
 
@@ -12,7 +12,7 @@ trait TransformableTrait {
      */
     public function transform($relations = false)
     {
-        $relations = $relations ? Config::get('larasearch.paths.' . get_class($this)) : [];
+        $relations = $relations ? Config::get('flexible.paths.' . get_class($this)) : [];
 
         $doc = $this->load($relations)->toArray();
 

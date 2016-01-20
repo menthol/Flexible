@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch\Jobs;
+<?php namespace Menthol\Flexible\Jobs;
 
 use Mockery as m;
 use AspectMock\Test as am;
@@ -22,7 +22,7 @@ class DeleteJobTest extends \PHPUnit_Framework_TestCase {
          *
          */
 	    $app = m::mock('Illuminate\Foundation\Application');
-	    $config = m::mock('Iverberk\Larasearch\Config');
+	    $config = m::mock('Menthol\Flexible\Config');
 	    $logger = m::mock('Monolog\Logger');
 	    am::double('Husband', ['deleteDoc' => true]);
 
@@ -37,8 +37,8 @@ class DeleteJobTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $logger->shouldReceive('info')->with('Deleting Husband with ID: 999 from Elasticsearch');
-        $config->shouldReceive('get')->with('logger', 'iverberk.larasearch.logger')->andReturn('iverberk.larasearch.logger');
-        $app->shouldReceive('make')->with('iverberk.larasearch.logger')->andReturn($logger);
+        $config->shouldReceive('get')->with('logger', 'menthol.flexible.logger')->andReturn('menthol.flexible.logger');
+        $app->shouldReceive('make')->with('menthol.flexible.logger')->andReturn($logger);
         $job->shouldReceive('delete')->once();
 
         /**

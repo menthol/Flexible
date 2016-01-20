@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch;
+<?php namespace Menthol\Flexible;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Facade;
@@ -43,7 +43,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase {
 
         self::$functions = m::mock();
 
-        $this->index = m::mock('Iverberk\Larasearch\Index');
+        $this->index = m::mock('Menthol\Flexible\Index');
         $this->model = m::mock('Husband')->makePartial();
         $this->client = m::mock('Elasticsearch\Client');
 
@@ -58,7 +58,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase {
             ->andReturn($this->client);
 
         App::shouldReceive('make')
-            ->with('iverberk.larasearch.index', m::type('array'))
+            ->with('menthol.flexible.index', m::type('array'))
             ->once()
             ->andReturn($this->index);
 
@@ -137,7 +137,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase {
          * Set
          *
          */
-        $query = m::mock('Iverberk\Larasearch\Query');
+        $query = m::mock('Menthol\Flexible\Query');
 
         /**
          *
@@ -147,7 +147,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase {
         $query->shouldReceive('execute')->andReturn('result');
 
         App::shouldReceive('make')
-            ->with('iverberk.larasearch.query', ['proxy' => $this->proxy, 'term' => '*', 'options' => ['option']])
+            ->with('menthol.flexible.query', ['proxy' => $this->proxy, 'term' => '*', 'options' => ['option']])
             ->once()
             ->andReturn($query);
 
@@ -171,7 +171,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase {
          * Set
          *
          */
-        $queryMock = m::mock('Iverberk\Larasearch\Query');
+        $queryMock = m::mock('Menthol\Flexible\Query');
 
         $query['index'] = 'my_index';
         $query['type'] = 'my_type';
@@ -185,7 +185,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase {
         $queryMock->shouldReceive('execute')->andReturn('result');
 
         App::shouldReceive('make')
-            ->with('iverberk.larasearch.query', [
+            ->with('menthol.flexible.query', [
                 'proxy' => $this->proxy,
                 'term' => null,
                 'options' => array_merge(['query' => $query], ['option'])])
@@ -225,7 +225,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase {
         $this->client->shouldReceive('get')->andReturn(['hit']);
 
         App::shouldReceive('make')
-            ->with('iverberk.larasearch.response.result', ['hit'])
+            ->with('menthol.flexible.response.result', ['hit'])
             ->once()
             ->andReturn('result');
 
@@ -249,8 +249,8 @@ class ProxyTest extends \PHPUnit_Framework_TestCase {
          * Set
          *
          */
-        $indexDouble = am::double('Iverberk\Larasearch\Index', ['refresh' => null, 'clean' => null, 'updateAliases' => null]);
-        $indexMock = m::mock('Iverberk\Larasearch\Index');
+        $indexDouble = am::double('Menthol\Flexible\Index', ['refresh' => null, 'clean' => null, 'updateAliases' => null]);
+        $indexMock = m::mock('Menthol\Flexible\Index');
 
         /**
          *
@@ -262,7 +262,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase {
         $this->index->shouldReceive('delete')->once()->andReturn();
 
         App::shouldReceive('make')
-            ->with('iverberk.larasearch.index', ['name' => 'Husband_9999', 'proxy' => $this->proxy])
+            ->with('menthol.flexible.index', ['name' => 'Husband_9999', 'proxy' => $this->proxy])
             ->andReturn($indexMock);
 
         $indexMock->shouldReceive('create')->once()->andReturn();
@@ -290,13 +290,13 @@ class ProxyTest extends \PHPUnit_Framework_TestCase {
          * Set
          *
          */
-        $indexDouble = am::double('Iverberk\Larasearch\Index', [
+        $indexDouble = am::double('Menthol\Flexible\Index', [
             'refresh' => null,
             'clean' => null,
             'updateAliases' => null,
             'getAlias' => ['mockIndex' => 'aliases']
         ]);
-        $indexMock = m::mock('Iverberk\Larasearch\Index');
+        $indexMock = m::mock('Menthol\Flexible\Index');
 
         $operations[] = [
             'add' => [
@@ -324,7 +324,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase {
         $indexMock->shouldReceive('import')->andReturn();
 
         App::shouldReceive('make')
-            ->with('iverberk.larasearch.index', ['name' => 'Husband_9999', 'proxy' => $this->proxy])
+            ->with('menthol.flexible.index', ['name' => 'Husband_9999', 'proxy' => $this->proxy])
             ->andReturn($indexMock);
 
         /**

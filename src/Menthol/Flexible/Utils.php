@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch;
+<?php namespace Menthol\Flexible;
 
 use PHPParser_Parser;
 use PHPParser_Lexer;
@@ -95,7 +95,7 @@ class Utils {
                     {
                         $class = $stmt->name;
                         if ($ns) $class = $ns . '\\' . $class;
-                        if (in_array('Iverberk\\Larasearch\\Traits\\SearchableTrait', class_uses($class)))
+                        if (in_array('Menthol\\Flexible\\Traits\\SearchableTrait', class_uses($class)))
                         {
                             $models[] = $class;
                         }

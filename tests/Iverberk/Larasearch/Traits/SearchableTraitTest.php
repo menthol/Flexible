@@ -1,9 +1,9 @@
-<?php namespace Iverberk\Larasearch\Traits;
+<?php namespace Menthol\Flexible\Traits;
 
 use Husband;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Facade;
-use Iverberk\Larasearch\Proxy;
+use Menthol\Flexible\Proxy;
 use Mockery as m;
 use AspectMock\Test as am;
 
@@ -25,7 +25,7 @@ class SearchableTraitTest extends \PHPUnit_Framework_TestCase {
          * Set
          *
          */
-        $proxy = m::mock('Iverberk\Larasearch\proxy');
+        $proxy = m::mock('Menthol\Flexible\proxy');
 
         /**
          *
@@ -36,7 +36,7 @@ class SearchableTraitTest extends \PHPUnit_Framework_TestCase {
         \Husband::clearProxy();
 
         App::shouldReceive('make')
-            ->with('iverberk.larasearch.proxy', m::type('Illuminate\Database\Eloquent\Model'))
+            ->with('menthol.flexible.proxy', m::type('Illuminate\Database\Eloquent\Model'))
             ->andReturn($proxy);
 
         /**
@@ -78,7 +78,7 @@ class SearchableTraitTest extends \PHPUnit_Framework_TestCase {
          * Set
          *
          */
-        $proxy = m::mock('Iverberk\Larasearch\proxy');
+        $proxy = m::mock('Menthol\Flexible\proxy');
         $husband = am::double('Husband', ['getProxy' => $proxy]);
 
         /**
@@ -125,7 +125,7 @@ class SearchableTraitTest extends \PHPUnit_Framework_TestCase {
          */
         App::clearResolvedInstance('app');
         App::shouldReceive('make')->with('Elasticsearch')->andReturn(true);
-        App::shouldReceive('make')->with('iverberk.larasearch.index', m::type('array'))->andReturn(true);
+        App::shouldReceive('make')->with('menthol.flexible.index', m::type('array'))->andReturn(true);
 
         /**
          *

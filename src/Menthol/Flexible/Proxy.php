@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch;
+<?php namespace Menthol\Flexible;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
@@ -26,7 +26,7 @@ class Proxy {
         $this->config['type'] = str_singular($model->getTable());
 
         $this->config['client'] = App::make('Elasticsearch');
-        $this->config['index'] = App::make('iverberk.larasearch.index', array('proxy' => $this));
+        $this->config['index'] = App::make('menthol.flexible.index', array('proxy' => $this));
     }
 
     /**
@@ -72,11 +72,11 @@ class Proxy {
     /**
      * @param       $term
      * @param array $options
-     * @return \Iverberk\Larasearch\Response
+     * @return \Menthol\Flexible\Response
      */
     public function search($term, $options = [])
     {
-        return App::make('iverberk.larasearch.query', ['proxy' => $this, 'term' => $term, 'options' => $options])->execute();
+        return App::make('menthol.flexible.query', ['proxy' => $this, 'term' => $term, 'options' => $options])->execute();
     }
 
     /**
@@ -84,13 +84,13 @@ class Proxy {
      *
      * @param array $query
      * @param array $options
-     * @return \Iverberk\Larasearch\Response
+     * @return \Menthol\Flexible\Response
      */
     public function searchByQuery($query, $options = [])
     {
         $options = array_merge(['query' => $query], $options);
 
-        return App::make('iverberk.larasearch.query', ['proxy' => $this, 'term' => null, 'options' => $options])->execute();
+        return App::make('menthol.flexible.query', ['proxy' => $this, 'term' => null, 'options' => $options])->execute();
     }
 
     /**
@@ -101,7 +101,7 @@ class Proxy {
      */
     public function searchById($id)
     {
-        return App::make('iverberk.larasearch.response.result', $this->config['client']->get(
+        return App::make('menthol.flexible.response.result', $this->config['client']->get(
                 [
                     'index' => $this->getIndex()->getName(),
                     'type' => $this->getType(),
@@ -125,11 +125,11 @@ class Proxy {
         $name = $this->config['index']->getName();
 
         $newName = $name . '_' . date("YmdHis");
-        $relations = $relations ? Config::get('larasearch.paths.' . get_class($model)) : [];
+        $relations = $relations ? Config::get('flexible.paths.' . get_class($model)) : [];
 
         Index::clean($name);
 
-        $index = App::make('iverberk.larasearch.index', array('name' => $newName, 'proxy' => $this));
+        $index = App::make('menthol.flexible.index', array('name' => $newName, 'proxy' => $this));
         $index->create($mapping);
 
         if ($index->aliasExists($name))

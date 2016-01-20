@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch\Commands;
+<?php namespace Menthol\Flexible\Commands;
 
 use Symfony\Component\Console\Input\InputOption;
 use Mockery as m;
@@ -23,7 +23,7 @@ class ReindexCommandTest extends \PHPUnit_Framework_TestCase {
          * Set
          *
          **/
-        $command = m::mock('Iverberk\Larasearch\Commands\ReindexCommand');
+        $command = m::mock('Menthol\Flexible\Commands\ReindexCommand');
         $options = array(
             array('relations', null, InputOption::VALUE_NONE, 'Reindex related Eloquent models', null),
             array('mapping', null, InputOption::VALUE_REQUIRED, 'A file containing custom mappings', null),
@@ -50,7 +50,7 @@ class ReindexCommandTest extends \PHPUnit_Framework_TestCase {
          * Set
          *
          **/
-        $command = m::mock('Iverberk\Larasearch\Commands\ReindexCommand');
+        $command = m::mock('Menthol\Flexible\Commands\ReindexCommand');
         $arguments = array(
             array('model', InputOption::VALUE_OPTIONAL, 'Eloquent model to reindex', null)
         );
@@ -74,7 +74,7 @@ class ReindexCommandTest extends \PHPUnit_Framework_TestCase {
          *
          **/
         /* @var \Mockery\Mock $command */
-        $command = m::mock('Iverberk\Larasearch\Commands\ReindexCommand')->makePartial();
+        $command = m::mock('Menthol\Flexible\Commands\ReindexCommand')->makePartial();
 
         /**
          *
@@ -114,7 +114,7 @@ class ReindexCommandTest extends \PHPUnit_Framework_TestCase {
          *
          */
         /* @var \Mockery\Mock $command */
-        $command = m::mock('Iverberk\Larasearch\Commands\ReindexCommand')->makePartial();
+        $command = m::mock('Menthol\Flexible\Commands\ReindexCommand')->makePartial();
         $command->shouldAllowMockingProtectedMethods();
 
         $model = m::mock('Husband');
@@ -179,7 +179,7 @@ class ReindexCommandTest extends \PHPUnit_Framework_TestCase {
          * Set
          *
          */
-        $command = m::mock('Iverberk\Larasearch\Commands\ReindexCommand')->makePartial();
+        $command = m::mock('Menthol\Flexible\Commands\ReindexCommand')->makePartial();
         $command->shouldAllowMockingProtectedMethods();
 
         /**

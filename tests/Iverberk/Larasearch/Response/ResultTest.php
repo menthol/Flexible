@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch\Response;
+<?php namespace Menthol\Flexible\Response;
 
 use Mockery as m;
 

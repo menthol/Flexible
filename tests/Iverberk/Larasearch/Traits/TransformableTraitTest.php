@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch\Traits;
+<?php namespace Menthol\Flexible\Traits;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;

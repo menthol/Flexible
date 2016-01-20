@@ -62,109 +62,109 @@ return array_merge($pathConfig, array(
                     'number_of_replicas' => 0,
                     'analysis' => [
                         'analyzer' => [
-                            'larasearch_keyword' => [
+                            'flexible_keyword' => [
                                 'type' => "custom",
                                 'tokenizer' => "keyword",
-                                'filter' => ["lowercase", "larasearch_stemmer"]
+                                'filter' => ["lowercase", "flexible_stemmer"]
                             ],
                             'default_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["standard", "lowercase", "asciifolding", "larasearch_index_shingle", "larasearch_stemmer"]
+                                'filter' => ["standard", "lowercase", "asciifolding", "flexible_index_shingle", "flexible_stemmer"]
                             ],
-                            'larasearch_search' => [
+                            'flexible_search' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["standard", "lowercase", "asciifolding", "larasearch_search_shingle", "larasearch_stemmer"]
+                                'filter' => ["standard", "lowercase", "asciifolding", "flexible_search_shingle", "flexible_stemmer"]
                             ],
-                            'larasearch_search2' => [
+                            'flexible_search2' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["standard", "lowercase", "asciifolding", "larasearch_stemmer"]
+                                'filter' => ["standard", "lowercase", "asciifolding", "flexible_stemmer"]
                             ],
-                            'larasearch_autocomplete_index' => [
+                            'flexible_autocomplete_index' => [
                                 'type' => "custom",
-                                'tokenizer' => "larasearch_autocomplete_ngram",
+                                'tokenizer' => "flexible_autocomplete_ngram",
                                 'filter' => ["lowercase", "asciifolding"]
                             ],
-                            'larasearch_autocomplete_search' => [
+                            'flexible_autocomplete_search' => [
                                 'type' => "custom",
                                 'tokenizer' => "keyword",
                                 'filter' => ["lowercase", "asciifolding"]
                             ],
-                            'larasearch_word_search' => [
+                            'flexible_word_search' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
                                 'filter' => ["lowercase", "asciifolding"]
                             ],
-                            'larasearch_suggest_index' => [
+                            'flexible_suggest_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["lowercase", "asciifolding", "larasearch_suggest_shingle"]
+                                'filter' => ["lowercase", "asciifolding", "flexible_suggest_shingle"]
                             ],
-                            'larasearch_text_start_index' => [
+                            'flexible_text_start_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "keyword",
-                                'filter' => ["lowercase", "asciifolding", "larasearch_edge_ngram"]
+                                'filter' => ["lowercase", "asciifolding", "flexible_edge_ngram"]
                             ],
-                            'larasearch_text_middle_index' => [
+                            'flexible_text_middle_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "keyword",
-                                'filter' => ["lowercase", "asciifolding", "larasearch_ngram"]
+                                'filter' => ["lowercase", "asciifolding", "flexible_ngram"]
                             ],
-                            'larasearch_text_end_index' => [
+                            'flexible_text_end_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "keyword",
-                                'filter' => ["lowercase", "asciifolding", "reverse", "larasearch_edge_ngram", "reverse"]
+                                'filter' => ["lowercase", "asciifolding", "reverse", "flexible_edge_ngram", "reverse"]
                             ],
-                            'larasearch_word_start_index' => [
+                            'flexible_word_start_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["lowercase", "asciifolding", "larasearch_edge_ngram"]
+                                'filter' => ["lowercase", "asciifolding", "flexible_edge_ngram"]
                             ],
-                            'larasearch_word_middle_index' => [
+                            'flexible_word_middle_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["lowercase", "asciifolding", "larasearch_ngram"]
+                                'filter' => ["lowercase", "asciifolding", "flexible_ngram"]
                             ],
-                            'larasearch_word_end_index' => [
+                            'flexible_word_end_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["lowercase", "asciifolding", "reverse", "larasearch_edge_ngram", "reverse"]
+                                'filter' => ["lowercase", "asciifolding", "reverse", "flexible_edge_ngram", "reverse"]
                             ]
                         ],
                         'filter' => [
-                            'larasearch_index_shingle' => [
+                            'flexible_index_shingle' => [
                                 'type' => "shingle",
                                 'token_separator' => ""
                             ],
-                            'larasearch_search_shingle' => [
+                            'flexible_search_shingle' => [
                                 'type' => "shingle",
                                 'token_separator' => "",
                                 'output_unigrams' => false,
                                 'output_unigrams_if_no_shingles' => true
                             ],
-                            'larasearch_suggest_shingle' => [
+                            'flexible_suggest_shingle' => [
                                 'type' => "shingle",
                                 'max_shingle_size' => 5
                             ],
-                            'larasearch_edge_ngram' => [
+                            'flexible_edge_ngram' => [
                                 'type' => "edgeNGram",
                                 'min_gram' => 1,
                                 'max_gram' => 50
                             ],
-                            'larasearch_ngram' => [
+                            'flexible_ngram' => [
                                 'type' => "nGram",
                                 'min_gram' => 1,
                                 'max_gram' => 50
                             ],
-                            'larasearch_stemmer' => [
+                            'flexible_stemmer' => [
                                 'type' => "snowball",
                                 'language' => "English"
                             ]
                         ],
                         'tokenizer' => [
-                            'larasearch_autocomplete_ngram' => [
+                            'flexible_autocomplete_ngram' => [
                                 'type' => "edgeNGram",
                                 'min_gram' => 1,
                                 'max_gram' => 50
@@ -203,6 +203,6 @@ return array_merge($pathConfig, array(
         'index_prefix' => ''
     ],
 
-	'logger' => 'iverberk.larasearch.logger'
+	'logger' => 'menthol.flexible.logger'
 
 ));

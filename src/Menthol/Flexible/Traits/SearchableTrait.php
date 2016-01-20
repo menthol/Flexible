@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch\Traits;
+<?php namespace Menthol\Flexible\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
@@ -11,7 +11,7 @@ trait SearchableTrait {
     /**
      * The Elasticsearch proxy class
      *
-     * @var \Iverberk\Larasearch\Proxy
+     * @var \Menthol\Flexible\Proxy
      */
     protected static $__es_proxy = null;
 
@@ -33,7 +33,7 @@ trait SearchableTrait {
      * Return an instance of the Elasticsearch proxy
      *
      * @throws \Exception
-     * @return \Iverberk\Larasearch\Proxy | bool
+     * @return \Menthol\Flexible\Proxy | bool
      */
     public static function getProxy()
     {
@@ -43,7 +43,7 @@ trait SearchableTrait {
 
             if ($instance instanceof Model)
             {
-                static::$__es_proxy = App::make('iverberk.larasearch.proxy', $instance);
+                static::$__es_proxy = App::make('menthol.flexible.proxy', $instance);
 
                 return static::$__es_proxy;
             } else

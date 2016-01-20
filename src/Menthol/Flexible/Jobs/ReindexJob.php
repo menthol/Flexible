@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch\Jobs;
+<?php namespace Menthol\Flexible\Jobs;
 
 use Illuminate\Config\Repository;
 use Illuminate\Foundation\Application;
@@ -8,7 +8,7 @@ use Exception;
 /**
  * Class ReindexJob
  *
- * @package Iverberk\Larasearch\Jobs
+ * @package Menthol\Flexible\Jobs
  */
 class ReindexJob {
 
@@ -34,7 +34,7 @@ class ReindexJob {
 
     public function fire(Job $job, $models)
     {
-        $loggerContainerBinding = $this->config->get('larasearch.logger');
+        $loggerContainerBinding = $this->config->get('flexible.logger');
         $logger = $this->app->make($loggerContainerBinding);
 
         foreach ($models as $model)

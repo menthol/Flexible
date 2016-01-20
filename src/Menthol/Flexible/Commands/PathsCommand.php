@@ -1,10 +1,10 @@
-<?php namespace Iverberk\Larasearch\Commands;
+<?php namespace Menthol\Flexible\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\File;
-use Iverberk\Larasearch\Utils;
+use Menthol\Flexible\Utils;
 use Symfony\Component\Console\Input\InputOption;
 
 class PathsCommand extends Command {
@@ -14,7 +14,7 @@ class PathsCommand extends Command {
      *
      * @var string
      */
-    protected $name = 'larasearch:paths';
+    protected $name = 'flexible:paths';
 
     /**
      * The console command description.
@@ -305,15 +305,15 @@ class PathsCommand extends Command {
     {
         if ($this->option('write-config'))
         {
-            $configFile = base_path() . '/config/larasearch.php';
+            $configFile = base_path() . '/config/flexible.php';
 
             if ($this->getLaravel())
             {
                 if ( ! File::exists($configFile))
                 {
-                    if ($this->confirm('It appears that you have not yet published the larasearch config. Would you like to do this now?', false))
+                    if ($this->confirm('It appears that you have not yet published the flexible config. Would you like to do this now?', false))
                     {
-                        $this->call('vendor:publish', ['--provider' => 'Iverberk\\Larasearch\LarasearchServiceProvider', '--tag' => 'config']);
+                        $this->call('vendor:publish', ['--provider' => 'Menthol\\Flexible\FlexibleServiceProvider', '--tag' => 'config']);
                     }
                     else
                     {
@@ -325,7 +325,7 @@ class PathsCommand extends Command {
             {
                 if ( ! File::exists($configFile))
                 {
-                    $this->info('Lumen application detected. Please copy the config manually to config/larasearch.php.');
+                    $this->info('Lumen application detected. Please copy the config manually to config/flexible.php.');
                 }
             }
 

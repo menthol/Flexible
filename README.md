@@ -1,7 +1,7 @@
 Introduction
 ------------
 
-Larasearch is a Laravel package that aims to seamlessly integrate Elasticsearch functionality with the Eloquent ORM.
+Flexible is a Laravel package that aims to seamlessly integrate Elasticsearch functionality with the Eloquent ORM.
 
 Features
 --------
@@ -15,47 +15,20 @@ Features
 Installation
 ------------
 
-*Laravel 5*
+Add Flexible to your composer.json file:
 
-NB: This is preliminary support. When L5 compatibility is stable I will tag it with a version.
-
-Add Larasearch to your composer.json file:
-
-```"iverberk/larasearch": "dev-L5"```
+```"menthol/flexible": "dev-master"```
 
 Add the service provider to your Laravel application config:
 
 ```PHP
-'Iverberk\Larasearch\LarasearchServiceProvider'
+'Menthol\Flexible\FlexibleServiceProvider'
 ```
-
-*Laravel 4*
-
-Add Larasearch to your composer.json file:
-
-```"iverberk/larasearch": "0.8.0"```
-
-Add the service provider to your Laravel application config:
-
-```PHP
-'Iverberk\Larasearch\LarasearchServiceProvider'
-```
-
-
-
-Wiki
-----
-Please see the Github [wiki](https://github.com/iverberk/larasearch/wiki/Introduction) for the most up-to-date documentation.
-
-Changelog
----------
-All releases are tracked and documented in the [changelog](https://github.com/iverberk/larasearch/wiki/Changelog).
 
 Credits
 -------
-This package is very much inspired by these excellent packages that already exist for the Ruby/Rails ecosystem.
+This package is very much inspired by these excellent packages that already exist.
 
+* [Larasearch](https://github.com/iverberk/larasearch)
 * [Searchkick](https://github.com/ankane/searchkick)
 * [Elasticsearch Rails](https://github.com/elasticsearch/elasticsearch-rails)
-
-A lot of their ideas have been reused to work within a PHP/Laravel environment.

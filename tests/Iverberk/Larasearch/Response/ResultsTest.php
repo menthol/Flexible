@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch\Response;
+<?php namespace Menthol\Flexible\Response;
 
 use Mockery as m;
 
@@ -41,7 +41,7 @@ class ResultsTest extends \PHPUnit_Framework_TestCase {
          * Set
          *
          */
-        $response = m::mock('Iverberk\Larasearch\Response');
+        $response = m::mock('Menthol\Flexible\Response');
 
         /**
          *
@@ -58,6 +58,6 @@ class ResultsTest extends \PHPUnit_Framework_TestCase {
         $results = new Results($response);
 
         $this->assertInstanceOf('Illuminate\Support\Collection', $results);
-        $this->assertInstanceOf('Iverberk\Larasearch\Response\Result', $results->first());
+        $this->assertInstanceOf('Menthol\Flexible\Response\Result', $results->first());
     }
 }

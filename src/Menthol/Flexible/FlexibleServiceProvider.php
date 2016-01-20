@@ -1,14 +1,14 @@
-<?php namespace Iverberk\Larasearch;
+<?php namespace Menthol\Flexible;
 
 use Elasticsearch\Client;
 use Illuminate\Support\ServiceProvider;
-use Iverberk\Larasearch\Commands\PathsCommand;
-use Iverberk\Larasearch\Commands\ReindexCommand;
-use Iverberk\Larasearch\Response\Result;
+use Menthol\Flexible\Commands\PathsCommand;
+use Menthol\Flexible\Commands\ReindexCommand;
+use Menthol\Flexible\Response\Result;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
 
-class LarasearchServiceProvider extends ServiceProvider
+class FlexibleServiceProvider extends ServiceProvider
 {
 
     /**
@@ -23,7 +23,7 @@ class LarasearchServiceProvider extends ServiceProvider
         $this->bootContainerBindings();
 
         $this->publishes([
-            __DIR__ . '/../../config/larasearch.php' => base_path('config/larasearch.php'),
+            __DIR__ . '/../../config/flexible.php' => base_path('config/flexible.php'),
         ], 'config');
     }
 
@@ -36,13 +36,13 @@ class LarasearchServiceProvider extends ServiceProvider
     {
         $this->registerCommands();
 
-        if (file_exists(base_path('config/larasearch.php')))
+        if (file_exists(base_path('config/flexible.php')))
         {
-            $this->mergeConfigFrom(base_path('config/larasearch.php'), 'larasearch');
+            $this->mergeConfigFrom(base_path('config/flexible.php'), 'flexible');
         }
         else
         {
-            $this->mergeConfigFrom(__DIR__ . '/../../config/larasearch.php', 'larasearch');
+            $this->mergeConfigFrom(__DIR__ . '/../../config/flexible.php', 'flexible');
         }
     }
 
@@ -62,13 +62,13 @@ class LarasearchServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bind a Larasearch log handler to the container
+     * Bind a Flexible log handler to the container
      */
     protected function bindLogger()
     {
-        $this->app->singleton('iverberk.larasearch.logger', function ($app)
+        $this->app->singleton('menthol.flexible.logger', function ($app)
         {
-            return new Logger('larasearch', [new NullHandler()]);
+            return new Logger('flexible', [new NullHandler()]);
         });
     }
 
@@ -79,16 +79,16 @@ class LarasearchServiceProvider extends ServiceProvider
     {
         $this->app->singleton('Elasticsearch', function ($app)
         {
-            return new Client(\Illuminate\Support\Facades\Config::get('larasearch.elasticsearch.params'));
+            return new Client(\Illuminate\Support\Facades\Config::get('flexible.elasticsearch.params'));
         });
     }
 
     /**
-     * Bind the Larasearch index to the container
+     * Bind the Flexible index to the container
      */
     protected function bindIndex()
     {
-        $this->app->bind('iverberk.larasearch.index', function ($app, $params)
+        $this->app->bind('menthol.flexible.index', function ($app, $params)
         {
             $name = isset($params['name']) ? $params['name'] : '';
 
@@ -97,33 +97,33 @@ class LarasearchServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bind the Larasearch Query to the container
+     * Bind the Flexible Query to the container
      */
     protected function bindQuery()
     {
-        $this->app->bind('iverberk.larasearch.query', function ($app, $params)
+        $this->app->bind('menthol.flexible.query', function ($app, $params)
         {
             return new Query($params['proxy'], $params['term'], $params['options']);
         });
     }
 
     /**
-     * Bind the Larasearch proxy to the container
+     * Bind the Flexible proxy to the container
      */
     protected function bindProxy()
     {
-        $this->app->bind('iverberk.larasearch.proxy', function ($app, $model)
+        $this->app->bind('menthol.flexible.proxy', function ($app, $model)
         {
             return new Proxy($model);
         });
     }
 
     /**
-     * Bind the Larasearch result to the container
+     * Bind the Flexible result to the container
      */
     protected function bindResult()
     {
-        $this->app->bind('iverberk.larasearch.response.result', function ($app, array $hit)
+        $this->app->bind('menthol.flexible.response.result', function ($app, array $hit)
         {
             return new Result($hit);
         });
@@ -136,18 +136,18 @@ class LarasearchServiceProvider extends ServiceProvider
      */
     protected function registerCommands()
     {
-        $this->app['iverberk.larasearch.commands.reindex'] = $this->app->share(function ($app)
+        $this->app['menthol.flexible.commands.reindex'] = $this->app->share(function ($app)
         {
             return new ReindexCommand();
         });
 
-        $this->app['iverberk.larasearch.commands.paths'] = $this->app->share(function ($app)
+        $this->app['menthol.flexible.commands.paths'] = $this->app->share(function ($app)
         {
             return new PathsCommand();
         });
 
-        $this->commands('iverberk.larasearch.commands.reindex');
-        $this->commands('iverberk.larasearch.commands.paths');
+        $this->commands('menthol.flexible.commands.reindex');
+        $this->commands('menthol.flexible.commands.paths');
     }
 
     /**

@@ -1,7 +1,7 @@
-<?php namespace Iverberk\Larasearch;
+<?php namespace Menthol\Flexible;
 
 use Illuminate\Database\Eloquent\Model;
-use Iverberk\Larasearch\Response\Results;
+use Menthol\Flexible\Response\Results;
 
 class Response {
 

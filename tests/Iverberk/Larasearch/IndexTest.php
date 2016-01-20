@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch;
+<?php namespace Menthol\Flexible;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Facade;
@@ -149,7 +149,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
          *
          */
         Config::shouldReceive('get')
-            ->with('larasearch.elasticsearch.analyzers')
+            ->with('flexible.elasticsearch.analyzers')
             ->andReturn([
                 'autocomplete',
                 'suggest',
@@ -162,116 +162,116 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
             ]);
 
         Config::shouldReceive('get')
-            ->with('larasearch.elasticsearch.defaults.index')
+            ->with('flexible.elasticsearch.defaults.index')
             ->andReturn([
                 'settings' => [
                     'number_of_shards' => 1,
                     'number_of_replicas' => 0,
                     'analysis' => [
                         'analyzer' => [
-                            'larasearch_keyword' => [
+                            'flexible_keyword' => [
                                 'type' => "custom",
                                 'tokenizer' => "keyword",
-                                'filter' => ["lowercase", "larasearch_stemmer"]
+                                'filter' => ["lowercase", "flexible_stemmer"]
                             ],
                             'default_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["standard", "lowercase", "asciifolding", "larasearch_index_shingle", "larasearch_stemmer"]
+                                'filter' => ["standard", "lowercase", "asciifolding", "flexible_index_shingle", "flexible_stemmer"]
                             ],
-                            'larasearch_search' => [
+                            'flexible_search' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["standard", "lowercase", "asciifolding", "larasearch_search_shingle", "larasearch_stemmer"]
+                                'filter' => ["standard", "lowercase", "asciifolding", "flexible_search_shingle", "flexible_stemmer"]
                             ],
-                            'larasearch_search2' => [
+                            'flexible_search2' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["standard", "lowercase", "asciifolding", "larasearch_stemmer"]
+                                'filter' => ["standard", "lowercase", "asciifolding", "flexible_stemmer"]
                             ],
-                            'larasearch_autocomplete_index' => [
+                            'flexible_autocomplete_index' => [
                                 'type' => "custom",
-                                'tokenizer' => "larasearch_autocomplete_ngram",
+                                'tokenizer' => "flexible_autocomplete_ngram",
                                 'filter' => ["lowercase", "asciifolding"]
                             ],
-                            'larasearch_autocomplete_search' => [
+                            'flexible_autocomplete_search' => [
                                 'type' => "custom",
                                 'tokenizer' => "keyword",
                                 'filter' => ["lowercase", "asciifolding"]
                             ],
-                            'larasearch_word_search' => [
+                            'flexible_word_search' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
                                 'filter' => ["lowercase", "asciifolding"]
                             ],
-                            'larasearch_suggest_index' => [
+                            'flexible_suggest_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["lowercase", "asciifolding", "larasearch_suggest_shingle"]
+                                'filter' => ["lowercase", "asciifolding", "flexible_suggest_shingle"]
                             ],
-                            'larasearch_text_start_index' => [
+                            'flexible_text_start_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "keyword",
-                                'filter' => ["lowercase", "asciifolding", "larasearch_edge_ngram"]
+                                'filter' => ["lowercase", "asciifolding", "flexible_edge_ngram"]
                             ],
-                            'larasearch_text_middle_index' => [
+                            'flexible_text_middle_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "keyword",
-                                'filter' => ["lowercase", "asciifolding", "larasearch_ngram"]
+                                'filter' => ["lowercase", "asciifolding", "flexible_ngram"]
                             ],
-                            'larasearch_text_end_index' => [
+                            'flexible_text_end_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "keyword",
-                                'filter' => ["lowercase", "asciifolding", "reverse", "larasearch_edge_ngram", "reverse"]
+                                'filter' => ["lowercase", "asciifolding", "reverse", "flexible_edge_ngram", "reverse"]
                             ],
-                            'larasearch_word_start_index' => [
+                            'flexible_word_start_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["lowercase", "asciifolding", "larasearch_edge_ngram"]
+                                'filter' => ["lowercase", "asciifolding", "flexible_edge_ngram"]
                             ],
-                            'larasearch_word_middle_index' => [
+                            'flexible_word_middle_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["lowercase", "asciifolding", "larasearch_ngram"]
+                                'filter' => ["lowercase", "asciifolding", "flexible_ngram"]
                             ],
-                            'larasearch_word_end_index' => [
+                            'flexible_word_end_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["lowercase", "asciifolding", "reverse", "larasearch_edge_ngram", "reverse"]
+                                'filter' => ["lowercase", "asciifolding", "reverse", "flexible_edge_ngram", "reverse"]
                             ]
                         ],
                         'filter' => [
-                            'larasearch_index_shingle' => [
+                            'flexible_index_shingle' => [
                                 'type' => "shingle",
                                 'token_separator' => ""
                             ],
-                            'larasearch_search_shingle' => [
+                            'flexible_search_shingle' => [
                                 'type' => "shingle",
                                 'token_separator' => "",
                                 'output_unigrams' => false,
                                 'output_unigrams_if_no_shingles' => true
                             ],
-                            'larasearch_suggest_shingle' => [
+                            'flexible_suggest_shingle' => [
                                 'type' => "shingle",
                                 'max_shingle_size' => 5
                             ],
-                            'larasearch_edge_ngram' => [
+                            'flexible_edge_ngram' => [
                                 'type' => "edgeNGram",
                                 'min_gram' => 1,
                                 'max_gram' => 50
                             ],
-                            'larasearch_ngram' => [
+                            'flexible_ngram' => [
                                 'type' => "nGram",
                                 'min_gram' => 1,
                                 'max_gram' => 50
                             ],
-                            'larasearch_stemmer' => [
+                            'flexible_stemmer' => [
                                 'type' => "snowball",
                                 'language' => "English"
                             ]
                         ],
                         'tokenizer' => [
-                            'larasearch_autocomplete_ngram' => [
+                            'flexible_autocomplete_ngram' => [
                                 'type' => "edgeNGram",
                                 'min_gram' => 1,
                                 'max_gram' => 50
@@ -292,12 +292,12 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                               "number_of_replicas": 0,
                               "analysis": {
                                 "analyzer": {
-                                  "larasearch_keyword": {
+                                  "flexible_keyword": {
                                     "type": "custom",
                                     "tokenizer": "keyword",
                                     "filter": [
                                       "lowercase",
-                                      "larasearch_stemmer"
+                                      "flexible_stemmer"
                                     ]
                                   },
                                   "default_index": {
@@ -307,40 +307,40 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                                       "standard",
                                       "lowercase",
                                       "asciifolding",
-                                      "larasearch_index_shingle",
-                                      "larasearch_stemmer"
+                                      "flexible_index_shingle",
+                                      "flexible_stemmer"
                                     ]
                                   },
-                                  "larasearch_search": {
+                                  "flexible_search": {
                                     "type": "custom",
                                     "tokenizer": "standard",
                                     "filter": [
                                       "standard",
                                       "lowercase",
                                       "asciifolding",
-                                      "larasearch_search_shingle",
-                                      "larasearch_stemmer"
+                                      "flexible_search_shingle",
+                                      "flexible_stemmer"
                                     ]
                                   },
-                                  "larasearch_search2": {
+                                  "flexible_search2": {
                                     "type": "custom",
                                     "tokenizer": "standard",
                                     "filter": [
                                       "standard",
                                       "lowercase",
                                       "asciifolding",
-                                      "larasearch_stemmer"
+                                      "flexible_stemmer"
                                     ]
                                   },
-                                  "larasearch_autocomplete_index": {
+                                  "flexible_autocomplete_index": {
                                     "type": "custom",
-                                    "tokenizer": "larasearch_autocomplete_ngram",
+                                    "tokenizer": "flexible_autocomplete_ngram",
                                     "filter": [
                                       "lowercase",
                                       "asciifolding"
                                     ]
                                   },
-                                  "larasearch_autocomplete_search": {
+                                  "flexible_autocomplete_search": {
                                     "type": "custom",
                                     "tokenizer": "keyword",
                                     "filter": [
@@ -348,7 +348,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                                       "asciifolding"
                                     ]
                                   },
-                                  "larasearch_word_search": {
+                                  "flexible_word_search": {
                                     "type": "custom",
                                     "tokenizer": "standard",
                                     "filter": [
@@ -356,106 +356,106 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                                       "asciifolding"
                                     ]
                                   },
-                                  "larasearch_suggest_index": {
+                                  "flexible_suggest_index": {
                                     "type": "custom",
                                     "tokenizer": "standard",
                                     "filter": [
                                       "lowercase",
                                       "asciifolding",
-                                      "larasearch_suggest_shingle"
+                                      "flexible_suggest_shingle"
                                     ]
                                   },
-                                  "larasearch_text_start_index": {
+                                  "flexible_text_start_index": {
                                     "type": "custom",
                                     "tokenizer": "keyword",
                                     "filter": [
                                       "lowercase",
                                       "asciifolding",
-                                      "larasearch_edge_ngram"
+                                      "flexible_edge_ngram"
                                     ]
                                   },
-                                  "larasearch_text_middle_index": {
+                                  "flexible_text_middle_index": {
                                     "type": "custom",
                                     "tokenizer": "keyword",
                                     "filter": [
                                       "lowercase",
                                       "asciifolding",
-                                      "larasearch_ngram"
+                                      "flexible_ngram"
                                     ]
                                   },
-                                  "larasearch_text_end_index": {
+                                  "flexible_text_end_index": {
                                     "type": "custom",
                                     "tokenizer": "keyword",
                                     "filter": [
                                       "lowercase",
                                       "asciifolding",
                                       "reverse",
-                                      "larasearch_edge_ngram",
+                                      "flexible_edge_ngram",
                                       "reverse"
                                     ]
                                   },
-                                  "larasearch_word_start_index": {
+                                  "flexible_word_start_index": {
                                     "type": "custom",
                                     "tokenizer": "standard",
                                     "filter": [
                                       "lowercase",
                                       "asciifolding",
-                                      "larasearch_edge_ngram"
+                                      "flexible_edge_ngram"
                                     ]
                                   },
-                                  "larasearch_word_middle_index": {
+                                  "flexible_word_middle_index": {
                                     "type": "custom",
                                     "tokenizer": "standard",
                                     "filter": [
                                       "lowercase",
                                       "asciifolding",
-                                      "larasearch_ngram"
+                                      "flexible_ngram"
                                     ]
                                   },
-                                  "larasearch_word_end_index": {
+                                  "flexible_word_end_index": {
                                     "type": "custom",
                                     "tokenizer": "standard",
                                     "filter": [
                                       "lowercase",
                                       "asciifolding",
                                       "reverse",
-                                      "larasearch_edge_ngram",
+                                      "flexible_edge_ngram",
                                       "reverse"
                                     ]
                                   }
                                 },
                                 "filter": {
-                                  "larasearch_index_shingle": {
+                                  "flexible_index_shingle": {
                                     "type": "shingle",
                                     "token_separator": ""
                                   },
-                                  "larasearch_search_shingle": {
+                                  "flexible_search_shingle": {
                                     "type": "shingle",
                                     "token_separator": "",
                                     "output_unigrams": false,
                                     "output_unigrams_if_no_shingles": true
                                   },
-                                  "larasearch_suggest_shingle": {
+                                  "flexible_suggest_shingle": {
                                     "type": "shingle",
                                     "max_shingle_size": 5
                                   },
-                                  "larasearch_edge_ngram": {
+                                  "flexible_edge_ngram": {
                                     "type": "edgeNGram",
                                     "min_gram": 1,
                                     "max_gram": 50
                                   },
-                                  "larasearch_ngram": {
+                                  "flexible_ngram": {
                                     "type": "nGram",
                                     "min_gram": 1,
                                     "max_gram": 50
                                   },
-                                  "larasearch_stemmer": {
+                                  "flexible_stemmer": {
                                     "type": "snowball",
                                     "language": "English"
                                   }
                                 },
                                 "tokenizer": {
-                                  "larasearch_autocomplete_ngram": {
+                                  "flexible_autocomplete_ngram": {
                                     "type": "edgeNGram",
                                     "min_gram": 1,
                                     "max_gram": 50
@@ -480,42 +480,42 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                                       "autocomplete": {
                                         "type": "string",
                                         "index": "analyzed",
-                                        "analyzer": "larasearch_autocomplete_index"
+                                        "analyzer": "flexible_autocomplete_index"
                                       },
                                       "suggest": {
                                         "type": "string",
                                         "index": "analyzed",
-                                        "analyzer": "larasearch_suggest_index"
+                                        "analyzer": "flexible_suggest_index"
                                       },
                                       "text_start": {
                                         "type": "string",
                                         "index": "analyzed",
-                                        "analyzer": "larasearch_text_start_index"
+                                        "analyzer": "flexible_text_start_index"
                                       },
                                       "text_middle": {
                                         "type": "string",
                                         "index": "analyzed",
-                                        "analyzer": "larasearch_text_middle_index"
+                                        "analyzer": "flexible_text_middle_index"
                                       },
                                       "text_end": {
                                         "type": "string",
                                         "index": "analyzed",
-                                        "analyzer": "larasearch_text_end_index"
+                                        "analyzer": "flexible_text_end_index"
                                       },
                                       "word_start": {
                                         "type": "string",
                                         "index": "analyzed",
-                                        "analyzer": "larasearch_word_start_index"
+                                        "analyzer": "flexible_word_start_index"
                                       },
                                       "word_middle": {
                                         "type": "string",
                                         "index": "analyzed",
-                                        "analyzer": "larasearch_word_middle_index"
+                                        "analyzer": "flexible_word_middle_index"
                                       },
                                       "word_end": {
                                         "type": "string",
                                         "index": "analyzed",
-                                        "analyzer": "larasearch_word_end_index"
+                                        "analyzer": "flexible_word_end_index"
                                       }
                                     }
                                   },
@@ -536,7 +536,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                                           "autocomplete": {
                                             "type": "string",
                                             "index": "analyzed",
-                                            "analyzer": "larasearch_autocomplete_index"
+                                            "analyzer": "flexible_autocomplete_index"
                                           }
                                         }
                                       },
@@ -557,32 +557,32 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                                               "text_start": {
                                                 "type": "string",
                                                 "index": "analyzed",
-                                                "analyzer": "larasearch_text_start_index"
+                                                "analyzer": "flexible_text_start_index"
                                               },
                                               "text_middle": {
                                                 "type": "string",
                                                 "index": "analyzed",
-                                                "analyzer": "larasearch_text_middle_index"
+                                                "analyzer": "flexible_text_middle_index"
                                               },
                                               "text_end": {
                                                 "type": "string",
                                                 "index": "analyzed",
-                                                "analyzer": "larasearch_text_end_index"
+                                                "analyzer": "flexible_text_end_index"
                                               },
                                               "word_start": {
                                                 "type": "string",
                                                 "index": "analyzed",
-                                                "analyzer": "larasearch_word_start_index"
+                                                "analyzer": "flexible_word_start_index"
                                               },
                                               "word_middle": {
                                                 "type": "string",
                                                 "index": "analyzed",
-                                                "analyzer": "larasearch_word_middle_index"
+                                                "analyzer": "flexible_word_middle_index"
                                               },
                                               "word_end": {
                                                 "type": "string",
                                                 "index": "analyzed",
-                                                "analyzer": "larasearch_word_end_index"
+                                                "analyzer": "flexible_word_end_index"
                                               }
                                             }
                                           }
@@ -643,7 +643,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
          *
          */
         Config::shouldReceive('get')
-            ->with('larasearch.elasticsearch.analyzers')
+            ->with('flexible.elasticsearch.analyzers')
             ->andReturn([
                 'autocomplete',
                 'suggest',
@@ -656,116 +656,116 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
             ]);
 
         Config::shouldReceive('get')
-            ->with('larasearch.elasticsearch.defaults.index')
+            ->with('flexible.elasticsearch.defaults.index')
             ->andReturn([
                 'settings' => [
                     'number_of_shards' => 1,
                     'number_of_replicas' => 0,
                     'analysis' => [
                         'analyzer' => [
-                            'larasearch_keyword' => [
+                            'flexible_keyword' => [
                                 'type' => "custom",
                                 'tokenizer' => "keyword",
-                                'filter' => ["lowercase", "larasearch_stemmer"]
+                                'filter' => ["lowercase", "flexible_stemmer"]
                             ],
                             'default_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["standard", "lowercase", "asciifolding", "larasearch_index_shingle", "larasearch_stemmer"]
+                                'filter' => ["standard", "lowercase", "asciifolding", "flexible_index_shingle", "flexible_stemmer"]
                             ],
-                            'larasearch_search' => [
+                            'flexible_search' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["standard", "lowercase", "asciifolding", "larasearch_search_shingle", "larasearch_stemmer"]
+                                'filter' => ["standard", "lowercase", "asciifolding", "flexible_search_shingle", "flexible_stemmer"]
                             ],
-                            'larasearch_search2' => [
+                            'flexible_search2' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["standard", "lowercase", "asciifolding", "larasearch_stemmer"]
+                                'filter' => ["standard", "lowercase", "asciifolding", "flexible_stemmer"]
                             ],
-                            'larasearch_autocomplete_index' => [
+                            'flexible_autocomplete_index' => [
                                 'type' => "custom",
-                                'tokenizer' => "larasearch_autocomplete_ngram",
+                                'tokenizer' => "flexible_autocomplete_ngram",
                                 'filter' => ["lowercase", "asciifolding"]
                             ],
-                            'larasearch_autocomplete_search' => [
+                            'flexible_autocomplete_search' => [
                                 'type' => "custom",
                                 'tokenizer' => "keyword",
                                 'filter' => ["lowercase", "asciifolding"]
                             ],
-                            'larasearch_word_search' => [
+                            'flexible_word_search' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
                                 'filter' => ["lowercase", "asciifolding"]
                             ],
-                            'larasearch_suggest_index' => [
+                            'flexible_suggest_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["lowercase", "asciifolding", "larasearch_suggest_shingle"]
+                                'filter' => ["lowercase", "asciifolding", "flexible_suggest_shingle"]
                             ],
-                            'larasearch_text_start_index' => [
+                            'flexible_text_start_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "keyword",
-                                'filter' => ["lowercase", "asciifolding", "larasearch_edge_ngram"]
+                                'filter' => ["lowercase", "asciifolding", "flexible_edge_ngram"]
                             ],
-                            'larasearch_text_middle_index' => [
+                            'flexible_text_middle_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "keyword",
-                                'filter' => ["lowercase", "asciifolding", "larasearch_ngram"]
+                                'filter' => ["lowercase", "asciifolding", "flexible_ngram"]
                             ],
-                            'larasearch_text_end_index' => [
+                            'flexible_text_end_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "keyword",
-                                'filter' => ["lowercase", "asciifolding", "reverse", "larasearch_edge_ngram", "reverse"]
+                                'filter' => ["lowercase", "asciifolding", "reverse", "flexible_edge_ngram", "reverse"]
                             ],
-                            'larasearch_word_start_index' => [
+                            'flexible_word_start_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["lowercase", "asciifolding", "larasearch_edge_ngram"]
+                                'filter' => ["lowercase", "asciifolding", "flexible_edge_ngram"]
                             ],
-                            'larasearch_word_middle_index' => [
+                            'flexible_word_middle_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["lowercase", "asciifolding", "larasearch_ngram"]
+                                'filter' => ["lowercase", "asciifolding", "flexible_ngram"]
                             ],
-                            'larasearch_word_end_index' => [
+                            'flexible_word_end_index' => [
                                 'type' => "custom",
                                 'tokenizer' => "standard",
-                                'filter' => ["lowercase", "asciifolding", "reverse", "larasearch_edge_ngram", "reverse"]
+                                'filter' => ["lowercase", "asciifolding", "reverse", "flexible_edge_ngram", "reverse"]
                             ]
                         ],
                         'filter' => [
-                            'larasearch_index_shingle' => [
+                            'flexible_index_shingle' => [
                                 'type' => "shingle",
                                 'token_separator' => ""
                             ],
-                            'larasearch_search_shingle' => [
+                            'flexible_search_shingle' => [
                                 'type' => "shingle",
                                 'token_separator' => "",
                                 'output_unigrams' => false,
                                 'output_unigrams_if_no_shingles' => true
                             ],
-                            'larasearch_suggest_shingle' => [
+                            'flexible_suggest_shingle' => [
                                 'type' => "shingle",
                                 'max_shingle_size' => 5
                             ],
-                            'larasearch_edge_ngram' => [
+                            'flexible_edge_ngram' => [
                                 'type' => "edgeNGram",
                                 'min_gram' => 1,
                                 'max_gram' => 50
                             ],
-                            'larasearch_ngram' => [
+                            'flexible_ngram' => [
                                 'type' => "nGram",
                                 'min_gram' => 1,
                                 'max_gram' => 50
                             ],
-                            'larasearch_stemmer' => [
+                            'flexible_stemmer' => [
                                 'type' => "snowball",
                                 'language' => "English"
                             ]
                         ],
                         'tokenizer' => [
-                            'larasearch_autocomplete_ngram' => [
+                            'flexible_autocomplete_ngram' => [
                                 'type' => "edgeNGram",
                                 'min_gram' => 1,
                                 'max_gram' => 50
@@ -787,12 +787,12 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                               "number_of_replicas": 0,
                               "analysis": {
                                 "analyzer": {
-                                  "larasearch_keyword": {
+                                  "flexible_keyword": {
                                     "type": "custom",
                                     "tokenizer": "keyword",
                                     "filter": [
                                       "lowercase",
-                                      "larasearch_stemmer"
+                                      "flexible_stemmer"
                                     ]
                                   },
                                   "default_index": {
@@ -802,40 +802,40 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                                       "standard",
                                       "lowercase",
                                       "asciifolding",
-                                      "larasearch_index_shingle",
-                                      "larasearch_stemmer"
+                                      "flexible_index_shingle",
+                                      "flexible_stemmer"
                                     ]
                                   },
-                                  "larasearch_search": {
+                                  "flexible_search": {
                                     "type": "custom",
                                     "tokenizer": "standard",
                                     "filter": [
                                       "standard",
                                       "lowercase",
                                       "asciifolding",
-                                      "larasearch_search_shingle",
-                                      "larasearch_stemmer"
+                                      "flexible_search_shingle",
+                                      "flexible_stemmer"
                                     ]
                                   },
-                                  "larasearch_search2": {
+                                  "flexible_search2": {
                                     "type": "custom",
                                     "tokenizer": "standard",
                                     "filter": [
                                       "standard",
                                       "lowercase",
                                       "asciifolding",
-                                      "larasearch_stemmer"
+                                      "flexible_stemmer"
                                     ]
                                   },
-                                  "larasearch_autocomplete_index": {
+                                  "flexible_autocomplete_index": {
                                     "type": "custom",
-                                    "tokenizer": "larasearch_autocomplete_ngram",
+                                    "tokenizer": "flexible_autocomplete_ngram",
                                     "filter": [
                                       "lowercase",
                                       "asciifolding"
                                     ]
                                   },
-                                  "larasearch_autocomplete_search": {
+                                  "flexible_autocomplete_search": {
                                     "type": "custom",
                                     "tokenizer": "keyword",
                                     "filter": [
@@ -843,7 +843,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                                       "asciifolding"
                                     ]
                                   },
-                                  "larasearch_word_search": {
+                                  "flexible_word_search": {
                                     "type": "custom",
                                     "tokenizer": "standard",
                                     "filter": [
@@ -851,106 +851,106 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                                       "asciifolding"
                                     ]
                                   },
-                                  "larasearch_suggest_index": {
+                                  "flexible_suggest_index": {
                                     "type": "custom",
                                     "tokenizer": "standard",
                                     "filter": [
                                       "lowercase",
                                       "asciifolding",
-                                      "larasearch_suggest_shingle"
+                                      "flexible_suggest_shingle"
                                     ]
                                   },
-                                  "larasearch_text_start_index": {
+                                  "flexible_text_start_index": {
                                     "type": "custom",
                                     "tokenizer": "keyword",
                                     "filter": [
                                       "lowercase",
                                       "asciifolding",
-                                      "larasearch_edge_ngram"
+                                      "flexible_edge_ngram"
                                     ]
                                   },
-                                  "larasearch_text_middle_index": {
+                                  "flexible_text_middle_index": {
                                     "type": "custom",
                                     "tokenizer": "keyword",
                                     "filter": [
                                       "lowercase",
                                       "asciifolding",
-                                      "larasearch_ngram"
+                                      "flexible_ngram"
                                     ]
                                   },
-                                  "larasearch_text_end_index": {
+                                  "flexible_text_end_index": {
                                     "type": "custom",
                                     "tokenizer": "keyword",
                                     "filter": [
                                       "lowercase",
                                       "asciifolding",
                                       "reverse",
-                                      "larasearch_edge_ngram",
+                                      "flexible_edge_ngram",
                                       "reverse"
                                     ]
                                   },
-                                  "larasearch_word_start_index": {
+                                  "flexible_word_start_index": {
                                     "type": "custom",
                                     "tokenizer": "standard",
                                     "filter": [
                                       "lowercase",
                                       "asciifolding",
-                                      "larasearch_edge_ngram"
+                                      "flexible_edge_ngram"
                                     ]
                                   },
-                                  "larasearch_word_middle_index": {
+                                  "flexible_word_middle_index": {
                                     "type": "custom",
                                     "tokenizer": "standard",
                                     "filter": [
                                       "lowercase",
                                       "asciifolding",
-                                      "larasearch_ngram"
+                                      "flexible_ngram"
                                     ]
                                   },
-                                  "larasearch_word_end_index": {
+                                  "flexible_word_end_index": {
                                     "type": "custom",
                                     "tokenizer": "standard",
                                     "filter": [
                                       "lowercase",
                                       "asciifolding",
                                       "reverse",
-                                      "larasearch_edge_ngram",
+                                      "flexible_edge_ngram",
                                       "reverse"
                                     ]
                                   }
                                 },
                                 "filter": {
-                                  "larasearch_index_shingle": {
+                                  "flexible_index_shingle": {
                                     "type": "shingle",
                                     "token_separator": ""
                                   },
-                                  "larasearch_search_shingle": {
+                                  "flexible_search_shingle": {
                                     "type": "shingle",
                                     "token_separator": "",
                                     "output_unigrams": false,
                                     "output_unigrams_if_no_shingles": true
                                   },
-                                  "larasearch_suggest_shingle": {
+                                  "flexible_suggest_shingle": {
                                     "type": "shingle",
                                     "max_shingle_size": 5
                                   },
-                                  "larasearch_edge_ngram": {
+                                  "flexible_edge_ngram": {
                                     "type": "edgeNGram",
                                     "min_gram": 1,
                                     "max_gram": 50
                                   },
-                                  "larasearch_ngram": {
+                                  "flexible_ngram": {
                                     "type": "nGram",
                                     "min_gram": 1,
                                     "max_gram": 50
                                   },
-                                  "larasearch_stemmer": {
+                                  "flexible_stemmer": {
                                     "type": "snowball",
                                     "language": "English"
                                   }
                                 },
                                 "tokenizer": {
-                                  "larasearch_autocomplete_ngram": {
+                                  "flexible_autocomplete_ngram": {
                                     "type": "edgeNGram",
                                     "min_gram": 1,
                                     "max_gram": 50
@@ -975,42 +975,42 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                                       "autocomplete": {
                                         "type": "string",
                                         "index": "analyzed",
-                                        "analyzer": "larasearch_autocomplete_index"
+                                        "analyzer": "flexible_autocomplete_index"
                                       },
                                       "suggest": {
                                         "type": "string",
                                         "index": "analyzed",
-                                        "analyzer": "larasearch_suggest_index"
+                                        "analyzer": "flexible_suggest_index"
                                       },
                                       "text_start": {
                                         "type": "string",
                                         "index": "analyzed",
-                                        "analyzer": "larasearch_text_start_index"
+                                        "analyzer": "flexible_text_start_index"
                                       },
                                       "text_middle": {
                                         "type": "string",
                                         "index": "analyzed",
-                                        "analyzer": "larasearch_text_middle_index"
+                                        "analyzer": "flexible_text_middle_index"
                                       },
                                       "text_end": {
                                         "type": "string",
                                         "index": "analyzed",
-                                        "analyzer": "larasearch_text_end_index"
+                                        "analyzer": "flexible_text_end_index"
                                       },
                                       "word_start": {
                                         "type": "string",
                                         "index": "analyzed",
-                                        "analyzer": "larasearch_word_start_index"
+                                        "analyzer": "flexible_word_start_index"
                                       },
                                       "word_middle": {
                                         "type": "string",
                                         "index": "analyzed",
-                                        "analyzer": "larasearch_word_middle_index"
+                                        "analyzer": "flexible_word_middle_index"
                                       },
                                       "word_end": {
                                         "type": "string",
                                         "index": "analyzed",
-                                        "analyzer": "larasearch_word_end_index"
+                                        "analyzer": "flexible_word_end_index"
                                       }
                                     }
                                   },
@@ -1031,7 +1031,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                                           "autocomplete": {
                                             "type": "string",
                                             "index": "analyzed",
-                                            "analyzer": "larasearch_autocomplete_index"
+                                            "analyzer": "flexible_autocomplete_index"
                                           }
                                         }
                                       },
@@ -1052,32 +1052,32 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                                               "text_start": {
                                                 "type": "string",
                                                 "index": "analyzed",
-                                                "analyzer": "larasearch_text_start_index"
+                                                "analyzer": "flexible_text_start_index"
                                               },
                                               "text_middle": {
                                                 "type": "string",
                                                 "index": "analyzed",
-                                                "analyzer": "larasearch_text_middle_index"
+                                                "analyzer": "flexible_text_middle_index"
                                               },
                                               "text_end": {
                                                 "type": "string",
                                                 "index": "analyzed",
-                                                "analyzer": "larasearch_text_end_index"
+                                                "analyzer": "flexible_text_end_index"
                                               },
                                               "word_start": {
                                                 "type": "string",
                                                 "index": "analyzed",
-                                                "analyzer": "larasearch_word_start_index"
+                                                "analyzer": "flexible_word_start_index"
                                               },
                                               "word_middle": {
                                                 "type": "string",
                                                 "index": "analyzed",
-                                                "analyzer": "larasearch_word_middle_index"
+                                                "analyzer": "flexible_word_middle_index"
                                               },
                                               "word_end": {
                                                 "type": "string",
                                                 "index": "analyzed",
-                                                "analyzer": "larasearch_word_end_index"
+                                                "analyzer": "flexible_word_end_index"
                                               }
                                             }
                                           }
@@ -1676,7 +1676,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @expectedException \Iverberk\Larasearch\Exceptions\ImportException
+     * @expectedException \Menthol\Flexible\Exceptions\ImportException
      */
     public function it_should_store_a_records_in_bulk_with_errors()
     {
@@ -1724,7 +1724,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @expectedException \Iverberk\Larasearch\Exceptions\ImportException
+     * @expectedException \Menthol\Flexible\Exceptions\ImportException
      */
     public function it_should_store_records_having_prefix_in_bulk_with_errors()
     {
@@ -1774,7 +1774,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @expectedException \Iverberk\Larasearch\Exceptions\ImportException
+     * @expectedException \Menthol\Flexible\Exceptions\ImportException
      */
     public function it_should_store_records_having_explicit_prefix_in_bulk_with_errors()
     {
@@ -1920,7 +1920,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
         list($index, $proxy, $client) = $this->getMocks();
 
         // Mock the self::$client variable
-        am::double('Iverberk\Larasearch\Index', ['self::$client' => $client]);
+        am::double('Menthol\Flexible\Index', ['self::$client' => $client]);
 
         /**
          *
@@ -1963,7 +1963,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
         list($index, $proxy, $client) = $this->getMocks('bar_');
 
         // Mock the self::$client variable
-        am::double('Iverberk\Larasearch\Index', ['self::$client' => $client]);
+        am::double('Menthol\Flexible\Index', ['self::$client' => $client]);
 
         /**
          *
@@ -2009,7 +2009,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
         list($index, $proxy, $client) = $this->getMocks();
 
         // Mock the self::$client variable
-        am::double('Iverberk\Larasearch\Index', ['self::$client' => $client]);
+        am::double('Menthol\Flexible\Index', ['self::$client' => $client]);
 
         /**
          *
@@ -2045,7 +2045,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
         list($index, $proxy, $client) = $this->getMocks('bar_');
 
         // Mock the self::$client variable
-        am::double('Iverberk\Larasearch\Index', ['self::$client' => $client]);
+        am::double('Menthol\Flexible\Index', ['self::$client' => $client]);
 
         /**
          *
@@ -2083,7 +2083,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
         list($index, $proxy, $client) = $this->getMocks();
 
         // Mock the self::$client variable
-        am::double('Iverberk\Larasearch\Index', ['self::$client' => $client]);
+        am::double('Menthol\Flexible\Index', ['self::$client' => $client]);
 
         /**
          *
@@ -2119,7 +2119,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
         list($index, $proxy, $client) = $this->getMocks('bar_');
 
         // Mock the self::$client variable
-        am::double('Iverberk\Larasearch\Index', ['self::$client' => $client]);
+        am::double('Menthol\Flexible\Index', ['self::$client' => $client]);
 
         /**
          *
@@ -2157,7 +2157,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
         list($index, $proxy, $client) = $this->getMocks();
 
         // Mock the self::$client variable
-        am::double('Iverberk\Larasearch\Index', ['self::$client' => $client]);
+        am::double('Menthol\Flexible\Index', ['self::$client' => $client]);
 
         /**
          *
@@ -2193,7 +2193,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
         list($index, $proxy, $client) = $this->getMocks('bar_');
 
         // Mock the self::$client variable
-        am::double('Iverberk\Larasearch\Index', ['self::$client' => $client]);
+        am::double('Menthol\Flexible\Index', ['self::$client' => $client]);
 
         /**
          *
@@ -2236,14 +2236,14 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
             ->andReturn($client);
 
         Config::shouldReceive('get')
-            ->with('larasearch.elasticsearch.index_prefix', '')
+            ->with('flexible.elasticsearch.index_prefix', '')
             ->andReturn($index_prefix);
 
-        $proxy = m::mock('Iverberk\Larasearch\Proxy');
+        $proxy = m::mock('Menthol\Flexible\Proxy');
         $proxy->shouldReceive('getModel->getTable')
             ->andReturn('Husband');
 
-        $index = m::mock('Iverberk\Larasearch\Index', [$proxy], [m::BLOCKS => ['setName', 'setProxy']])->makePartial();
+        $index = m::mock('Menthol\Flexible\Index', [$proxy], [m::BLOCKS => ['setName', 'setProxy']])->makePartial();
 
         return [$index, $proxy, $client];
     }

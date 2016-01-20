@@ -1,6 +1,6 @@
 <?php
 
-use Iverberk\Larasearch\Traits\SearchableTrait;
+use Menthol\Flexible\Traits\SearchableTrait;
 
 class Child extends Illuminate\Database\Eloquent\Model {
 

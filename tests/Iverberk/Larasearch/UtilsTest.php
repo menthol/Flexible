@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch;
+<?php namespace Menthol\Flexible;
 
 
 class UtilsTest extends \PHPUnit_Framework_TestCase {

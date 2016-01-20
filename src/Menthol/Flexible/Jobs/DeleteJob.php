@@ -1,13 +1,13 @@
-<?php namespace Iverberk\Larasearch\Jobs;
+<?php namespace Menthol\Flexible\Jobs;
 
-use Iverberk\Larasearch\Config;
+use Menthol\Flexible\Config;
 use Illuminate\Foundation\Application;
 use Illuminate\Queue\Jobs\Job;
 
 /**
  * Class DeleteJob
  *
- * @package Iverberk\Larasearch\Jobs
+ * @package Menthol\Flexible\Jobs
  */
 class DeleteJob {
 
@@ -37,7 +37,7 @@ class DeleteJob {
      */
     public function fire(Job $job, $models)
     {
-        $loggerContainerBinding = $this->config->get('logger', 'iverberk.larasearch.logger');
+        $loggerContainerBinding = $this->config->get('logger', 'menthol.flexible.logger');
         $logger = $this->app->make($loggerContainerBinding);
 
         foreach ($models as $model)

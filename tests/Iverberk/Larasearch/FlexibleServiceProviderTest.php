@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch;
+<?php namespace Menthol\Flexible;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
@@ -6,13 +6,13 @@ use Mockery as m;
 
 function base_path($path = null)
 {
-    return LarasearchServiceProviderTest::$functions->base_path($path);
+    return FlexibleServiceProviderTest::$functions->base_path($path);
 }
 
 /**
- * Class LarasearchServiceProviderTest
+ * Class FlexibleServiceProviderTest
  */
-class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
+class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
 
     public static $functions;
     protected static $providers_real_path;
@@ -21,7 +21,7 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
     {
         self::$functions = m::mock();
         self::$functions->shouldReceive('base_path')->andReturn('');
-        self::$providers_real_path = realpath(__DIR__ . '/../../../src/Iverberk/Larasearch');
+        self::$providers_real_path = realpath(__DIR__ . '/../../../src/Menthol/Flexible');
     }
 
     protected function tearDown()
@@ -37,7 +37,7 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
         /**
          * Set
          */
-        $sp = m::mock('Iverberk\Larasearch\LarasearchServiceProvider[bootContainerBindings, publishes]', ['something']);
+        $sp = m::mock('Menthol\Flexible\FlexibleServiceProvider[bootContainerBindings, publishes]', ['something']);
         $sp->shouldAllowMockingProtectedMethods();
 
         /**
@@ -45,7 +45,7 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
          */
         $sp->shouldReceive('publishes')
             ->with([
-                self::$providers_real_path . '/../../config/larasearch.php' => base_path('config/larasearch.php'),
+                self::$providers_real_path . '/../../config/flexible.php' => base_path('config/flexible.php'),
             ], 'config')
             ->once();
 
@@ -66,7 +66,7 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
         /**
          * Set
          */
-        $sp = m::mock('Iverberk\Larasearch\LarasearchServiceProvider[' .
+        $sp = m::mock('Menthol\Flexible\FlexibleServiceProvider[' .
             'bindProxy, bindIndex, bindLogger, bindElasticsearch, bindQuery, bindResult]', ['something']);
         $sp->shouldAllowMockingProtectedMethods();
 
@@ -95,13 +95,13 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
          * Set
          */
         $app = m::mock('LaravelApp');
-        $sp = m::mock('Iverberk\Larasearch\LarasearchServiceProvider[bindElasticsearch]', [$app]);
+        $sp = m::mock('Menthol\Flexible\FlexibleServiceProvider[bindElasticsearch]', [$app]);
 
         /**
          * Expectation
          */
         Config::shouldReceive('get')
-            ->with('larasearch.elasticsearch.params')
+            ->with('flexible.elasticsearch.params')
             ->once()
             ->andReturn([]);
 
@@ -127,7 +127,7 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
          * Set
          */
         $app = m::mock('LaravelApp');
-        $sp = m::mock('Iverberk\Larasearch\LarasearchServiceProvider[bindLogger]', [$app]);
+        $sp = m::mock('Menthol\Flexible\FlexibleServiceProvider[bindLogger]', [$app]);
 
         /**
          * Expectation
@@ -137,7 +137,7 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->andReturnUsing(
                 function ($name, $closure) use ($app)
                 {
-                    $this->assertEquals('iverberk.larasearch.logger', $name);
+                    $this->assertEquals('menthol.flexible.logger', $name);
                     $this->assertInstanceOf('Monolog\Logger', $closure($app));
                 }
             );
@@ -157,7 +157,7 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
         Config::clearResolvedInstances();
 
         App::shouldReceive('make')
-            ->with('iverberk.larasearch.index', m::any())
+            ->with('menthol.flexible.index', m::any())
             ->once()
             ->andReturn('mock');
 
@@ -167,7 +167,7 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->andReturn('mock');
 
         Config::shouldReceive('get')
-            ->with('larasearch.elasticsearch.index_prefix', '')
+            ->with('flexible.elasticsearch.index_prefix', '')
             ->andReturn('');
 
         $model = m::mock('Illuminate\Database\Eloquent\Model');
@@ -175,8 +175,8 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->once()
             ->andReturn('mockType');
         $app = m::mock('LaravelApp');
-        $proxy = m::mock('Iverberk\Larasearch\Proxy', [$model]);
-        $sp = m::mock('Iverberk\Larasearch\LarasearchServiceProvider[bindIndex]', [$app]);
+        $proxy = m::mock('Menthol\Flexible\Proxy', [$model]);
+        $sp = m::mock('Menthol\Flexible\FlexibleServiceProvider[bindIndex]', [$app]);
 
         /**
          * Expectation
@@ -186,8 +186,8 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->andReturnUsing(
                 function ($name, $closure) use ($app, $proxy)
                 {
-                    $this->assertEquals('iverberk.larasearch.index', $name);
-                    $this->assertInstanceOf('Iverberk\Larasearch\Index',
+                    $this->assertEquals('menthol.flexible.index', $name);
+                    $this->assertInstanceOf('Menthol\Flexible\Index',
                         $closure($app, ['proxy' => $proxy, 'name' => 'name']));
                 }
             );
@@ -212,8 +212,8 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->once()
             ->andReturn('mockType');
         $app = m::mock('LaravelApp');
-        $proxy = m::mock('Iverberk\Larasearch\Proxy', [$model]);
-        $sp = m::mock('Iverberk\Larasearch\LarasearchServiceProvider[bindQuery]', [$app]);
+        $proxy = m::mock('Menthol\Flexible\Proxy', [$model]);
+        $sp = m::mock('Menthol\Flexible\FlexibleServiceProvider[bindQuery]', [$app]);
 
         /**
          * Expectation
@@ -223,8 +223,8 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->andReturnUsing(
                 function ($name, $closure) use ($app, $proxy)
                 {
-                    $this->assertEquals('iverberk.larasearch.query', $name);
-                    $this->assertInstanceOf('Iverberk\Larasearch\Query',
+                    $this->assertEquals('menthol.flexible.query', $name);
+                    $this->assertInstanceOf('Menthol\Flexible\Query',
                         $closure($app, ['proxy' => $proxy, 'term' => 'term', 'options' => []]));
                 }
             );
@@ -248,7 +248,7 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->once()
             ->andReturn('mockType');
         $app = m::mock('LaravelApp');
-        $sp = m::mock('Iverberk\Larasearch\LarasearchServiceProvider[bindProxy]', [$app]);
+        $sp = m::mock('Menthol\Flexible\FlexibleServiceProvider[bindProxy]', [$app]);
 
         /**
          * Expectation
@@ -258,8 +258,8 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->andReturnUsing(
                 function ($name, $closure) use ($app, $model)
                 {
-                    $this->assertEquals('iverberk.larasearch.proxy', $name);
-                    $this->assertInstanceOf('Iverberk\Larasearch\Proxy',
+                    $this->assertEquals('menthol.flexible.proxy', $name);
+                    $this->assertInstanceOf('Menthol\Flexible\Proxy',
                         $closure($app, $model));
                 }
             );
@@ -280,7 +280,7 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
          * Set
          */
         $app = m::mock('LaravelApp');
-        $sp = m::mock('Iverberk\Larasearch\LarasearchServiceProvider[bindResult]', [$app]);
+        $sp = m::mock('Menthol\Flexible\FlexibleServiceProvider[bindResult]', [$app]);
 
         /**
          * Expectation
@@ -290,8 +290,8 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->andReturnUsing(
                 function ($name, $closure) use ($app)
                 {
-                    $this->assertEquals('iverberk.larasearch.response.result', $name);
-                    $this->assertInstanceOf('Iverberk\Larasearch\Response\Result',
+                    $this->assertEquals('menthol.flexible.response.result', $name);
+                    $this->assertInstanceOf('Menthol\Flexible\Response\Result',
                         $closure($app, []));
                 }
             );
@@ -311,7 +311,7 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
          * Set
          */
         $app = m::mock('Illuminate\Container\Container');
-        $sp = m::mock('Iverberk\Larasearch\LarasearchServiceProvider[commands, mergeConfigFrom]', [$app]);
+        $sp = m::mock('Menthol\Flexible\FlexibleServiceProvider[commands, mergeConfigFrom]', [$app]);
         $sp->shouldAllowMockingProtectedMethods();
 
         /**
@@ -324,28 +324,28 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->once()
             ->andReturnUsing(function ($closure) use ($app)
             {
-                $this->assertInstanceOf('Iverberk\Larasearch\Commands\ReindexCommand', $closure($app));
+                $this->assertInstanceOf('Menthol\Flexible\Commands\ReindexCommand', $closure($app));
             });
 
         $app->shouldReceive('share')
             ->once()
             ->andReturnUsing(function ($closure) use ($app)
             {
-                $this->assertInstanceOf('Iverberk\Larasearch\Commands\PathsCommand', $closure($app));
+                $this->assertInstanceOf('Menthol\Flexible\Commands\PathsCommand', $closure($app));
             });
 
         $sp->shouldReceive('commands')
-            ->with('iverberk.larasearch.commands.reindex')
+            ->with('menthol.flexible.commands.reindex')
             ->once()
             ->andReturn(true);
 
         $sp->shouldReceive('commands')
-            ->with('iverberk.larasearch.commands.paths')
+            ->with('menthol.flexible.commands.paths')
             ->once()
             ->andReturn(true);
 
         $sp->shouldReceive('mergeConfigFrom')
-            ->with(self::$providers_real_path . '/../../config/larasearch.php', 'larasearch')
+            ->with(self::$providers_real_path . '/../../config/flexible.php', 'flexible')
             ->once();
 
         /**
@@ -367,7 +367,7 @@ class LarasearchServiceProviderTest extends \PHPUnit_Framework_TestCase {
         /**
          * Assertion
          */
-        $sp = new LarasearchServiceProvider($app);
+        $sp = new FlexibleServiceProvider($app);
         $this->assertEquals([], $sp->provides());
     }
 

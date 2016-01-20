@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch;
+<?php namespace Menthol\Flexible;
 
 use stdClass;
 
@@ -201,7 +201,7 @@ class Query {
                         'like_text' => $this->term,
                         'min_doc_freq' => 1,
                         'min_term_freq' => 1,
-                        'analyzer' => "larasearch_search2"
+                        'analyzer' => "flexible_search2"
                     ]
                 ]
             ],
@@ -210,7 +210,7 @@ class Query {
                     'multi_match' => [
                         'fields' => $this->fields,
                         'query' => $this->term,
-                        'analyzer' => "larasearch_autocomplete_search"
+                        'analyzer' => "flexible_autocomplete_search"
                     ]
                 ]
             ]
@@ -246,16 +246,16 @@ class Query {
                     if ($field == '_all' || substr_compare($field, '.analyzed', -9, 9) === 0)
                     {
                         $qs = array_merge($qs, [
-                                array_merge($shared_options, ['boost' => 10, 'analyzer' => "larasearch_search"]),
-                                array_merge($shared_options, ['boost' => 10, 'analyzer' => "larasearch_search2"])
+                                array_merge($shared_options, ['boost' => 10, 'analyzer' => "flexible_search"]),
+                                array_merge($shared_options, ['boost' => 10, 'analyzer' => "flexible_search2"])
                             ]
                         );
                         if ($misspellings = Utils::findKey($this->options, 'misspellings', false))
                         {
                             $distance = 1;
                             $qs = array_merge($qs, [
-                                    array_merge($shared_options, ['fuzziness' => $distance, 'max_expansions' => 3, 'analyzer' => "larasearch_search"]),
-                                    array_merge($shared_options, ['fuzziness' => $distance, 'max_expansions' => 3, 'analyzer' => "larasearch_search2"])
+                                    array_merge($shared_options, ['fuzziness' => $distance, 'max_expansions' => 3, 'analyzer' => "flexible_search"]),
+                                    array_merge($shared_options, ['fuzziness' => $distance, 'max_expansions' => 3, 'analyzer' => "flexible_search2"])
                                 ]
                             );
 
@@ -270,7 +270,7 @@ class Query {
                         ];
                     } else
                     {
-                        $analyzer = preg_match('/\.word_(start|middle|end)\z/', $field) ? "larasearch_word_search" : "larasearch_autocomplete_search";
+                        $analyzer = preg_match('/\.word_(start|middle|end)\z/', $field) ? "flexible_word_search" : "flexible_autocomplete_search";
                         $qs[] = array_merge($shared_options, ['analyzer' => $analyzer]);
                     }
 

@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch\Exceptions;
+<?php namespace Menthol\Flexible\Exceptions;
 
 use Exception;
 

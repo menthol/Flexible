@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch\Commands;
+<?php namespace Menthol\Flexible\Commands;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
@@ -25,7 +25,7 @@ function base_path()
 
 /**
  * Class PathsCommandTest
- * @package Iverberk\Larasearch\Commands
+ * @package Menthol\Flexible\Commands
  * @preserveGlobalState disabled
  */
 class PathsCommandTest extends \PHPUnit_Framework_TestCase {
@@ -63,7 +63,7 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
          * Set
          *
          **/
-        $command = m::mock('Iverberk\Larasearch\Commands\PathsCommand');
+        $command = m::mock('Menthol\Flexible\Commands\PathsCommand');
         $options = array(
             array('dir', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Directory to scan for searchable models', null, ''),
             array('relations', null, InputOption::VALUE_NONE, 'Include related Eloquent models', null),
@@ -88,7 +88,7 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
          * Set
          *
          **/
-        $command = m::mock('Iverberk\Larasearch\Commands\PathsCommand');
+        $command = m::mock('Menthol\Flexible\Commands\PathsCommand');
         $arguments = array(
             array('model', InputOption::VALUE_OPTIONAL, 'Eloquent model to find paths for', null)
         );
@@ -112,7 +112,7 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
          *
          * @var \Mockery\Mock $command
          */
-        $command = m::mock('Iverberk\Larasearch\Commands\PathsCommand')->makePartial();
+        $command = m::mock('Menthol\Flexible\Commands\PathsCommand')->makePartial();
         $command->shouldAllowMockingProtectedMethods();
 
         File::clearResolvedInstance('files');
@@ -208,7 +208,7 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
          *
          * @var \Mockery\Mock $command
          */
-        $command = m::mock('Iverberk\Larasearch\Commands\PathsCommand')->makePartial();
+        $command = m::mock('Menthol\Flexible\Commands\PathsCommand')->makePartial();
         $command->shouldAllowMockingProtectedMethods();
 
         App::shouldReceive('make')->andReturn(true);
@@ -261,7 +261,7 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
          *
          * @var \Mockery\Mock $command
          */
-        $command = m::mock('Iverberk\Larasearch\Commands\PathsCommand')->makePartial();
+        $command = m::mock('Menthol\Flexible\Commands\PathsCommand')->makePartial();
         $command->shouldAllowMockingProtectedMethods();
 
         App::shouldReceive('make')->andReturn(true);
@@ -308,7 +308,7 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
          *
          * @var \Mockery\Mock $command
          */
-        $command = m::mock('Iverberk\Larasearch\Commands\PathsCommand')->makePartial();
+        $command = m::mock('Menthol\Flexible\Commands\PathsCommand')->makePartial();
         $command->shouldAllowMockingProtectedMethods();
 
         File::clearResolvedInstance('files');
@@ -368,7 +368,7 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
          *
          * @var \Mockery\Mock $command
          */
-        $command = m::mock('Iverberk\Larasearch\Commands\PathsCommand')->makePartial();
+        $command = m::mock('Menthol\Flexible\Commands\PathsCommand')->makePartial();
         $command->shouldAllowMockingProtectedMethods();
 
         File::clearResolvedInstance('files');

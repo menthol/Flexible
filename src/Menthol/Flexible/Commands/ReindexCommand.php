@@ -1,9 +1,9 @@
-<?php namespace Iverberk\Larasearch\Commands;
+<?php namespace Menthol\Flexible\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
-use Iverberk\Larasearch\Utils;
+use Menthol\Flexible\Utils;
 use Symfony\Component\Console\Input\InputOption;
 
 class ReindexCommand extends Command {
@@ -13,7 +13,7 @@ class ReindexCommand extends Command {
      *
      * @var string
      */
-    protected $name = 'larasearch:reindex';
+    protected $name = 'flexible:reindex';
 
     /**
      * The console command description.

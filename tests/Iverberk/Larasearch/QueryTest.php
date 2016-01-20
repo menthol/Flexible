@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch;
+<?php namespace Menthol\Flexible;
 
 use Mockery as m;
 use AspectMock\Test as am;
@@ -25,7 +25,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
         list($proxy, $client, $model) = $this->getMocks();
         $test = $this;
 
-        $query = m::mock('Iverberk\Larasearch\Query', [$proxy, 'term'])->makePartial();
+        $query = m::mock('Menthol\Flexible\Query', [$proxy, 'term'])->makePartial();
 
         /**
          *
@@ -51,7 +51,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                     "query": "term",
                                     "operator": "and",
                                     "boost": 10,
-                                    "analyzer": "larasearch_search"
+                                    "analyzer": "flexible_search"
                                   }
                                 }
                               },
@@ -61,7 +61,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                     "query": "term",
                                     "operator": "and",
                                     "boost": 10,
-                                    "analyzer": "larasearch_search2"
+                                    "analyzer": "flexible_search2"
                                   }
                                 }
                               }
@@ -83,7 +83,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          */
         $response = $query->execute();
 
-        $this->assertInstanceOf('Iverberk\Larasearch\Response', $response);
+        $this->assertInstanceOf('Menthol\Flexible\Response', $response);
     }
 
     /**
@@ -100,7 +100,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
         list($proxy, $client, $model) = $this->getMocks();
         $test = $this;
 
-        $query = m::mock('Iverberk\Larasearch\Query', [
+        $query = m::mock('Menthol\Flexible\Query', [
             $proxy,
             'term',
             [
@@ -154,7 +154,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          */
         $response = $query->execute();
 
-        $this->assertInstanceOf('Iverberk\Larasearch\Response', $response);
+        $this->assertInstanceOf('Menthol\Flexible\Response', $response);
     }
 
     /**
@@ -171,7 +171,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
         list($proxy, $client, $model) = $this->getMocks();
         $test = $this;
 
-        $query = m::mock('Iverberk\Larasearch\Query', [
+        $query = m::mock('Menthol\Flexible\Query', [
             $proxy,
             'term',
             [
@@ -203,7 +203,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                     "query": "term",
                                     "operator": "and",
                                     "boost": 10,
-                                    "analyzer": "larasearch_search"
+                                    "analyzer": "flexible_search"
                                   }
                                 }
                               },
@@ -213,7 +213,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                     "query": "term",
                                     "operator": "and",
                                     "boost": 10,
-                                    "analyzer": "larasearch_search2"
+                                    "analyzer": "flexible_search2"
                                   }
                                 }
                               },
@@ -225,7 +225,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                     "boost": 1,
                                     "fuzziness": 1,
                                     "max_expansions": 3,
-                                    "analyzer": "larasearch_search"
+                                    "analyzer": "flexible_search"
                                   }
                                 }
                               },
@@ -237,7 +237,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                     "boost": 1,
                                     "fuzziness": 1,
                                     "max_expansions": 3,
-                                    "analyzer": "larasearch_search2"
+                                    "analyzer": "flexible_search2"
                                   }
                                 }
                               }
@@ -258,7 +258,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          */
         $response = $query->execute();
 
-        $this->assertInstanceOf('Iverberk\Larasearch\Response', $response);
+        $this->assertInstanceOf('Menthol\Flexible\Response', $response);
     }
 
     /**
@@ -275,7 +275,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
         list($proxy, $client, $model) = $this->getMocks();
         $test = $this;
 
-        $query = m::mock('Iverberk\Larasearch\Query', [
+        $query = m::mock('Menthol\Flexible\Query', [
             $proxy,
             'term',
             [
@@ -307,7 +307,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                     "query": "term",
                                     "operator": "and",
                                     "boost": 1,
-                                    "analyzer": "larasearch_word_search"
+                                    "analyzer": "flexible_word_search"
                                   }
                                 }
                               },
@@ -317,7 +317,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                     "query": "term",
                                     "operator": "and",
                                     "boost": 10,
-                                    "analyzer": "larasearch_search"
+                                    "analyzer": "flexible_search"
                                   }
                                 }
                               },
@@ -327,7 +327,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                     "query": "term",
                                     "operator": "and",
                                     "boost": 10,
-                                    "analyzer": "larasearch_search2"
+                                    "analyzer": "flexible_search2"
                                   }
                                 }
                               }
@@ -349,7 +349,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          */
         $response = $query->execute();
 
-        $this->assertInstanceOf('Iverberk\Larasearch\Response', $response);
+        $this->assertInstanceOf('Menthol\Flexible\Response', $response);
     }
 
     /**
@@ -366,7 +366,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
         list($proxy, $client, $model) = $this->getMocks();
         $test = $this;
 
-        $query = m::mock('Iverberk\Larasearch\Query', [
+        $query = m::mock('Menthol\Flexible\Query', [
             $proxy,
             'term',
             [
@@ -396,7 +396,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                               "wife.name.autocomplete"
                             ],
                             "query": "term",
-                            "analyzer": "larasearch_autocomplete_search"
+                            "analyzer": "flexible_autocomplete_search"
                           }
                         }
                       }
@@ -414,7 +414,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          */
         $response = $query->execute();
 
-        $this->assertInstanceOf('Iverberk\Larasearch\Response', $response);
+        $this->assertInstanceOf('Menthol\Flexible\Response', $response);
     }
 
     /**
@@ -431,7 +431,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
         list($proxy, $client, $model) = $this->getMocks();
         $test = $this;
 
-        $query = m::mock('Iverberk\Larasearch\Query', [
+        $query = m::mock('Menthol\Flexible\Query', [
             $proxy,
             'term',
             [
@@ -461,7 +461,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                   "wife.name.autocomplete"
                                 ],
                                 "query": "term",
-                                "analyzer": "larasearch_autocomplete_search"
+                                "analyzer": "flexible_autocomplete_search"
                               }
                             }
                           }
@@ -479,7 +479,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          */
         $response = $query->execute();
 
-        $this->assertInstanceOf('Iverberk\Larasearch\Response', $response);
+        $this->assertInstanceOf('Menthol\Flexible\Response', $response);
     }
 
     /**
@@ -496,7 +496,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
         list($proxy, $client, $model) = $this->getMocks();
         $test = $this;
 
-        $query = m::mock('Iverberk\Larasearch\Query', [
+        $query = m::mock('Menthol\Flexible\Query', [
             $proxy,
             'term',
             [
@@ -529,7 +529,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                     "query": "term",
                                     "operator": "and",
                                     "boost": 10,
-                                    "analyzer": "larasearch_search"
+                                    "analyzer": "flexible_search"
                                   }
                                 }
                               },
@@ -539,7 +539,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                     "query": "term",
                                     "operator": "and",
                                     "boost": 10,
-                                    "analyzer": "larasearch_search2"
+                                    "analyzer": "flexible_search2"
                                   }
                                 }
                               }
@@ -564,7 +564,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          */
         $response = $query->execute();
 
-        $this->assertInstanceOf('Iverberk\Larasearch\Response', $response);
+        $this->assertInstanceOf('Menthol\Flexible\Response', $response);
     }
 
     /**
@@ -581,7 +581,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
         list($proxy, $client, $model) = $this->getMocks();
         $test = $this;
 
-        $query = m::mock('Iverberk\Larasearch\Query', [
+        $query = m::mock('Menthol\Flexible\Query', [
             $proxy,
             'term',
             [
@@ -614,7 +614,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                         "query": "term",
                                         "operator": "and",
                                         "boost": 10,
-                                        "analyzer": "larasearch_search"
+                                        "analyzer": "flexible_search"
                                       }
                                     }
                                   },
@@ -624,7 +624,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                         "query": "term",
                                         "operator": "and",
                                         "boost": 10,
-                                        "analyzer": "larasearch_search2"
+                                        "analyzer": "flexible_search2"
                                       }
                                     }
                                   }
@@ -649,7 +649,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          */
         $response = $query->execute();
 
-        $this->assertInstanceOf('Iverberk\Larasearch\Response', $response);
+        $this->assertInstanceOf('Menthol\Flexible\Response', $response);
     }
 
     /**
@@ -666,7 +666,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
         list($proxy, $client, $model) = $this->getMocks();
         $test = $this;
 
-        $query = m::mock('Iverberk\Larasearch\Query', [
+        $query = m::mock('Menthol\Flexible\Query', [
             $proxy,
             'term',
             [
@@ -712,7 +712,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                     "query": "term",
                                     "operator": "and",
                                     "boost": 10,
-                                    "analyzer": "larasearch_search"
+                                    "analyzer": "flexible_search"
                                   }
                                 }
                               },
@@ -722,7 +722,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                     "query": "term",
                                     "operator": "and",
                                     "boost": 10,
-                                    "analyzer": "larasearch_search2"
+                                    "analyzer": "flexible_search2"
                                   }
                                 }
                               }
@@ -748,7 +748,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          */
         $response = $query->execute();
 
-        $this->assertInstanceOf('Iverberk\Larasearch\Response', $response);
+        $this->assertInstanceOf('Menthol\Flexible\Response', $response);
     }
 
     /**
@@ -765,7 +765,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
         list($proxy, $client, $model) = $this->getMocks();
         $test = $this;
 
-        $query = m::mock('Iverberk\Larasearch\Query', [
+        $query = m::mock('Menthol\Flexible\Query', [
             $proxy,
             'term',
             [
@@ -806,7 +806,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                     "query": "term",
                                     "operator": "and",
                                     "boost": 10,
-                                    "analyzer": "larasearch_search"
+                                    "analyzer": "flexible_search"
                                   }
                                 }
                               },
@@ -816,7 +816,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                     "query": "term",
                                     "operator": "and",
                                     "boost": 10,
-                                    "analyzer": "larasearch_search2"
+                                    "analyzer": "flexible_search2"
                                   }
                                 }
                               }
@@ -837,7 +837,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          */
         $response = $query->execute();
 
-        $this->assertInstanceOf('Iverberk\Larasearch\Response', $response);
+        $this->assertInstanceOf('Menthol\Flexible\Response', $response);
     }
 
     /**
@@ -854,7 +854,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
         list($proxy, $client, $model) = $this->getMocks();
         $test = $this;
 
-        $query = m::mock('Iverberk\Larasearch\Query', [
+        $query = m::mock('Menthol\Flexible\Query', [
             $proxy,
             '*',
             [
@@ -909,7 +909,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          */
         $response = $query->execute();
 
-        $this->assertInstanceOf('Iverberk\Larasearch\Response', $response);
+        $this->assertInstanceOf('Menthol\Flexible\Response', $response);
     }
 
     /**
@@ -924,7 +924,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
         list($proxy, $client, $model) = $this->getMocks();
         $test = $this;
 
-        $query = m::mock('Iverberk\Larasearch\Query', [$proxy, 'term', ['sort' => 'name']])->makePartial();
+        $query = m::mock('Menthol\Flexible\Query', [$proxy, 'term', ['sort' => 'name']])->makePartial();
 
         /**
          * Expectation
@@ -950,7 +950,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                                     "query": "term",
                                                     "operator": "and",
                                                     "boost": 10,
-                                                    "analyzer": "larasearch_search"
+                                                    "analyzer": "flexible_search"
                                                 }
                                             }
                                         },
@@ -960,7 +960,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
                                                     "query": "term",
                                                     "operator": "and",
                                                     "boost": 10,
-                                                    "analyzer": "larasearch_search2"
+                                                    "analyzer": "flexible_search2"
                                                 }
                                             }
                                         }
@@ -977,7 +977,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          */
         $response = $query->execute();
 
-        $this->assertInstanceOf('Iverberk\Larasearch\Response', $response);
+        $this->assertInstanceOf('Menthol\Flexible\Response', $response);
     }
 
 
@@ -996,7 +996,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
         list($proxy, $client, $model) = $this->getMocks();
         $test = $this;
 
-        $query = m::mock('Iverberk\Larasearch\Query', [
+        $query = m::mock('Menthol\Flexible\Query', [
             $proxy,
             '*',
             [
@@ -1023,7 +1023,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
         $client = m::mock('Elasticsearch\Client');
         $model = m::mock('Illuminate\Database\Eloquent\Model');
 
-        $proxy = m::mock('Iverberk\Larasearch\Proxy');
+        $proxy = m::mock('Menthol\Flexible\Proxy');
         $proxy->shouldReceive('getClient')
             ->andReturn($client);
         $proxy->shouldReceive('getModel')

@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch\Traits;
+<?php namespace Menthol\Flexible\Traits;
 
 use Mockery as m;
 use AspectMock\Test as am;

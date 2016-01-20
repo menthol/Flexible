@@ -1,6 +1,6 @@
 <?php namespace House;
 
-use Iverberk\Larasearch\Traits\SearchableTrait;
+use Menthol\Flexible\Traits\SearchableTrait;
 
 class Item extends \Illuminate\Database\Eloquent\Model {
 

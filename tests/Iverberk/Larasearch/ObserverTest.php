@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch;
+<?php namespace Menthol\Flexible;
 
 use Husband;
 use Illuminate\Support\Facades\App;
@@ -54,20 +54,20 @@ class ObserverTest extends \PHPUnit_Framework_TestCase {
          */
         Facade::clearResolvedInstances();
 
-        $proxy = m::mock('Iverberk\Larasearch\Proxy');
+        $proxy = m::mock('Menthol\Flexible\Proxy');
         $proxy->shouldReceive('shouldIndex')->andReturn(true);
 
         App::shouldReceive('make')
-            ->with('iverberk.larasearch.proxy', m::type('Illuminate\Database\Eloquent\Model'))
+            ->with('menthol.flexible.proxy', m::type('Illuminate\Database\Eloquent\Model'))
             ->andReturn($proxy);
 
         Config::shouldReceive('get')
-            ->with('larasearch.reversedPaths.Husband', [])
+            ->with('flexible.reversedPaths.Husband', [])
             ->once()
             ->andReturn(['', 'wife', 'children', 'children.toys']);
 
         Queue::shouldReceive('push')
-            ->with('Iverberk\Larasearch\Jobs\ReindexJob', [
+            ->with('Menthol\Flexible\Jobs\ReindexJob', [
                 'Husband:2',
                 'Wife:2',
                 'Child:2',
@@ -92,20 +92,20 @@ class ObserverTest extends \PHPUnit_Framework_TestCase {
          */
         Facade::clearResolvedInstances();
 
-        $proxy = m::mock('Iverberk\Larasearch\Proxy');
+        $proxy = m::mock('Menthol\Flexible\Proxy');
         $proxy->shouldReceive('shouldIndex')->andReturn(true);
 
         App::shouldReceive('make')
-            ->with('iverberk.larasearch.proxy', m::type('Illuminate\Database\Eloquent\Model'))
+            ->with('menthol.flexible.proxy', m::type('Illuminate\Database\Eloquent\Model'))
             ->andReturn($proxy);
 
         Config::shouldReceive('get')
-            ->with('larasearch.reversedPaths.Toy', [])
+            ->with('flexible.reversedPaths.Toy', [])
             ->once()
             ->andReturn(['', 'children', 'children.mother.husband', 'children.mother']);
 
         Queue::shouldReceive('push')
-            ->with('Iverberk\Larasearch\Jobs\ReindexJob', [
+            ->with('Menthol\Flexible\Jobs\ReindexJob', [
                 'Toy:2',
                 'Child:8',
                 'Child:2',
@@ -139,15 +139,15 @@ class ObserverTest extends \PHPUnit_Framework_TestCase {
         Facade::clearResolvedInstances();
 
         Queue::shouldReceive('push')
-            ->with('Iverberk\Larasearch\Jobs\DeleteJob', ['Husband:2'])
+            ->with('Menthol\Flexible\Jobs\DeleteJob', ['Husband:2'])
             ->once();
 
         Queue::shouldReceive('push')
-            ->with('Iverberk\Larasearch\Jobs\ReindexJob', ['Wife:2', 'Child:2', 'Toy:2'])
+            ->with('Menthol\Flexible\Jobs\ReindexJob', ['Wife:2', 'Child:2', 'Toy:2'])
             ->once();
 
         Config::shouldReceive('get')
-            ->with('/^larasearch.reversedPaths\..*$/', [])
+            ->with('/^flexible.reversedPaths\..*$/', [])
             ->once()
             ->andReturn(['', 'wife', 'children', 'children.toys']);
 

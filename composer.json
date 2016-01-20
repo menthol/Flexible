@@ -1,35 +1,39 @@
 {
-    "name": "iverberk/larasearch",
-    "description": "Elasticsearch enabled Eloquent models",
-    "keywords": ["search", "elasticsearch", "eloquent"],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Ivo Verberk"
-        }
-    ],
-    "require": {
-        "php": ">=5.4.0",
-        "illuminate/support": "~5.0",
-        "illuminate/database": "~5.0",
-        "illuminate/console": "~5.0",
-		"illuminate/config": "~5.0",
-        "doctrine/dbal": "2.5.1",
-        "elasticsearch/elasticsearch": "~1.0",
-        "nikic/php-parser": "*"
-    },
-    "autoload": {
-        "psr-0": {
-            "Iverberk\\Larasearch": "src/"
-        },
-        "classmap": [
-            "tests/Support/Stubs",
-            "tests/Support"
-        ]
-    },
-    "require-dev": {
-        "mockery/mockery": "dev-master",
-		"phpunit/phpunit": "4.4.*",
-        "codeception/aspect-mock": "*"
+  "name": "menthol/flexible",
+  "description": "Elasticsearch enabled Eloquent models",
+  "keywords": [
+    "search",
+    "elasticsearch",
+    "eloquent"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ivo Verberk"
     }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "illuminate/support": "~5.0",
+    "illuminate/database": "~5.0",
+    "illuminate/console": "~5.0",
+    "illuminate/config": "~5.0",
+    "doctrine/dbal": "2.5.1",
+    "elasticsearch/elasticsearch": "~1.0",
+    "nikic/php-parser": "*"
+  },
+  "autoload": {
+    "psr-0": {
+      "Menthol\\Flexible": "src/"
+    },
+    "classmap": [
+      "tests/Support/Stubs",
+      "tests/Support"
+    ]
+  },
+  "require-dev": {
+    "mockery/mockery": "dev-master",
+    "phpunit/phpunit": "4.4.*",
+    "codeception/aspect-mock": "*"
+  }
 }

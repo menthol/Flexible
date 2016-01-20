@@ -1,4 +1,4 @@
-<?php namespace Iverberk\Larasearch\Response;
+<?php namespace Menthol\Flexible\Response;
 
 use Mockery as m;
 
@@ -20,7 +20,7 @@ class RecordsTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $husbandMock = m::mock('Husband');
-        $response = m::mock('Iverberk\Larasearch\Response');
+        $response = m::mock('Menthol\Flexible\Response');
         $test = $this;
 
         /**

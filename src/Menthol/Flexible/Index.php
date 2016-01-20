@@ -1,10 +1,10 @@
-<?php namespace Iverberk\Larasearch;
+<?php namespace Menthol\Flexible;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
-use Iverberk\Larasearch\Exceptions\ImportException;
+use Menthol\Flexible\Exceptions\ImportException;
 
 class Index {
 
@@ -30,7 +30,7 @@ class Index {
     private $params;
 
     /**
-     * Larasearch Eloquent proxy
+     * Flexible Eloquent proxy
      *
      * @var Proxy
      */
@@ -120,7 +120,7 @@ class Index {
      */
     public function setName($name)
     {
-        $index_prefix = Config::get('larasearch.elasticsearch.index_prefix', '');
+        $index_prefix = Config::get('flexible.elasticsearch.index_prefix', '');
         if ($index_prefix && !Str::startsWith($name, $index_prefix)) $name = $index_prefix . $name;
 
         $this->name = $name;
@@ -142,7 +142,7 @@ class Index {
      * Set ElasticSearch Proxy for the index
      *
      * @param Proxy $proxy
-     * @return \Iverberk\Larasearch\Proxy
+     * @return \Menthol\Flexible\Proxy
      * @author Chris Nagle
      */
     public function setProxy(Proxy $proxy)
@@ -155,7 +155,7 @@ class Index {
     /**
      * Get ElasticSearch Proxy for the index
      *
-     * @return \Iverberk\Larasearch\Proxy
+     * @return \Menthol\Flexible\Proxy
      */
     public function getProxy()
     {
@@ -200,7 +200,7 @@ class Index {
      */
     public function aliasExists($alias)
     {
-        $index_prefix = Config::get('larasearch.elasticsearch.index_prefix', '');
+        $index_prefix = Config::get('flexible.elasticsearch.index_prefix', '');
         if ($index_prefix && !Str::startsWith($alias, $index_prefix)) $alias = $index_prefix . $alias;
 
         return self::getClient()->indices()->existsAlias(['name' => $alias]);
@@ -311,7 +311,7 @@ class Index {
      */
     public static function clean($name)
     {
-        $index_prefix = Config::get('larasearch.elasticsearch.index_prefix', '');
+        $index_prefix = Config::get('flexible.elasticsearch.index_prefix', '');
         if ($index_prefix && !Str::startsWith($name, $index_prefix)) $name = $index_prefix . $name;
 
         $indices = self::getClient()->indices()->getAliases();
@@ -332,7 +332,7 @@ class Index {
      */
     public static function getAlias($name)
     {
-        $index_prefix = Config::get('larasearch.elasticsearch.index_prefix', '');
+        $index_prefix = Config::get('flexible.elasticsearch.index_prefix', '');
         if ($index_prefix && !Str::startsWith($name, $index_prefix)) $name = $index_prefix . $name;
 
         return self::getClient()->indices()->getAlias(['name' => $name]);
@@ -344,7 +344,7 @@ class Index {
      */
     public static function updateAliases(array $actions)
     {
-        if (isset($actions['actions']) && ($index_prefix = Config::get('larasearch.elasticsearch.index_prefix', '')))
+        if (isset($actions['actions']) && ($index_prefix = Config::get('flexible.elasticsearch.index_prefix', '')))
         {
             foreach ($actions['actions'] as &$action)
             {
@@ -365,7 +365,7 @@ class Index {
      */
     public static function refresh($index)
     {
-        $index_prefix = Config::get('larasearch.elasticsearch.index_prefix', '');
+        $index_prefix = Config::get('flexible.elasticsearch.index_prefix', '');
         if ($index_prefix && !Str::startsWith($index, $index_prefix)) $index = $index_prefix . $index;
 
         return self::getClient()->indices()->refresh(['index' => $index]);
@@ -378,8 +378,8 @@ class Index {
      */
     private function getDefaultIndexParams()
     {
-        $analyzers = Config::get('larasearch.elasticsearch.analyzers');
-        $params = Config::get('larasearch.elasticsearch.defaults.index');
+        $analyzers = Config::get('flexible.elasticsearch.analyzers');
+        $params = Config::get('flexible.elasticsearch.defaults.index');
         $mapping = [];
 
         $mapping_options = array_combine(
@@ -434,7 +434,7 @@ class Index {
                     $fieldMapping['fields'][$type] = [
                         'type' => 'string',
                         'index' => 'analyzed',
-                        'analyzer' => "larasearch_${type}_index"
+                        'analyzer' => "flexible_${type}_index"
                     ];
                 }
             }
