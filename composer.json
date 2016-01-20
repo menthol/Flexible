@@ -21,7 +21,8 @@
     "illuminate/database": "~4.2|~5.0",
     "illuminate/console": "~4.2|~5.0",
     "illuminate/config": "~4.2|~5.0",
-    "elasticsearch/elasticsearch": "~2.0"
+    "elasticsearch/elasticsearch": "~2.0",
+    "doctrine/dbal": "~2.5"
   },
   "autoload": {
     "psr-0": {
