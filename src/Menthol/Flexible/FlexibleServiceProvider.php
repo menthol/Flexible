@@ -21,10 +21,6 @@ class FlexibleServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->bootContainerBindings();
-
-        $this->publishes([
-            __DIR__ . '/../../config/flexible.php' => base_path('config/flexible.php'),
-        ], 'config');
     }
 
     /**
@@ -36,13 +32,25 @@ class FlexibleServiceProvider extends ServiceProvider
     {
         $this->registerCommands();
 
-        if (file_exists(base_path('config/flexible.php')))
+        $app = $this->app ?: app();
+        $laravel_version = substr($app::VERSION, 0, strpos($app::VERSION, '.'));
+        if ($laravel_version == 5)
         {
-            $this->mergeConfigFrom(base_path('config/flexible.php'), 'flexible');
+            if (file_exists(config_path('flexible.php')))
+            {
+                $this->mergeConfigFrom(config_path('flexible.php'), 'flexible');
+            }
+            else
+            {
+                $this->mergeConfigFrom(__DIR__ . '/../../config/flexible.php', 'flexible');
+            }
+            $this->publishes([
+                __DIR__.'/../../config/flexible.php' => config_path('flexible.php'),
+            ]);
         }
-        else
+        else if ($laravel_version == 4)
         {
-            $this->mergeConfigFrom(__DIR__ . '/../../config/flexible.php', 'flexible');
+            $this->package('menthol/flexible', 'flexible', __DIR__.'/../..');
         }
     }
 
