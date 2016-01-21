@@ -2,8 +2,6 @@
 
 use Elasticsearch\Client;
 use Illuminate\Support\ServiceProvider;
-use Menthol\Flexible\Commands\PathsCommandLaravel4;
-use Menthol\Flexible\Commands\ReindexCommand;
 use Menthol\Flexible\Response\Result;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
@@ -33,7 +31,6 @@ class FlexibleServiceProvider extends ServiceProvider
         parent::__construct($app);
 
         $this->provider = $this->getProvider();
-        $this->defer = $this->provider->defer;
     }
 
     /**
@@ -63,6 +60,20 @@ class FlexibleServiceProvider extends ServiceProvider
     }
 
     /**
+     * Return the current laravel version
+     *
+     * @return int
+     */
+    private function getLaravelVersion()
+    {
+        $app = get_class($this->app);
+        if (defined($app.'::VERSION')) {
+            return (int)constant($app.'::VERSION');
+        }
+        return method_exists($this, 'package') ? 4 : 5;
+    }
+
+    /**
      * Return the service provider for the particular Laravel version
      *
      * @return mixed
@@ -70,8 +81,7 @@ class FlexibleServiceProvider extends ServiceProvider
     private function getProvider()
     {
         $app = $this->app;
-        $version = (int)$app::VERSION;
-        switch ($version) {
+        switch ($this->getLaravelVersion()) {
             case 4:
                 return new Laravel4\FlexibleServiceProvider($app);
             case 5:

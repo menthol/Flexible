@@ -7,13 +7,6 @@ use Menthol\Flexible\Commands\ReindexCommand;
 class FlexibleServiceProvider extends ServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
-
-    /**
      * FlexibleServiceProviderLaravel4 constructor.
      */
     public function __construct($app)
@@ -53,8 +46,8 @@ class FlexibleServiceProvider extends ServiceProvider
             return new ReindexCommand();
         });
 
-        $configPath = base_path() . '/config/flexible.php';
-        $this->app['menthol.flexible.commands.paths'] = $this->app->share(function ($app) use ($configPath) {
+        $this->app['menthol.flexible.commands.paths'] = $this->app->share(function ($app) {
+            $configPath = base_path() . '/config/flexible.php';
             $publishConfigCallable = function($command) {
                 $command->call('vendor:publish', ['--provider' => 'Menthol\\Flexible\FlexibleServiceProvider', '--tag' => 'config']);
             };
