@@ -1,6 +1,9 @@
 <?php namespace Menthol\Flexible;
 
 use Elasticsearch\Client;
+use Elasticsearch\ClientBuilder;
+use Elasticsearch\Transport;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Menthol\Flexible\Response\Result;
 use Monolog\Handler\NullHandler;
@@ -40,13 +43,17 @@ class FlexibleServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->bootContainerBindings();
+        $this->provider->boot();
+    }
+
+    public function bootContainerBindings() {
         $this->bindElasticsearch();
         $this->bindLogger();
         $this->bindIndex();
         $this->bindQuery();
         $this->bindProxy();
         $this->bindResult();
-        $this->provider->boot();
     }
 
     /**
@@ -64,7 +71,7 @@ class FlexibleServiceProvider extends ServiceProvider
      *
      * @return int
      */
-    private function getLaravelVersion()
+    protected function getLaravelVersion()
     {
         $app = get_class($this->app);
         if (defined($app.'::VERSION')) {
@@ -97,7 +104,8 @@ class FlexibleServiceProvider extends ServiceProvider
     protected function bindElasticsearch()
     {
         $this->app->singleton('Elasticsearch', function ($app) {
-            return new Client(\Illuminate\Support\Facades\Config::get('flexible.elasticsearch.params'));
+            $config = Config::get('flexible.elasticsearch.params', []);
+            return ClientBuilder::fromConfig($config);
         });
     }
 

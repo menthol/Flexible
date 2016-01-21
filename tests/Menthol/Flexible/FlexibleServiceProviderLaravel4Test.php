@@ -13,7 +13,7 @@ class FlexibleServiceProviderLaravel4Test extends \PHPUnit_Framework_TestCase {
     public static $functions;
     protected static $providers_real_path;
 
-    protected function setup()
+    protected function setUp()
     {
         self::$functions = m::mock();
         self::$functions->shouldReceive('base_path')->andReturn('');
@@ -35,19 +35,13 @@ class FlexibleServiceProviderLaravel4Test extends \PHPUnit_Framework_TestCase {
          */
 
         $app = m::mock();
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProvider[bootContainerBindings, package, getLaravelVersion]', [$app]);
+        $sp = m::mock('Menthol\Flexible\FlexibleServiceProvider[bootContainerBindings, package, getLaravelVersion, singleton]', [$app]);
         $sp->shouldAllowMockingProtectedMethods();
 
         /**
          * Expectation
          */
         $sp->shouldReceive('getLaravelVersion')->andReturn(4);
-        self::$functions->shouldReceive('app_path')->once();
-
-        $sp->shouldReceive('package')
-            ->with('menthol/flexible', 'flexible', self::$providers_real_path . '/../..')
-            ->once();
-
         $sp->shouldReceive('bootContainerBindings')
             ->once();
 
@@ -102,7 +96,7 @@ class FlexibleServiceProviderLaravel4Test extends \PHPUnit_Framework_TestCase {
          * Expectation
          */
         Config::shouldReceive('get')
-            ->with('flexible.elasticsearch.params')
+            ->with('flexible.elasticsearch.params', [])
             ->once()
             ->andReturn([]);
 
@@ -302,80 +296,4 @@ class FlexibleServiceProviderLaravel4Test extends \PHPUnit_Framework_TestCase {
          */
         $sp->bindResult();
     }
-
-    /**
-     * @test
-     */
-    public function it_should_register_commands()
-    {
-        /**
-         * Set
-         */
-        $app = m::mock('Illuminate\Container\Container');
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProvider[commands, mergeConfigFrom, package]', [$app]);
-        $sp->shouldAllowMockingProtectedMethods();
-
-        /**
-         * Expectation
-         */
-        $app->shouldReceive('offsetSet')->andReturn(true);
-        $app->shouldReceive('offsetGet')->andReturn(true);
-
-        $app->shouldReceive('share')
-            ->once()
-            ->andReturnUsing(function ($closure) use ($app)
-            {
-                $this->assertInstanceOf('Menthol\Flexible\Commands\ReindexCommand', $closure($app));
-            });
-
-        $app->shouldReceive('share')
-            ->once()
-            ->andReturnUsing(function ($closure) use ($app)
-            {
-                $this->assertInstanceOf('Menthol\Flexible\Commands\PathsCommand', $closure($app));
-            });
-
-        self::$functions->shouldReceive('app_path')->once();
-
-        $sp->shouldReceive('package')
-            ->with('menthol/flexible', 'flexible', self::$providers_real_path . '/../..')
-            ->once();
-
-        $sp->shouldReceive('commands')
-            ->with('menthol.flexible.commands.reindex')
-            ->once()
-            ->andReturn(true);
-
-        $sp->shouldReceive('commands')
-            ->with('menthol.flexible.commands.paths')
-            ->once()
-            ->andReturn(true);
-
-        $sp->shouldReceive('mergeConfigFrom')
-            ->with(self::$providers_real_path . '/../../config/flexible.php', 'flexible')
-            ->once();
-
-        /**
-         * Assertion
-         */
-        $sp->register();
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_provide_services()
-    {
-        /**
-         * Set
-         */
-        $app = m::mock('LaravelApp');
-
-        /**
-         * Assertion
-         */
-        $sp = new FlexibleServiceProvider($app);
-        $this->assertEquals([], $sp->provides());
-    }
-
 }

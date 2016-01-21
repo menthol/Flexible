@@ -26,11 +26,11 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
     public static $functions;
     protected static $providers_real_path;
 
-    protected function setup()
+    protected function setUp()
     {
         self::$functions = m::mock();
         self::$functions->shouldReceive('base_path')->andReturn('');
-        self::$providers_real_path = realpath(__DIR__ . '/../../../src/Menthol/Flexible');
+        self::$providers_real_path = realpath(__DIR__ . '/../../../../src/Menthol/Flexible/Laravel4');
     }
 
     protected function tearDown()
@@ -47,7 +47,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
          * Set
          */
         $app = m::mock('Illuminate\Container\Container');
-        $sp = m::mock('Menthol\Flexible\Laravel4\FlexibleServiceProvider[commands, mergeConfigFrom, package]', [$app]);
+        $sp = m::mock('Menthol\Flexible\Laravel4\FlexibleServiceProvider[commands, package]', [$app]);
         $sp->shouldAllowMockingProtectedMethods();
 
         /**
@@ -72,10 +72,6 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
 
         self::$functions->shouldReceive('app_path')->once();
 
-        $sp->shouldReceive('package')
-            ->with('menthol/flexible', 'flexible', self::$providers_real_path . '/../..')
-            ->once();
-
         $sp->shouldReceive('commands')
             ->with('menthol.flexible.commands.reindex')
             ->once()
@@ -85,9 +81,9 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->with('menthol.flexible.commands.paths')
             ->once()
             ->andReturn(true);
-
-        $sp->shouldReceive('mergeConfigFrom')
-            ->with(self::$providers_real_path . '/../../config/flexible.php', 'flexible')
+print_r('##############################'.self::$providers_real_path);
+        $sp->shouldReceive('package')
+            ->with('menthol/flexible', 'flexible', self::$providers_real_path . '/../..')
             ->once();
 
         /**

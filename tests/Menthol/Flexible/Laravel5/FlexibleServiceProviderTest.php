@@ -26,11 +26,11 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
     public static $functions;
     protected static $providers_real_path;
 
-    protected function setup()
+    protected function setUp()
     {
         self::$functions = m::mock();
         self::$functions->shouldReceive('base_path')->andReturn('');
-        self::$providers_real_path = realpath(__DIR__ . '/../../../src/Menthol/Flexible');
+        self::$providers_real_path = realpath(__DIR__ . '/../../../../src/Menthol/Flexible/Laravel5');
     }
 
     protected function tearDown()
