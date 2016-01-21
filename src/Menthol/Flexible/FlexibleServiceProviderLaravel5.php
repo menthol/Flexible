@@ -14,6 +14,16 @@ class FlexibleServiceProviderLaravel5 extends ServiceProvider
     protected $defer = false;
 
     /**
+     * FlexibleServiceProviderLaravel4 constructor.
+     */
+    public function __construct($app)
+    {
+        parent::__construct($app);
+
+        require_once __DIR__ . '/../../compatibility/laravel5.php';
+    }
+
+    /**
      * Register the service provider.
      *
      * @return void
