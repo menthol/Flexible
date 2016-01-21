@@ -11,10 +11,16 @@ env:
   - LARAVEL_VERSION="5.0.*"
   - LARAVEL_VERSION="5.1.*"
   - LARAVEL_VERSION="5.2.*"
-  - LARAVEL_VERSION="dev-master"
+
+matrix:
+  exclude:
+    - php: 5.4
+      env: LARAVEL_VERSION="5.1.*"
+    - php: 5.4
+      env: LARAVEL_VERSION="5.2.*"
 
 install:
-  - composer self-update
-  - composer require illuminate/support:${LARAVEL_VERSION} illuminate/database:${LARAVEL_VERSION} illuminate/console:${LARAVEL_VERSION} illuminate/config:${LARAVEL_VERSION}  --prefer-source --no-interaction --dev
+  - travis_retry composer self-update
+  - travis_retry composer require illuminate/support:${LARAVEL_VERSION} illuminate/database:${LARAVEL_VERSION} illuminate/console:${LARAVEL_VERSION} illuminate/config:${LARAVEL_VERSION}  --prefer-source --no-interaction --dev
 
 script: phpunit
