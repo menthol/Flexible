@@ -15,9 +15,9 @@ env:
 matrix:
   exclude:
     - php: 5.4
-      env: LARAVEL_VERSION="5.1.*"
+      env: LARAVEL_VERSION="5.1.*" EXCLUDED_GROUP="laravel4"
     - php: 5.4
-      env: LARAVEL_VERSION="5.2.*"
+      env: LARAVEL_VERSION="5.2.*" EXCLUDED_GROUP="laravel4"
 
 install:
   - travis_retry composer self-update
