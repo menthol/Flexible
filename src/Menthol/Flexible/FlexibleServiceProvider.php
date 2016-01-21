@@ -2,15 +2,15 @@
 
 use Elasticsearch\Client;
 use Illuminate\Support\ServiceProvider;
-use Menthol\Flexible\Commands\PathsCommand;
+use Menthol\Flexible\Commands\PathsCommandLaravel4;
 use Menthol\Flexible\Commands\ReindexCommand;
 use Menthol\Flexible\Response\Result;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
+use RuntimeException;
 
 class FlexibleServiceProvider extends ServiceProvider
 {
-
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -18,9 +18,38 @@ class FlexibleServiceProvider extends ServiceProvider
      */
     protected $defer = false;
 
+    /**
+     * The actual provider
+     *
+     * @var \Illuminate\Support\ServiceProvider
+     */
+    protected $provider;
+
+    /**
+     * Construct the Flexible service provider
+     */
+    public function __construct($app)
+    {
+        parent::__construct($app);
+
+        $this->provider = $this->getProvider();
+        $this->defer = $this->provider->defer;
+    }
+
+    /**
+     * Bootstrap the application events.
+     *
+     * @return void
+     */
     public function boot()
     {
-        $this->bootContainerBindings();
+        $this->bindElasticsearch();
+        $this->bindLogger();
+        $this->bindIndex();
+        $this->bindQuery();
+        $this->bindProxy();
+        $this->bindResult();
+        $this->provider->boot();
     }
 
     /**
@@ -30,54 +59,26 @@ class FlexibleServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerCommands();
-
-        $app = $this->app ?: app();
-        $laravel_version = substr($app::VERSION, 0, strpos($app::VERSION, '.'));
-        if ($laravel_version == 5)
-        {
-            if (file_exists(config_path('flexible.php')))
-            {
-                $this->mergeConfigFrom(config_path('flexible.php'), 'flexible');
-            }
-            else
-            {
-                $this->mergeConfigFrom(__DIR__ . '/../../config/flexible.php', 'flexible');
-            }
-            $this->publishes([
-                __DIR__.'/../../config/flexible.php' => config_path('flexible.php'),
-            ]);
-        }
-        else if ($laravel_version == 4)
-        {
-            $this->package('menthol/flexible', 'flexible', __DIR__.'/../..');
-        }
+        $this->provider->register();
     }
 
     /**
-     * Boot the container bindings.
+     * Return the service provider for the particular Laravel version
      *
-     * @return void
+     * @return mixed
      */
-    public function bootContainerBindings()
+    private function getProvider()
     {
-        $this->bindElasticsearch();
-        $this->bindLogger();
-        $this->bindIndex();
-        $this->bindQuery();
-        $this->bindProxy();
-        $this->bindResult();
-    }
-
-    /**
-     * Bind a Flexible log handler to the container
-     */
-    protected function bindLogger()
-    {
-        $this->app->singleton('menthol.flexible.logger', function ($app)
-        {
-            return new Logger('flexible', [new NullHandler()]);
-        });
+        $app = $this->app;
+        $version = (int)$app::VERSION;
+        switch ($version) {
+            case 4:
+                return new FlexibleServiceProviderLaravel4($app);
+            case 5:
+                return new FlexibleServiceProviderLaravel5($app);
+            default:
+                throw new RuntimeException('Your version of Laravel is not supported');
+        }
     }
 
     /**
@@ -85,9 +86,18 @@ class FlexibleServiceProvider extends ServiceProvider
      */
     protected function bindElasticsearch()
     {
-        $this->app->singleton('Elasticsearch', function ($app)
-        {
+        $this->app->singleton('Elasticsearch', function ($app) {
             return new Client(\Illuminate\Support\Facades\Config::get('flexible.elasticsearch.params'));
+        });
+    }
+
+    /**
+     * Bind a Flexible log handler to the container
+     */
+    protected function bindLogger()
+    {
+        $this->app->singleton('menthol.flexible.logger', function ($app) {
+            return new Logger('flexible', [new NullHandler()]);
         });
     }
 
@@ -96,8 +106,7 @@ class FlexibleServiceProvider extends ServiceProvider
      */
     protected function bindIndex()
     {
-        $this->app->bind('menthol.flexible.index', function ($app, $params)
-        {
+        $this->app->bind('menthol.flexible.index', function ($app, $params) {
             $name = isset($params['name']) ? $params['name'] : '';
 
             return new Index($params['proxy'], $name);
@@ -109,8 +118,7 @@ class FlexibleServiceProvider extends ServiceProvider
      */
     protected function bindQuery()
     {
-        $this->app->bind('menthol.flexible.query', function ($app, $params)
-        {
+        $this->app->bind('menthol.flexible.query', function ($app, $params) {
             return new Query($params['proxy'], $params['term'], $params['options']);
         });
     }
@@ -120,8 +128,7 @@ class FlexibleServiceProvider extends ServiceProvider
      */
     protected function bindProxy()
     {
-        $this->app->bind('menthol.flexible.proxy', function ($app, $model)
-        {
+        $this->app->bind('menthol.flexible.proxy', function ($app, $model) {
             return new Proxy($model);
         });
     }
@@ -131,41 +138,16 @@ class FlexibleServiceProvider extends ServiceProvider
      */
     protected function bindResult()
     {
-        $this->app->bind('menthol.flexible.response.result', function ($app, array $hit)
-        {
+        $this->app->bind('menthol.flexible.response.result', function ($app, array $hit) {
             return new Result($hit);
         });
     }
 
     /**
-     * Register the commands.
-     *
-     * @return void
+     * Proxy to the real provider
      */
-    protected function registerCommands()
+    public function __call($method, $parameters)
     {
-        $this->app['menthol.flexible.commands.reindex'] = $this->app->share(function ($app)
-        {
-            return new ReindexCommand();
-        });
-
-        $this->app['menthol.flexible.commands.paths'] = $this->app->share(function ($app)
-        {
-            return new PathsCommand();
-        });
-
-        $this->commands('menthol.flexible.commands.reindex');
-        $this->commands('menthol.flexible.commands.paths');
+        return call_user_func_array([$this->provider, $method], $parameters);
     }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return array();
-    }
-
 }

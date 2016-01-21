@@ -44,6 +44,27 @@ class PathsCommand extends Command {
     private $reversedPaths = [];
 
     /**
+     * @var string
+     */
+    private $configPath;
+
+    /**
+     * @var Callable
+     */
+    private $publishConfigCallable;
+
+    /**
+     * PathsCommandLaravel constructor.
+     */
+    public function __construct($configPath, $publishConfigCallable)
+    {
+        parent::__construct();
+        $this->configPath = $configPath;
+        $this->publishConfigCallable = $publishConfigCallable;
+    }
+
+
+    /**
      * Scan directories for Eloquent models that use the SearchableTrait.
      * Generate paths for all these models so that we can (re)index these
      * models.
@@ -305,13 +326,7 @@ class PathsCommand extends Command {
     {
         if ($this->option('write-config'))
         {
-            $app = $this->app ?: app();
-            $laravel_version = substr($app::VERSION, 0, strpos($app::VERSION, '.'));
-            $configFile = base_path() . '/config/flexible.php';
-            if ($laravel_version == 4)
-            {
-                $configFile = app_path() . '/config/packages/menthol/flexible/config.php';
-            }
+            $configFile = $this->configPath;
 
             if ($this->getLaravel())
             {
@@ -319,13 +334,7 @@ class PathsCommand extends Command {
                 {
                     if ($this->confirm('It appears that you have not yet published the flexible config. Would you like to do this now?', false))
                     {
-                        if ($laravel_version == 4)
-                        {
-                            $this->call('config:publish', ['package' => 'iverberk/larasearch']);
-                        }
-                        else {
-                            $this->call('vendor:publish', ['--provider' => 'Menthol\\Flexible\FlexibleServiceProvider', '--tag' => 'config']);
-                        }
+                        call_user_func($this->publishConfigCallable, $this);
                     }
                     else
                     {
