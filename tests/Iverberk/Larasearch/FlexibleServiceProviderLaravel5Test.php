@@ -6,18 +6,18 @@ use Mockery as m;
 
 function base_path($path = null)
 {
-    return FlexibleServiceProviderTestLaravel5::$functions->base_path($path);
+    return FlexibleServiceProviderLaravel5Test::$functions->base_path($path);
 }
 
 function config_path()
 {
-    return FlexibleServiceProviderTestLaravel5::$functions->config_path();
+    return FlexibleServiceProviderLaravel5Test::$functions->config_path();
 }
 
 /**
  * Class FlexibleServiceProviderTest
  */
-class FlexibleServiceProviderTestLaravel5 extends \PHPUnit_Framework_TestCase {
+class FlexibleServiceProviderLaravel5Test extends \PHPUnit_Framework_TestCase {
 
     public static $functions;
     protected static $providers_real_path;
