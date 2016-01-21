@@ -7,8 +7,6 @@ php:
   - hhvm
 
 env:
-  - LARAVEL_VERSION="4.0.*"
-  - LARAVEL_VERSION="4.1.*"
   - LARAVEL_VERSION="4.2.*"
   - LARAVEL_VERSION="5.0.*"
   - LARAVEL_VERSION="5.1.*"
