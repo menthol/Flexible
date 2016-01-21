@@ -41,14 +41,6 @@ class FlexibleServiceProviderLaravel5Test extends \PHPUnit_Framework_TestCase {
          * Expectation
          */
 
-        self::$functions->shouldReceive('app_path')->once();
-
-        $sp->shouldReceive('getLaravelVersion')->andReturn(5);
-
-        $sp->shouldReceive('package')
-            ->with('menthol/flexible', 'flexible', self::$providers_real_path . '/../..')
-            ->once();
-
         $sp->shouldReceive('bootContainerBindings')
             ->once();
 

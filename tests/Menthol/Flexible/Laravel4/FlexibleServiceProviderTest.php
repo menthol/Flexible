@@ -81,7 +81,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->with('menthol.flexible.commands.paths')
             ->once()
             ->andReturn(true);
-print_r('##############################'.self::$providers_real_path);
+
         $sp->shouldReceive('package')
             ->with('menthol/flexible', 'flexible', self::$providers_real_path . '/../..')
             ->once();

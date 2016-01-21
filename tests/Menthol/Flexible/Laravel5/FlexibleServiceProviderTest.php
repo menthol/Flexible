@@ -70,6 +70,8 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
                 $this->assertInstanceOf('Menthol\Flexible\Commands\PathsCommand', $closure($app));
             });
 
+        self::$functions->shouldReceive('config_path')->times(3);
+
         $sp->shouldReceive('commands')
             ->with('menthol.flexible.commands.reindex')
             ->once()

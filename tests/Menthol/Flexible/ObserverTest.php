@@ -76,7 +76,6 @@ class ObserverTest extends \PHPUnit_Framework_TestCase {
 
         /**
          *
-         *
          * Assertion
          *
          */
