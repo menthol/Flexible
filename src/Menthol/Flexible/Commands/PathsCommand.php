@@ -334,7 +334,9 @@ class PathsCommand extends Command {
                 {
                     if ($this->confirm('It appears that you have not yet published the flexible config. Would you like to do this now?', false))
                     {
-                        call_user_func($this->publishConfigCallable, $this);
+                        if (is_callable($this->publishConfigCallable)) {
+                            call_user_func($this->publishConfigCallable, $this);
+                        }
                     }
                     else
                     {

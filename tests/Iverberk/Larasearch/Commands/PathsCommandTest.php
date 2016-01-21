@@ -23,6 +23,11 @@ function base_path()
     return PathsCommandTest::$functions->base_path();
 }
 
+function config_path()
+{
+    return PathsCommandTest::$functions->config_path();
+}
+
 /**
  * Class PathsCommandTest
  * @package Menthol\Flexible\Commands
@@ -121,7 +126,7 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
 
         App::shouldReceive('make')->andReturn(true);
 
-        self::$functions->shouldReceive('base_path')->once()->andReturn('');
+        // self::$functions->shouldReceive('base_path')->once()->andReturn('');
 
         /**
          *
@@ -148,8 +153,7 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
             ->times(17)
             ->andReturn(true);
 
-        $command->shouldReceive('error', 'confirm', 'call', 'info')
-            ->andReturn(true);
+        $command->shouldReceive('error', 'confirm', 'call', 'info')->andReturn(true);
 
         /**
          *
@@ -230,8 +234,7 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
             ->andReturn([]);
 
 
-        $command->shouldReceive('compilePaths', 'error', 'confirm', 'call', 'info')
-            ->andReturn(true);
+        $command->shouldReceive('compilePaths', 'error', 'confirm', 'call', 'info')->andReturn(true);
 
         /**
          *
@@ -286,8 +289,7 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
             ->once()
             ->andReturn(false);
 
-        $command->shouldReceive('compilePaths', 'error', 'confirm', 'call', 'info')
-            ->andReturn(true);
+        $command->shouldReceive('compilePaths', 'error', 'confirm', 'call', 'info')->andReturn(true);
 
         /**
          *
@@ -312,12 +314,12 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
         $command->shouldAllowMockingProtectedMethods();
 
         File::clearResolvedInstance('files');
-        File::shouldReceive('put')->once()->andReturn(true);
+        // File::shouldReceive('put')->once()->andReturn(true);
         File::shouldReceive('exists')->once()->andReturn(false);
 
         App::shouldReceive('make')->andReturn(true);
 
-        self::$functions->shouldReceive('base_path')->once()->andReturn('');
+        // self::$functions->shouldReceive('base_path')->once()->andReturn('');
 
         /**
          *
@@ -343,9 +345,7 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
             ->once()
             ->andReturn(true);
 
-        $command->shouldReceive('confirm')
-            ->once()
-            ->andReturn(true);
+        $command->shouldReceive('confirm')->once()->andReturn(true);
 
         $command->shouldReceive('compilePaths', 'error', 'call', 'info')
             ->andReturn(true);
@@ -376,7 +376,7 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
 
         App::shouldReceive('make')->andReturn(true);
 
-        self::$functions->shouldReceive('base_path')->once()->andReturn('');
+        // self::$functions->shouldReceive('base_path')->once()->andReturn('');
 
         /**
          * Expectation
@@ -400,9 +400,7 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
             ->once()
             ->andReturn(true);
 
-        $command->shouldReceive('confirm')
-            ->once()
-            ->andReturn(false);
+        $command->shouldReceive('confirm')->once()->andReturn(false);
 
         $command->shouldReceive('compilePaths', 'error', 'call', 'info')
             ->andReturn(true);
