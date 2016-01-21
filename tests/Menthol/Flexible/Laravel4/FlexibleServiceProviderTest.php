@@ -48,7 +48,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
         /**
          * Set
          */
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[bootContainerBindings, package]', ['something']);
+        $sp = m::mock('Menthol\Flexible\Laravel4\FlexibleServiceProvider[bootContainerBindings, package]', ['something']);
         $sp->shouldAllowMockingProtectedMethods();
 
         /**
@@ -76,7 +76,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
         /**
          * Set
          */
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[' .
+        $sp = m::mock('Menthol\Flexible\Laravel4\FlexibleServiceProvider[' .
             'bindProxy, bindIndex, bindLogger, bindElasticsearch, bindQuery, bindResult]', ['something']);
         $sp->shouldAllowMockingProtectedMethods();
 
@@ -106,7 +106,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
          * Set
          */
         $app = m::mock('LaravelApp');
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[bindElasticsearch]', [$app]);
+        $sp = m::mock('Menthol\Flexible\Laravel4\FlexibleServiceProvider[bindElasticsearch]', [$app]);
 
         /**
          * Expectation
@@ -139,7 +139,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
          * Set
          */
         $app = m::mock('LaravelApp');
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[bindLogger]', [$app]);
+        $sp = m::mock('Menthol\Flexible\Laravel4\FlexibleServiceProvider[bindLogger]', [$app]);
 
         /**
          * Expectation
@@ -189,7 +189,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->andReturn('mockType');
         $app = m::mock('LaravelApp');
         $proxy = m::mock('Menthol\Flexible\Proxy', [$model]);
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[bindIndex]', [$app]);
+        $sp = m::mock('Menthol\Flexible\Laravel4\FlexibleServiceProvider[bindIndex]', [$app]);
 
         /**
          * Expectation
@@ -227,7 +227,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->andReturn('mockType');
         $app = m::mock('LaravelApp');
         $proxy = m::mock('Menthol\Flexible\Proxy', [$model]);
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[bindQuery]', [$app]);
+        $sp = m::mock('Menthol\Flexible\Laravel4\FlexibleServiceProvider[bindQuery]', [$app]);
 
         /**
          * Expectation
@@ -263,7 +263,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->once()
             ->andReturn('mockType');
         $app = m::mock('LaravelApp');
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[bindProxy]', [$app]);
+        $sp = m::mock('Menthol\Flexible\Laravel4\FlexibleServiceProvider[bindProxy]', [$app]);
 
         /**
          * Expectation
@@ -296,7 +296,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
          * Set
          */
         $app = m::mock('LaravelApp');
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[bindResult]', [$app]);
+        $sp = m::mock('Menthol\Flexible\Laravel4\FlexibleServiceProvider[bindResult]', [$app]);
 
         /**
          * Expectation
@@ -328,7 +328,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
          * Set
          */
         $app = m::mock('Illuminate\Container\Container');
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[commands, mergeConfigFrom]', [$app]);
+        $sp = m::mock('Menthol\Flexible\Laravel4\FlexibleServiceProvider[commands, mergeConfigFrom]', [$app]);
         $sp->shouldAllowMockingProtectedMethods();
 
         /**
