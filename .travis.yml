@@ -14,13 +14,7 @@ env:
   - LARAVEL_VERSION="dev-master"
 
 install:
-  - composer require illuminate/support:${LARAVEL_VERSION}
-  - composer require illuminate/database:${LARAVEL_VERSION}
-  - composer require illuminate/console:${LARAVEL_VERSION}
-  - composer require illuminate/config:${LARAVEL_VERSION}
-
-before_script:
   - composer self-update
-  - composer install --prefer-source --no-interaction --dev
+  - composer require illuminate/support:${LARAVEL_VERSION} illuminate/database:${LARAVEL_VERSION} illuminate/console:${LARAVEL_VERSION} illuminate/config:${LARAVEL_VERSION}  --prefer-source --no-interaction --dev
 
 script: phpunit
