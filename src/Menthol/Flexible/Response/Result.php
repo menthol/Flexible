@@ -1,6 +1,6 @@
 <?php namespace Menthol\Flexible\Response;
 
-use Illuminate\Contracts\Support\Arrayable;
+use Menthol\Flexible\Contracts\Arrayable;
 
 class Result implements \ArrayAccess, Arrayable {
 

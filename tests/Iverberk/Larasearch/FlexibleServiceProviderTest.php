@@ -9,6 +9,11 @@ function base_path($path = null)
     return FlexibleServiceProviderTest::$functions->base_path($path);
 }
 
+function app_path($path = null)
+{
+    return FlexibleServiceProviderTest::$functions->app_path($path);
+}
+
 function config_path()
 {
     return FlexibleServiceProviderTest::$functions->config_path();
