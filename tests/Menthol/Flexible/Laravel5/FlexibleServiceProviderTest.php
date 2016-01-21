@@ -14,9 +14,9 @@ function app_path($path = null)
     return FlexibleServiceProviderTest::$functions->app_path($path);
 }
 
-function config_path()
+function config_path($config_path = null)
 {
-    return FlexibleServiceProviderTest::$functions->config_path();
+    return FlexibleServiceProviderTest::$functions->config_path($config_path);
 }
 
 /**
@@ -41,36 +41,6 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @group laravel4
-     */
-    public function it_should_boot_on_laravel4()
-    {
-        /**
-         * Set
-         */
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[bootContainerBindings, publishes]', ['something']);
-        $sp->shouldAllowMockingProtectedMethods();
-
-        /**
-         * Expectation
-         */
-        $sp->shouldReceive('publishes')
-            ->with([
-                self::$providers_real_path . '/../../config/flexible.php' => base_path('config/flexible.php'),
-            ], 'config')
-            ->once();
-
-        $sp->shouldReceive('bootContainerBindings')
-            ->once();
-
-        /**
-         * Assertion
-         */
-        $sp->boot();
-    }
-
-    /**
-     * @test
      * @group laravel5
      */
     public function it_should_boot_on_laravel5()
@@ -86,7 +56,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
          */
         $sp->shouldReceive('publishes')
             ->with([
-                self::$providers_real_path . '/../../config/flexible.php' => base_path('config/flexible.php'),
+                self::$providers_real_path . '/../../config/flexible.php' => config_path('flexible.php'),
             ], 'config')
             ->once();
 
@@ -97,35 +67,6 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
          * Assertion
          */
         $sp->boot();
-    }
-
-    /**
-     * @test
-     * @group laravel4
-     */
-    public function it_should_boot_container_bindings_on_laravel4()
-    {
-        /**
-         * Set
-         */
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[' .
-            'bindProxy, bindIndex, bindLogger, bindElasticsearch, bindQuery, bindResult]', ['something']);
-        $sp->shouldAllowMockingProtectedMethods();
-
-        /**
-         * Expectation
-         */
-        $sp->shouldReceive('bindElasticsearch')->once()->andReturn(true);
-        $sp->shouldReceive('bindLogger')->once()->andReturn(true);
-        $sp->shouldReceive('bindProxy')->once()->andReturn(true);
-        $sp->shouldReceive('bindIndex')->once()->andReturn(true);
-        $sp->shouldReceive('bindQuery')->once()->andReturn(true);
-        $sp->shouldReceive('bindResult')->once()->andReturn(true);
-
-        /**
-         * Assertions
-         */
-        $sp->bootContainerBindings();
     }
 
     /**
@@ -155,39 +96,6 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
          * Assertions
          */
         $sp->bootContainerBindings();
-    }
-
-    /**
-     * @test
-     * @group laravel4
-     */
-    public function it_should_bind_elasticsearch_on_laravel4()
-    {
-        /**
-         * Set
-         */
-        $app = m::mock('LaravelApp');
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[bindElasticsearch]', [$app]);
-
-        /**
-         * Expectation
-         */
-        Config::shouldReceive('get')
-            ->with('flexible.elasticsearch.params')
-            ->once()
-            ->andReturn([]);
-
-        $app->shouldReceive('singleton')
-            ->once()
-            ->andReturnUsing(
-                function ($name, $closure) use ($app)
-                {
-                    $this->assertEquals('Elasticsearch', $name);
-                    $this->assertInstanceOf('Elasticsearch\Client', $closure($app));
-                }
-            );
-
-        $sp->bindElasticsearch();
     }
 
     /**
@@ -225,34 +133,6 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @group laravel4
-     */
-    public function it_should_bind_logger_on_laravel4()
-    {
-        /**
-         * Set
-         */
-        $app = m::mock('LaravelApp');
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[bindLogger]', [$app]);
-
-        /**
-         * Expectation
-         */
-        $app->shouldReceive('singleton')
-            ->once()
-            ->andReturnUsing(
-                function ($name, $closure) use ($app)
-                {
-                    $this->assertEquals('menthol.flexible.logger', $name);
-                    $this->assertInstanceOf('Monolog\Logger', $closure($app));
-                }
-            );
-
-        $sp->bindLogger();
-    }
-
-    /**
-     * @test
      * @group laravel5
      */
     public function it_should_bind_logger_on_laravel5()
@@ -277,61 +157,6 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
             );
 
         $sp->bindLogger();
-    }
-
-    /**
-     * @test
-     * @group laravel4
-     */
-    public function it_should_bind_index_on_laravel4()
-    {
-        /**
-         * Set
-         */
-        App::clearResolvedInstances();
-        Config::clearResolvedInstances();
-
-        App::shouldReceive('make')
-            ->with('menthol.flexible.index', m::any())
-            ->once()
-            ->andReturn('mock');
-
-        App::shouldReceive('make')
-            ->with('Elasticsearch')
-            ->twice()
-            ->andReturn('mock');
-
-        Config::shouldReceive('get')
-            ->with('flexible.elasticsearch.index_prefix', '')
-            ->andReturn('');
-
-        $model = m::mock('Illuminate\Database\Eloquent\Model');
-        $model->shouldReceive('getTable')
-            ->once()
-            ->andReturn('mockType');
-        $app = m::mock('LaravelApp');
-        $proxy = m::mock('Menthol\Flexible\Proxy', [$model]);
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[bindIndex]', [$app]);
-
-        /**
-         * Expectation
-         */
-        $app->shouldReceive('bind')
-            ->once()
-            ->andReturnUsing(
-                function ($name, $closure) use ($app, $proxy)
-                {
-                    $this->assertEquals('menthol.flexible.index', $name);
-                    $this->assertInstanceOf('Menthol\Flexible\Index',
-                        $closure($app, ['proxy' => $proxy, 'name' => 'name']));
-                }
-            );
-
-
-        /**
-         * Assertion
-         */
-        $sp->bindIndex();
     }
 
     /**
@@ -391,43 +216,6 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @group laravel4
-     */
-    public function it_should_bind_query_on_laravel4()
-    {
-        /**
-         * Set
-         */
-        $model = m::mock('Illuminate\Database\Eloquent\Model');
-        $model->shouldReceive('getTable')
-            ->once()
-            ->andReturn('mockType');
-        $app = m::mock('LaravelApp');
-        $proxy = m::mock('Menthol\Flexible\Proxy', [$model]);
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[bindQuery]', [$app]);
-
-        /**
-         * Expectation
-         */
-        $app->shouldReceive('bind')
-            ->once()
-            ->andReturnUsing(
-                function ($name, $closure) use ($app, $proxy)
-                {
-                    $this->assertEquals('menthol.flexible.query', $name);
-                    $this->assertInstanceOf('Menthol\Flexible\Query',
-                        $closure($app, ['proxy' => $proxy, 'term' => 'term', 'options' => []]));
-                }
-            );
-
-        /**
-         * Assertion
-         */
-        $sp->bindQuery();
-    }
-
-    /**
-     * @test
      * @group laravel5
      */
     public function it_should_bind_query_on_laravel5()
@@ -461,43 +249,6 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
          * Assertion
          */
         $sp->bindQuery();
-    }
-
-    /**
-     * @test
-     * @group laravel4
-     */
-    public function it_should_bind_proxy_on_laravel4()
-    {
-        /**
-         * Set
-         */
-        $model = m::mock('Illuminate\Database\Eloquent\Model');
-        $model->shouldReceive('getTable')
-            ->once()
-            ->andReturn('mockType');
-        $app = m::mock('LaravelApp');
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[bindProxy]', [$app]);
-
-        /**
-         * Expectation
-         */
-        $app->shouldReceive('bind')
-            ->once()
-            ->andReturnUsing(
-                function ($name, $closure) use ($app, $model)
-                {
-                    $this->assertEquals('menthol.flexible.proxy', $name);
-                    $this->assertInstanceOf('Menthol\Flexible\Proxy',
-                        $closure($app, $model));
-                }
-            );
-
-
-        /**
-         * Assertion
-         */
-        $sp->bindProxy();
     }
 
     /**
@@ -539,38 +290,6 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @group laravel4
-     */
-    public function it_should_bind_result_on_laravel4()
-    {
-        /**
-         * Set
-         */
-        $app = m::mock('LaravelApp');
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[bindResult]', [$app]);
-
-        /**
-         * Expectation
-         */
-        $app->shouldReceive('bind')
-            ->once()
-            ->andReturnUsing(
-                function ($name, $closure) use ($app)
-                {
-                    $this->assertEquals('menthol.flexible.response.result', $name);
-                    $this->assertInstanceOf('Menthol\Flexible\Response\Result',
-                        $closure($app, []));
-                }
-            );
-
-        /**
-         * Assertion
-         */
-        $sp->bindResult();
-    }
-
-    /**
-     * @test
      * @group laravel5
      */
     public function it_should_bind_result_on_laravel5()
@@ -599,59 +318,6 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
          * Assertion
          */
         $sp->bindResult();
-    }
-
-    /**
-     * @test
-     * @group laravel4
-     */
-    public function it_should_register_commands_on_laravel4()
-    {
-        /**
-         * Set
-         */
-        $app = m::mock('Illuminate\Container\Container');
-        $sp = m::mock('Menthol\Flexible\FlexibleServiceProviderLaravel4[commands, mergeConfigFrom]', [$app]);
-        $sp->shouldAllowMockingProtectedMethods();
-
-        /**
-         * Expectation
-         */
-        $app->shouldReceive('offsetSet')->andReturn(true);
-        $app->shouldReceive('offsetGet')->andReturn(true);
-
-        $app->shouldReceive('share')
-            ->once()
-            ->andReturnUsing(function ($closure) use ($app)
-            {
-                $this->assertInstanceOf('Menthol\Flexible\Commands\ReindexCommand', $closure($app));
-            });
-
-        $app->shouldReceive('share')
-            ->once()
-            ->andReturnUsing(function ($closure) use ($app)
-            {
-                $this->assertInstanceOf('Menthol\Flexible\Commands\PathsCommand', $closure($app));
-            });
-
-        $sp->shouldReceive('commands')
-            ->with('menthol.flexible.commands.reindex')
-            ->once()
-            ->andReturn(true);
-
-        $sp->shouldReceive('commands')
-            ->with('menthol.flexible.commands.paths')
-            ->once()
-            ->andReturn(true);
-
-        $sp->shouldReceive('mergeConfigFrom')
-            ->with(self::$providers_real_path . '/../../config/flexible.php', 'flexible')
-            ->once();
-
-        /**
-         * Assertion
-         */
-        $sp->register();
     }
 
     /**
@@ -709,24 +375,6 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @test
-     * @group laravel4
-     */
-    public function it_should_provide_services_on_laravel4()
-    {
-        /**
-         * Set
-         */
-        $app = m::mock('LaravelApp');
-
-        /**
-         * Assertion
-         */
-        $sp = new FlexibleServiceProviderLaravel4($app);
-        $this->assertEquals([], $sp->provides());
-    }
-
-    /**
-     * @test
      * @group laravel5
      */
     public function it_should_provide_services_on_laravel5()
@@ -739,7 +387,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
         /**
          * Assertion
          */
-        $sp = new FlexibleServiceProviderLaravel5($app);
+        $sp = new FlexibleServiceProvider($app);
         $this->assertEquals([], $sp->provides());
     }
 

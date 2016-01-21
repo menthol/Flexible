@@ -1,10 +1,10 @@
-<?php namespace Menthol\Flexible;
+<?php namespace Menthol\Flexible\Laravel5;
 
 use Illuminate\Support\ServiceProvider;
 use Menthol\Flexible\Commands\PathsCommand;
 use Menthol\Flexible\Commands\ReindexCommand;
 
-class FlexibleServiceProviderLaravel4 extends ServiceProvider
+class FlexibleServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
@@ -20,7 +20,7 @@ class FlexibleServiceProviderLaravel4 extends ServiceProvider
     {
         parent::__construct($app);
 
-        require_once __DIR__ . '/../../compatibility/laravel4.php';
+        require_once __DIR__ . '/../../../compatibility/laravel5.php';
     }
 
     /**
@@ -32,7 +32,14 @@ class FlexibleServiceProviderLaravel4 extends ServiceProvider
     {
         $this->registerCommands();
 
-        $this->package('menthol/flexible', 'flexible', __DIR__ . '/../..');
+        if (file_exists(config_path('flexible.php'))) {
+            $this->mergeConfigFrom(config_path('flexible.php'), 'flexible');
+        } else {
+            $this->mergeConfigFrom(__DIR__ . '/../../config/flexible.php', 'flexible');
+        }
+        $this->publishes([
+            __DIR__ . '/../../config/flexible.php' => config_path('flexible.php'),
+        ]);
     }
 
     /**
@@ -46,10 +53,10 @@ class FlexibleServiceProviderLaravel4 extends ServiceProvider
             return new ReindexCommand();
         });
 
-        $this->app['menthol.flexible.commands.paths'] = $this->app->share(function ($app) {
-            $configPath = app_path() . '/config/packages/menthol/flexible/config.php';
+        $configPath = base_path() . '/config/flexible.php';
+        $this->app['menthol.flexible.commands.paths'] = $this->app->share(function ($app) use ($configPath) {
             $publishConfigCallable = function($command) {
-                $command->call('config:publish', ['package' => 'menthol/flexible']);
+                $command->call('vendor:publish', ['--provider' => 'Menthol\\Flexible\FlexibleServiceProvider', '--tag' => 'config']);
             };
             return new PathsCommand($configPath, $publishConfigCallable);
         });

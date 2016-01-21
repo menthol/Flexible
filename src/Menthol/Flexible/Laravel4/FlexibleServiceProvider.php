@@ -1,10 +1,10 @@
-<?php namespace Menthol\Flexible;
+<?php namespace Menthol\Flexible\Laravel4;
 
 use Illuminate\Support\ServiceProvider;
 use Menthol\Flexible\Commands\PathsCommand;
 use Menthol\Flexible\Commands\ReindexCommand;
 
-class FlexibleServiceProviderLaravel5 extends ServiceProvider
+class FlexibleServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
@@ -20,7 +20,7 @@ class FlexibleServiceProviderLaravel5 extends ServiceProvider
     {
         parent::__construct($app);
 
-        require_once __DIR__ . '/../../compatibility/laravel5.php';
+        require_once __DIR__ . '/../../../compatibility/laravel4.php';
     }
 
     /**
@@ -32,14 +32,7 @@ class FlexibleServiceProviderLaravel5 extends ServiceProvider
     {
         $this->registerCommands();
 
-        if (file_exists(config_path('flexible.php'))) {
-            $this->mergeConfigFrom(config_path('flexible.php'), 'flexible');
-        } else {
-            $this->mergeConfigFrom(__DIR__ . '/../../config/flexible.php', 'flexible');
-        }
-        $this->publishes([
-            __DIR__ . '/../../config/flexible.php' => config_path('flexible.php'),
-        ]);
+        $this->package('menthol/flexible', 'flexible', __DIR__ . '/../..');
     }
 
     /**
@@ -53,10 +46,10 @@ class FlexibleServiceProviderLaravel5 extends ServiceProvider
             return new ReindexCommand();
         });
 
-        $this->app['menthol.flexible.commands.paths'] = $this->app->share(function ($app) {
-            $configPath = base_path() . '/config/flexible.php';
+        $configPath = app_path() . '/config/packages/menthol/flexible/config.php';
+        $this->app['menthol.flexible.commands.paths'] = $this->app->share(function ($app) use ($configPath) {
             $publishConfigCallable = function($command) {
-                $command->call('vendor:publish', ['--provider' => 'Menthol\\Flexible\FlexibleServiceProvider', '--tag' => 'config']);
+                $command->call('config:publish', ['package' => 'menthol/flexible']);
             };
             return new PathsCommand($configPath, $publishConfigCallable);
         });

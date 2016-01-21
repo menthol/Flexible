@@ -126,8 +126,6 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
 
         App::shouldReceive('make')->andReturn(true);
 
-        // self::$functions->shouldReceive('base_path')->once()->andReturn('');
-
         /**
          *
          * Expectation
@@ -314,12 +312,10 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
         $command->shouldAllowMockingProtectedMethods();
 
         File::clearResolvedInstance('files');
-        // File::shouldReceive('put')->once()->andReturn(true);
+        File::shouldReceive('put')->once()->andReturn(true);
         File::shouldReceive('exists')->once()->andReturn(false);
 
         App::shouldReceive('make')->andReturn(true);
-
-        // self::$functions->shouldReceive('base_path')->once()->andReturn('');
 
         /**
          *
@@ -375,8 +371,6 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
         File::shouldReceive('exists')->once()->andReturn(false);
 
         App::shouldReceive('make')->andReturn(true);
-
-        // self::$functions->shouldReceive('base_path')->once()->andReturn('');
 
         /**
          * Expectation

@@ -73,9 +73,9 @@ class FlexibleServiceProvider extends ServiceProvider
         $version = (int)$app::VERSION;
         switch ($version) {
             case 4:
-                return new FlexibleServiceProviderLaravel4($app);
+                return new Laravel4\FlexibleServiceProvider($app);
             case 5:
-                return new FlexibleServiceProviderLaravel5($app);
+                return new Laravel5\FlexibleServiceProvider($app);
             default:
                 throw new RuntimeException('Your version of Laravel is not supported');
         }
