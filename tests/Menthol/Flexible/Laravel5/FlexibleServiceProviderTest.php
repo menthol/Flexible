@@ -83,7 +83,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->andReturn(true);
 
         $sp->shouldReceive('mergeConfigFrom')
-            ->with(self::$providers_real_path . '/../../config/flexible.php', 'flexible')
+            ->with(self::$providers_real_path . '/../../../config/flexible.php', 'flexible')
             ->once();
 
         $app->shouldReceive('singleton')

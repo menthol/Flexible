@@ -61,7 +61,7 @@ class FlexibleServiceProvider extends ServiceProvider
 
     protected function registerConfigs()
     {
-        $this->package('menthol/flexible', 'flexible', __DIR__ . '/../../../');
+        $this->package('menthol/flexible', 'flexible', __DIR__ . '/../../..');
     }
 
     /**

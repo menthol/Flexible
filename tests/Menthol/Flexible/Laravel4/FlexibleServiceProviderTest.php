@@ -83,7 +83,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->andReturn(true);
 
         $sp->shouldReceive('package')
-            ->with('menthol/flexible', 'flexible', self::$providers_real_path . '/../..')
+            ->with('menthol/flexible', 'flexible', self::$providers_real_path . '/../../..')
             ->once();
 
         $app->shouldReceive('singleton')
