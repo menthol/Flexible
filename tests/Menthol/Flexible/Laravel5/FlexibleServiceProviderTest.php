@@ -86,6 +86,13 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->with(self::$providers_real_path . '/../../config/flexible.php', 'flexible')
             ->once();
 
+        $app->shouldReceive('singleton')
+            ->once()
+            ->andReturnUsing(function ($name, $closure) use ($app) {
+                $this->assertInstanceOf('Menthol\Flexible\Config', $closure($app));
+            });
+
+
         /**
          * Assertion
          */

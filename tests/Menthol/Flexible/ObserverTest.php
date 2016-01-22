@@ -61,6 +61,7 @@ class ObserverTest extends \PHPUnit_Framework_TestCase {
          */
         Facade::clearResolvedInstances();
 
+        $config = m::mock('Menthol\Flexible\Config');
         $proxy = m::mock('Menthol\Flexible\Proxy');
         $proxy->shouldReceive('shouldIndex')->andReturn(true);
 
@@ -68,8 +69,12 @@ class ObserverTest extends \PHPUnit_Framework_TestCase {
             ->with('menthol.flexible.proxy', m::type('Illuminate\Database\Eloquent\Model'))
             ->andReturn($proxy);
 
-        Config::shouldReceive('get')
-            ->with('flexible.reversedPaths.Husband', [])
+        App::shouldReceive('make')
+            ->with('flexible.config')
+            ->andReturn($config);
+
+        $config->shouldReceive('get')
+            ->with('reversedPaths.Husband', [])
             ->once()
             ->andReturn(['', 'wife', 'children', 'children.toys']);
 
@@ -98,6 +103,7 @@ class ObserverTest extends \PHPUnit_Framework_TestCase {
          */
         Facade::clearResolvedInstances();
 
+        $config = m::mock('Menthol\Flexible\Config');
         $proxy = m::mock('Menthol\Flexible\Proxy');
         $proxy->shouldReceive('shouldIndex')->andReturn(true);
 
@@ -105,8 +111,12 @@ class ObserverTest extends \PHPUnit_Framework_TestCase {
             ->with('menthol.flexible.proxy', m::type('Illuminate\Database\Eloquent\Model'))
             ->andReturn($proxy);
 
-        Config::shouldReceive('get')
-            ->with('flexible.reversedPaths.Toy', [])
+        App::shouldReceive('make')
+            ->with('flexible.config')
+            ->andReturn($config);
+
+        $config->shouldReceive('get')
+            ->with('reversedPaths.Toy', [])
             ->once()
             ->andReturn(['', 'children', 'children.mother.husband', 'children.mother']);
 
@@ -147,14 +157,20 @@ class ObserverTest extends \PHPUnit_Framework_TestCase {
             ->with('Menthol\Flexible\Jobs\DeleteJob', ['Husband:2'])
             ->once();
 
+        $config = m::mock('Menthol\Flexible\Config');
+
+        App::shouldReceive('make')
+            ->with('flexible.config')
+            ->andReturn($config);
+
+        $config->shouldReceive('get')
+            ->with('/^reversedPaths\..*$/', [])
+            ->once()
+            ->andReturn(['', 'wife', 'children', 'children.toys']);
+
         Queue::shouldReceive('push')
             ->with('Menthol\Flexible\Jobs\ReindexJob', ['Wife:2', 'Child:2', 'Toy:2'])
             ->once();
-
-        Config::shouldReceive('get')
-            ->with('/^flexible.reversedPaths\..*$/', [])
-            ->once()
-            ->andReturn(['', 'wife', 'children', 'children.toys']);
 
         $husband = \Husband::find(2);
 

@@ -1,9 +1,9 @@
 <?php namespace Menthol\Flexible\Jobs;
 
-use Illuminate\Config\Repository;
 use Illuminate\Foundation\Application;
 use Illuminate\Queue\Jobs\Job;
 use Exception;
+use Menthol\Flexible\Config;
 
 /**
  * Class ReindexJob
@@ -26,7 +26,7 @@ class ReindexJob {
      * @param Application $app
      * @param Repository $config
      */
-    public function __construct(Application $app, Repository $config)
+    public function __construct(Application $app, Config $config)
     {
         $this->app = $app;
         $this->config = $config;
@@ -34,7 +34,7 @@ class ReindexJob {
 
     public function fire(Job $job, $models)
     {
-        $loggerContainerBinding = $this->config->get('flexible.logger');
+        $loggerContainerBinding = $this->config->get('logger', 'menthol.flexible.logger');
         $logger = $this->app->make($loggerContainerBinding);
 
         foreach ($models as $model)

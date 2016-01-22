@@ -24,8 +24,8 @@ class FlexibleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerCommands();
-
-        $this->package('menthol/flexible', 'flexible', __DIR__ . '/../..');
+        $this->registerBindings();
+        $this->registerConfigs();
     }
 
     /**
@@ -49,6 +49,19 @@ class FlexibleServiceProvider extends ServiceProvider
 
         $this->commands('menthol.flexible.commands.reindex');
         $this->commands('menthol.flexible.commands.paths');
+    }
+
+    protected function registerBindings()
+    {
+        $app = $this->app;
+        $this->app->singleton('flexible.config', function () use ($app) {
+            return new Config($app);
+        });
+    }
+
+    protected function registerConfigs()
+    {
+        $this->package('menthol/flexible', 'flexible', __DIR__ . '/../..');
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php namespace Menthol\Flexible\Traits;
 
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\App;
 
 trait TransformableTrait {
 
@@ -12,7 +12,7 @@ trait TransformableTrait {
      */
     public function transform($relations = false)
     {
-        $relations = $relations ? Config::get('flexible.paths.' . get_class($this)) : [];
+        $relations = $relations ? App::make('flexible.config')->get('paths.' . get_class($this)) : [];
 
         $doc = $this->load($relations)->toArray();
 

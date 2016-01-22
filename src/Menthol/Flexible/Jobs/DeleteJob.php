@@ -1,8 +1,8 @@
 <?php namespace Menthol\Flexible\Jobs;
 
-use Menthol\Flexible\Config;
 use Illuminate\Foundation\Application;
 use Illuminate\Queue\Jobs\Job;
+use Menthol\Flexible\Config;
 
 /**
  * Class DeleteJob
@@ -17,7 +17,7 @@ class DeleteJob {
     private $app;
 
     /**
-     * @var Config
+     * @var Repository
      */
     private $config;
 

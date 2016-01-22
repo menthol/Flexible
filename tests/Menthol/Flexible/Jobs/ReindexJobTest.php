@@ -29,7 +29,7 @@ class ReindexJobTest extends \PHPUnit_Framework_TestCase {
             ->andReturn('mock');
 
         $app = m::mock('Illuminate\Foundation\Application');
-        $config = m::mock('Illuminate\Config\Repository');
+        $config = m::mock('Menthol\Flexible\Config');
         $logger = m::mock('Monolog\Logger');
         $job = m::mock('Illuminate\Queue\Jobs\Job');
         $models = [
@@ -43,7 +43,7 @@ class ReindexJobTest extends \PHPUnit_Framework_TestCase {
          */
         $logger->shouldReceive('info')->with('Indexing Husband with ID: 99999');
         $logger->shouldReceive('error')->with('Indexing Husband with ID: 99999 failed: No query results for model [Husband].');
-        $config->shouldReceive('get')->with('flexible.logger')->andReturn('menthol.flexible.logger');
+        $config->shouldReceive('get')->with('logger', 'menthol.flexible.logger')->andReturn('menthol.flexible.logger');
         $app->shouldReceive('make')->with('menthol.flexible.logger')->andReturn($logger);
         $job->shouldReceive('delete')->once();
         $job->shouldReceive('release')->with(60)->once();
@@ -67,7 +67,7 @@ class ReindexJobTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $app = m::mock('Illuminate\Foundation\Application');
-        $config = m::mock('Illuminate\Config\Repository');
+        $config = m::mock('Menthol\Flexible\Config');
         $logger = m::mock('Monolog\Logger');
         $model = m::mock('Husband');
         $model->shouldReceive('refreshDoc')->with($model)->once();
@@ -82,7 +82,7 @@ class ReindexJobTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $logger->shouldReceive('info')->with('Indexing Husband with ID: 999');
-        $config->shouldReceive('get')->with('flexible.logger')->andReturn('menthol.flexible.logger');
+        $config->shouldReceive('get')->with('logger', 'menthol.flexible.logger')->andReturn('menthol.flexible.logger');
         $app->shouldReceive('make')->with('menthol.flexible.logger')->andReturn($logger);
         $job = m::mock('Illuminate\Queue\Jobs\Job');
         $job->shouldReceive('delete')->once();

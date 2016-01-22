@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Menthol\Flexible\Exceptions\ImportException;
 
@@ -37,6 +36,11 @@ class Index {
     private $proxy;
 
     /**
+     * @var \Menthol\Flexible\Config
+     */
+    private static $config;
+
+    /**
      * Retrieve the ElasticSearch Client
      *
      * @return \Elasticsearch\Client
@@ -54,6 +58,7 @@ class Index {
     public function __construct(Proxy $proxy, $name = '')
     {
         self::$client = App::make('Elasticsearch');
+        self::$config = App::make('flexible.config');
 
         $this->setProxy($proxy);
         $this->setName($name ?: $proxy->getModel()->getTable());
@@ -120,7 +125,7 @@ class Index {
      */
     public function setName($name)
     {
-        $index_prefix = Config::get('flexible.elasticsearch.index_prefix', '');
+        $index_prefix = self::$config->get('elasticsearch.index_prefix', '');
         if ($index_prefix && !Str::startsWith($name, $index_prefix)) $name = $index_prefix . $name;
 
         $this->name = $name;
@@ -200,7 +205,7 @@ class Index {
      */
     public function aliasExists($alias)
     {
-        $index_prefix = Config::get('flexible.elasticsearch.index_prefix', '');
+        $index_prefix = self::$config->get('elasticsearch.index_prefix', '');
         if ($index_prefix && !Str::startsWith($alias, $index_prefix)) $alias = $index_prefix . $alias;
 
         return self::getClient()->indices()->existsAlias(['name' => $alias]);
@@ -311,7 +316,7 @@ class Index {
      */
     public static function clean($name)
     {
-        $index_prefix = Config::get('flexible.elasticsearch.index_prefix', '');
+        $index_prefix = self::$config->get('elasticsearch.index_prefix', '');
         if ($index_prefix && !Str::startsWith($name, $index_prefix)) $name = $index_prefix . $name;
 
         $indices = self::getClient()->indices()->getAliases();
@@ -332,7 +337,7 @@ class Index {
      */
     public static function getAlias($name)
     {
-        $index_prefix = Config::get('flexible.elasticsearch.index_prefix', '');
+        $index_prefix = self::$config->get('elasticsearch.index_prefix', '');
         if ($index_prefix && !Str::startsWith($name, $index_prefix)) $name = $index_prefix . $name;
 
         return self::getClient()->indices()->getAlias(['name' => $name]);
@@ -344,7 +349,7 @@ class Index {
      */
     public static function updateAliases(array $actions)
     {
-        if (isset($actions['actions']) && ($index_prefix = Config::get('flexible.elasticsearch.index_prefix', '')))
+        if (isset($actions['actions']) && ($index_prefix = self::$config->get('elasticsearch.index_prefix', '')))
         {
             foreach ($actions['actions'] as &$action)
             {
@@ -365,7 +370,7 @@ class Index {
      */
     public static function refresh($index)
     {
-        $index_prefix = Config::get('flexible.elasticsearch.index_prefix', '');
+        $index_prefix = self::$config->get('elasticsearch.index_prefix', '');
         if ($index_prefix && !Str::startsWith($index, $index_prefix)) $index = $index_prefix . $index;
 
         return self::getClient()->indices()->refresh(['index' => $index]);
@@ -378,8 +383,8 @@ class Index {
      */
     private function getDefaultIndexParams()
     {
-        $analyzers = Config::get('flexible.elasticsearch.analyzers');
-        $params = Config::get('flexible.elasticsearch.defaults.index');
+        $analyzers = self::$config->get('elasticsearch.analyzers');
+        $params = self::$config->get('elasticsearch.defaults.index');
         $mapping = [];
 
         $mapping_options = array_combine(

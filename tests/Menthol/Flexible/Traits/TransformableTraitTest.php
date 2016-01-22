@@ -30,7 +30,13 @@ class TransformableTraitTest extends \PHPUnit_Framework_TestCase {
          */
         $husband->shouldReceive('load->toArray')->once()->andReturn('mock');
 
-        Config::shouldReceive('get')->with('/paths\..*/')->once();
+        $config = m::mock('Menthol\Flexible\Config');
+
+        App::shouldReceive('make')
+            ->with('flexible.config')
+            ->andReturn($config);
+
+        $config->shouldReceive('get')->with('/paths\..*/')->once();
         /**
          *
          * Assertion

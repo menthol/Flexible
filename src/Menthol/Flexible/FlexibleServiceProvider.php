@@ -104,7 +104,7 @@ class FlexibleServiceProvider extends ServiceProvider
     protected function bindElasticsearch()
     {
         $this->app->singleton('Elasticsearch', function ($app) {
-            $config = Config::get('flexible.elasticsearch.params', []);
+            $config = $app->make('flexible.config')->get('elasticsearch.params', []);
             return ClientBuilder::fromConfig($config);
         });
     }

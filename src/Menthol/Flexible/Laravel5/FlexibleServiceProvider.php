@@ -24,15 +24,8 @@ class FlexibleServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerCommands();
-
-        if (file_exists(config_path('flexible.php'))) {
-            $this->mergeConfigFrom(config_path('flexible.php'), 'flexible');
-        } else {
-            $this->mergeConfigFrom(__DIR__ . '/../../config/flexible.php', 'flexible');
-        }
-        $this->publishes([
-            __DIR__ . '/../../config/flexible.php' => config_path('flexible.php'),
-        ]);
+        $this->registerBindings();
+        $this->registerConfigs();
     }
 
     /**
@@ -56,6 +49,25 @@ class FlexibleServiceProvider extends ServiceProvider
 
         $this->commands('menthol.flexible.commands.reindex');
         $this->commands('menthol.flexible.commands.paths');
+    }
+
+    protected function registerBindings()
+    {
+        $this->app->singleton('flexible.config', function ($app) {
+            return new Config($app);
+        });
+    }
+
+    protected function registerConfigs()
+    {
+        if (file_exists(config_path('flexible.php'))) {
+            $this->mergeConfigFrom(config_path('flexible.php'), 'flexible');
+        } else {
+            $this->mergeConfigFrom(__DIR__ . '/../../config/flexible.php', 'flexible');
+        }
+        $this->publishes([
+            __DIR__ . '/../../config/flexible.php' => config_path('flexible.php'),
+        ]);
     }
 
     /**

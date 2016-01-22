@@ -140,7 +140,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
          * @var \Mockery\Mock $proxy
          * @var \Mockery\Mock $client
          */
-        list($index, $proxy, $client) = $this->getMocks();
+        list($index, $proxy, $client, $config) = $this->getMocks();
         $test = $this;
 
         /**
@@ -148,8 +148,8 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
          * Expectation
          *
          */
-        Config::shouldReceive('get')
-            ->with('flexible.elasticsearch.analyzers')
+        $config->shouldReceive('get')
+            ->with('elasticsearch.analyzers')
             ->andReturn([
                 'autocomplete',
                 'suggest',
@@ -161,8 +161,8 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                 'word_end'
             ]);
 
-        Config::shouldReceive('get')
-            ->with('flexible.elasticsearch.defaults.index')
+        $config->shouldReceive('get')
+            ->with('elasticsearch.defaults.index')
             ->andReturn([
                 'settings' => [
                     'number_of_shards' => 1,
@@ -634,7 +634,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
          * @var \Mockery\Mock $proxy
          * @var \Mockery\Mock $client
          */
-        list($index, $proxy, $client) = $this->getMocks('bar_');
+        list($index, $proxy, $client, $config) = $this->getMocks('bar_');
         $test = $this;
 
         /**
@@ -642,8 +642,8 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
          * Expectation
          *
          */
-        Config::shouldReceive('get')
-            ->with('flexible.elasticsearch.analyzers')
+        $config->shouldReceive('get')
+            ->with('elasticsearch.analyzers')
             ->andReturn([
                 'autocomplete',
                 'suggest',
@@ -655,8 +655,8 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                 'word_end'
             ]);
 
-        Config::shouldReceive('get')
-            ->with('flexible.elasticsearch.defaults.index')
+        $config->shouldReceive('get')
+            ->with('elasticsearch.defaults.index')
             ->andReturn([
                 'settings' => [
                     'number_of_shards' => 1,
@@ -2230,14 +2230,19 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
         Facade::clearResolvedInstances();
 
         $client = m::mock('Elasticsearch\Client');
+        $config = m::mock('Menthol\Flexible\Config');
 
         App::shouldReceive('make')
             ->with('Elasticsearch')
             ->andReturn($client);
+        App::shouldReceive('make')
+            ->with('flexible.config')
+            ->andReturn($config);
 
-        Config::shouldReceive('get')
-            ->with('flexible.elasticsearch.index_prefix', '')
+        $config->shouldReceive('get')
+            ->with('elasticsearch.index_prefix', '')
             ->andReturn($index_prefix);
+
 
         $proxy = m::mock('Menthol\Flexible\Proxy');
         $proxy->shouldReceive('getModel->getTable')
@@ -2245,7 +2250,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
 
         $index = m::mock('Menthol\Flexible\Index', [$proxy], [m::BLOCKS => ['setName', 'setProxy']])->makePartial();
 
-        return [$index, $proxy, $client];
+        return [$index, $proxy, $client, $config];
     }
 
 }
