@@ -64,12 +64,6 @@ class ObserverTest extends \PHPUnit_Framework_TestCase {
         $proxy = m::mock('Menthol\Flexible\Proxy');
         $proxy->shouldReceive('shouldIndex')->andReturn(true);
 
-        self::$functions->shouldReceive('is_callable')
-            ->with([$proxy, 'shouldIndex'])->andReturn(true)->once();
-
-        self::$functions->shouldReceive('is_callable')
-            ->with([$proxy, 'find'])->andReturn(false)->once();
-
         App::shouldReceive('make')
             ->with('menthol.flexible.proxy', m::type('Illuminate\Database\Eloquent\Model'))
             ->andReturn($proxy);
@@ -106,12 +100,6 @@ class ObserverTest extends \PHPUnit_Framework_TestCase {
 
         $proxy = m::mock('Menthol\Flexible\Proxy');
         $proxy->shouldReceive('shouldIndex')->andReturn(true);
-
-        self::$functions->shouldReceive('is_callable')
-            ->with([$proxy, 'shouldIndex'])->andReturn(true)->once();
-
-        self::$functions->shouldReceive('is_callable')
-            ->with([$proxy, 'find'])->andReturn(false)->once();
 
         App::shouldReceive('make')
             ->with('menthol.flexible.proxy', m::type('Illuminate\Database\Eloquent\Model'))
