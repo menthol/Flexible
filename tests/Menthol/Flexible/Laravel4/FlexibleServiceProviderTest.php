@@ -88,7 +88,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
 
         $app->shouldReceive('singleton')
             ->once()
-            ->andReturnUsing(function ($closure) use ($app) {
+            ->andReturnUsing(function ($name, $closure) use ($app) {
                 $this->assertInstanceOf('Menthol\Flexible\Config', $closure($app));
             });
 

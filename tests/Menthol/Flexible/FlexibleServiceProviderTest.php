@@ -47,7 +47,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->andReturn($config);
 
         $config->shouldReceive('get')
-            ->with('params', [])
+            ->with('elasticsearch.params', [])
             ->andReturn([]);
 
         $app->shouldReceive('singleton')
@@ -99,7 +99,6 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
          * Set
          */
         App::clearResolvedInstances();
-        Config::clearResolvedInstances();
 
         App::shouldReceive('make')
             ->with('menthol.flexible.index', m::any())
@@ -111,8 +110,15 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
             ->twice()
             ->andReturn('mock');
 
-        Config::shouldReceive('get')
-            ->with('flexible.elasticsearch.index_prefix', '')
+        $config = m::mock('Menthol\Flexible\Config');
+
+        App::shouldReceive('make')
+            ->with('flexible.config')
+            ->once()
+            ->andReturn($config);
+
+        $config->shouldReceive('get')
+            ->with('elasticsearch.index_prefix', '')
             ->andReturn('');
 
         $model = m::mock('Illuminate\Database\Eloquent\Model');
