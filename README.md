@@ -1,7 +1,6 @@
-Introduction
-------------
+# Flexible [![Build Status](https://travis-ci.org/menthol/Flexible.svg?branch=master)](https://travis-ci.org/menthol/Flexible) [![Latest Stable Version](https://poser.pugx.org/menthol/flexible/v/stable)](https://packagist.org/packages/menthol/flexible) [![Total Downloads](https://poser.pugx.org/menthol/flexible/downloads)](https://packagist.org/packages/menthol/flexible) [![Latest Unstable Version](https://poser.pugx.org/menthol/flexible/v/unstable)](https://packagist.org/packages/menthol/flexible) [![License](https://poser.pugx.org/menthol/flexible/license)](https://packagist.org/packages/menthol/flexible)
 
-Flexible is a Laravel package that aims to seamlessly integrate Elasticsearch functionality with the Eloquent ORM.
+Flexible is a Laravel 4 and 5 package that aims to seamlessly integrate Elasticsearch functionality with the Eloquent ORM.
 
 Features
 --------
