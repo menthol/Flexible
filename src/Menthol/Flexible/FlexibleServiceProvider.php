@@ -162,7 +162,7 @@ class FlexibleServiceProvider extends ServiceProvider
     }
 
     /**
-     * Proxy to the real provider
+     * Catch dynamic method calls intended for the real provider
      */
     public function __call($method, $parameters)
     {
