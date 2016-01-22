@@ -63,10 +63,10 @@ class FlexibleServiceProvider extends ServiceProvider
         if (file_exists(config_path('flexible.php'))) {
             $this->mergeConfigFrom(config_path('flexible.php'), 'flexible');
         } else {
-            $this->mergeConfigFrom(__DIR__ . '/../../config/flexible.php', 'flexible');
+            $this->mergeConfigFrom(__DIR__ . '/../../../config/flexible.php', 'flexible');
         }
         $this->publishes([
-            __DIR__ . '/../../config/flexible.php' => config_path('flexible.php'),
+            __DIR__ . '/../../../config/flexible.php' => config_path('flexible.php'),
         ]);
     }
 

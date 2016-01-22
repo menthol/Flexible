@@ -40,7 +40,7 @@ class FlexibleServiceProvider extends ServiceProvider
         });
 
         $this->app['menthol.flexible.commands.paths'] = $this->app->share(function ($app) {
-            $configPath = app_path() . '/config/packages/menthol/flexible/config.php';
+            $configPath = app_path() . '/config/packages/menthol/flexible/flexible.php';
             $publishConfigCallable = function($command) {
                 $command->call('config:publish', ['package' => 'menthol/flexible']);
             };
@@ -61,7 +61,7 @@ class FlexibleServiceProvider extends ServiceProvider
 
     protected function registerConfigs()
     {
-        $this->package('menthol/flexible', 'flexible', __DIR__ . '/../..');
+        $this->package('menthol/flexible', 'flexible', __DIR__ . '/../../../');
     }
 
     /**
