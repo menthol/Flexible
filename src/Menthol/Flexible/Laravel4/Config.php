@@ -14,6 +14,6 @@ class Config implements ConfigInterface
 
     public function get($key, $default = null)
     {
-        return $this->app['config']->get('flexible::' . $key, $default);
+        return $this->app['config']->get('flexible::flexible.' . $key, $default);
     }
 }
