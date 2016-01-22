@@ -1,8 +1,9 @@
 <?php namespace Menthol\Flexible;
 
-use PhpParser\ParserFactory;
-use PhpParser\Node\Stmt\Namespace_;
-use PhpParser\Node\Stmt\Class_;
+use PHPParser_Parser;
+use PHPParser_Lexer;
+use PHPParser_Node_Stmt_Namespace;
+Use PHPParser_Node_Stmt_Class;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RegexIterator;
@@ -67,7 +68,7 @@ class Utils {
     {
         $models = [];
 
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP5);
+        $parser = new PHPParser_Parser(new PHPParser_Lexer);
 
         // Iterate over each directory and inspect files for models
         foreach ($directories as $directory)
@@ -86,12 +87,12 @@ class Utils {
 
                 $walk = function ($stmt, $key, $ns) use (&$models, &$walk)
                 {
-                    if ($stmt instanceof Namespace_)
+                    if ($stmt instanceof PHPParser_Node_Stmt_Namespace)
                     {
                         $new_ns = implode('\\', $stmt->name->parts);
                         if ($ns && strpos($new_ns, $ns) !== 0) $new_ns = $ns . $new_ns;
                         array_walk($stmt->stmts, $walk, $new_ns);
-                    } else if ($stmt instanceof Class_)
+                    } else if ($stmt instanceof PHPParser_Node_Stmt_Class)
                     {
                         $class = $stmt->name;
                         if ($ns) $class = $ns . '\\' . $class;

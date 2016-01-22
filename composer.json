@@ -24,7 +24,7 @@
     "illuminate/config": "~4.2|~5.0",
     "elasticsearch/elasticsearch": "~2.0",
     "doctrine/dbal": "~2.5",
-    "nikic/php-parser": "~2.0",
+    "nikic/php-parser": "~0.9",
     "monolog/monolog": "~1.6"
   },
   "autoload": {
