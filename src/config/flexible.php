@@ -1,7 +1,5 @@
 <?php
 
-use Psr\Log\LogLevel;
-
 $compiled = __DIR__ . '/paths.json';
 
 // Check for a json file that contains the compiled paths for model relations
@@ -18,24 +16,9 @@ return array_merge($pathConfig, array(
          */
 
         'params' => [
-            'hosts'                 => [ 'localhost:9200' ],
-            'connectionClass'       => '\Elasticsearch\Connections\GuzzleConnection',
-            'connectionFactoryClass'=> '\Elasticsearch\Connections\ConnectionFactory',
-            'connectionPoolClass'   => '\Elasticsearch\ConnectionPool\StaticNoPingConnectionPool',
-            'selectorClass'         => '\Elasticsearch\ConnectionPool\Selectors\RoundRobinSelector',
-            'serializerClass'       => '\Elasticsearch\Serializers\SmartSerializer',
-            'sniffOnStart'          => false,
-            'connectionParams'      => [],
-            'logging'               => false,
-            'logObject'             => null,
-            'logPath'               => 'elasticsearch.log',
-            'logLevel'              => LogLevel::WARNING,
-            'traceObject'           => null,
-            'tracePath'             => 'elasticsearch.log',
-            'traceLevel'            => LogLevel::WARNING,
-            'guzzleOptions'         => [],
-            'connectionPoolParams'  => ['randomizeHosts' => true],
-            'retries'               => null,
+            'hosts' => ['localhost:9200'],
+            'sniffOnStart' => false,
+            'retries' => null,
         ],
 
         'analyzers' => [
