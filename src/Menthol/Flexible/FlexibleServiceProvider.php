@@ -44,7 +44,8 @@ class FlexibleServiceProvider extends ServiceProvider
         $this->provider->boot();
     }
 
-    public function bootContainerBindings() {
+    public function bootContainerBindings()
+    {
         $this->bindElasticsearch();
         $this->bindLogger();
         $this->bindIndex();
@@ -71,8 +72,8 @@ class FlexibleServiceProvider extends ServiceProvider
     protected function getLaravelVersion()
     {
         $app = get_class($this->app);
-        if (defined($app.'::VERSION')) {
-            return (int)constant($app.'::VERSION');
+        if (defined($app . '::VERSION')) {
+            return (int)constant($app . '::VERSION');
         }
         return method_exists($this, 'package') ? 4 : 5;
     }

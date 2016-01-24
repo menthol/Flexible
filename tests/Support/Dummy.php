@@ -2,7 +2,8 @@
 
 use Menthol\Flexible\Traits\SearchableTrait;
 
-class Dummy {
+class Dummy
+{
 
     use SearchableTrait;
 

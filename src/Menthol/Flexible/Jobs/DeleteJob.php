@@ -9,7 +9,8 @@ use Menthol\Flexible\Config;
  *
  * @package Menthol\Flexible\Jobs
  */
-class DeleteJob {
+class DeleteJob
+{
 
     /**
      * @var Application
@@ -40,8 +41,7 @@ class DeleteJob {
         $loggerContainerBinding = $this->config->get('logger', 'menthol.flexible.logger');
         $logger = $this->app->make($loggerContainerBinding);
 
-        foreach ($models as $model)
-        {
+        foreach ($models as $model) {
             list($class, $id) = explode(':', $model);
 
             $logger->info('Deleting ' . $class . ' with ID: ' . $id . ' from Elasticsearch');

@@ -5,7 +5,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Queue;
 
-class Observer {
+class Observer
+{
 
     /**
      * Model delete event handler
@@ -28,8 +29,7 @@ class Observer {
      */
     public function saved(Model $model)
     {
-        if ($model::$__es_enable && $model->shouldIndex())
-        {
+        if ($model::$__es_enable && $model->shouldIndex()) {
             Queue::push('Menthol\Flexible\Jobs\ReindexJob', $this->findAffectedModels($model));
         }
     }
@@ -47,10 +47,8 @@ class Observer {
 
         $paths = App::make('flexible.config')->get('reversedPaths.' . get_class($model), []);
 
-        foreach ((array)$paths as $path)
-        {
-            if (!empty($path))
-            {
+        foreach ((array)$paths as $path) {
+            if (!empty($path)) {
                 $model = $model->load($path);
 
                 // Explode the path into an array
@@ -58,30 +56,22 @@ class Observer {
 
                 // Define a little recursive function to walk the relations of the model based on the path
                 // Eventually it will queue all affected searchable models for reindexing
-                $walk = function ($relation, array $path) use (&$walk, &$affectedModels)
-                {
+                $walk = function ($relation, array $path) use (&$walk, &$affectedModels) {
                     $segment = array_shift($path);
 
                     $relation = $relation instanceof Collection ? $relation : new Collection([$relation]);
 
-                    foreach ($relation as $record)
-                    {
-                        if ($record instanceof Model)
-                        {
-                            if (!empty($segment))
-                            {
-                                if (array_key_exists($segment, $record->getRelations()))
-                                {
+                    foreach ($relation as $record) {
+                        if ($record instanceof Model) {
+                            if (!empty($segment)) {
+                                if (array_key_exists($segment, $record->getRelations())) {
                                     $walk($record->getRelation($segment), $path);
-                                } else
-                                {
+                                } else {
                                     // Apparently the relation doesn't exist on this model, so skip the rest of the path as well
                                     return;
                                 }
-                            } else
-                            {
-                                if (in_array('Menthol\Flexible\Traits\SearchableTrait', class_uses($record)))
-                                {
+                            } else {
+                                if (in_array('Menthol\Flexible\Traits\SearchableTrait', class_uses($record))) {
                                     $affectedModels[] = get_class($record) . ':' . $record->getKey();
                                 }
                             }
@@ -90,10 +80,8 @@ class Observer {
                 };
 
                 $walk($model->getRelation(array_shift($path)), $path);
-            } else if (!$excludeCurrent)
-            {
-                if (in_array('Menthol\Flexible\Traits\SearchableTrait', class_uses($model)))
-                {
+            } else if (!$excludeCurrent) {
+                if (in_array('Menthol\Flexible\Traits\SearchableTrait', class_uses($model))) {
                     $affectedModels[] = get_class($model) . ':' . $model->getKey();
                 }
             }

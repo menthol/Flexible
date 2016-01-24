@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
-use Symfony\Component\Console\Input\InputOption;
 use Mockery as m;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Global function mocks
@@ -33,7 +33,8 @@ function config_path()
  * @package Menthol\Flexible\Commands
  * @preserveGlobalState disabled
  */
-class PathsCommandTest extends \PHPUnit_Framework_TestCase {
+class PathsCommandTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @var \Mockery\Mock $functions
@@ -170,12 +171,10 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
         ];
         $actual = $command->getPaths();
 
-        foreach ($expected as $model => $paths)
-        {
+        foreach ($expected as $model => $paths) {
             $this->assertArrayHasKey($model, $actual);
 
-            foreach ($paths as $path)
-            {
+            foreach ($paths as $path) {
                 $this->assertContains($path, $actual[$model]);
             }
         }
@@ -189,12 +188,10 @@ class PathsCommandTest extends \PHPUnit_Framework_TestCase {
         ];
         $actual = $command->getReversedPaths();
 
-        foreach ($expected as $model => $paths)
-        {
+        foreach ($expected as $model => $paths) {
             $this->assertArrayHasKey($model, $actual);
 
-            foreach ($paths as $path)
-            {
+            foreach ($paths as $path) {
                 $this->assertContains($path, $actual[$model]);
             }
         }

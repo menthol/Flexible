@@ -1,15 +1,10 @@
 <?php namespace Menthol\Flexible\Traits;
 
-use Mockery as m;
 use AspectMock\Test as am;
+use Mockery as m;
 
-class CallableTraitTest extends \PHPUnit_Framework_TestCase {
-
-    protected function tearDown()
-    {
-        m::close();
-        am::clean();
-    }
+class CallableTraitTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @test
@@ -30,6 +25,12 @@ class CallableTraitTest extends \PHPUnit_Framework_TestCase {
     public function it_should_boot_callback_trait_and_throw_exception()
     {
         \Dummy::bootCallableTrait();
+    }
+
+    protected function tearDown()
+    {
+        m::close();
+        am::clean();
     }
 
 }

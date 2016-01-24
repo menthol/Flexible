@@ -2,12 +2,8 @@
 
 use Mockery as m;
 
-class RecordsTest extends \PHPUnit_Framework_TestCase {
-
-    protected function tearDown()
-    {
-        m::close();
-    }
+class RecordsTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @test
@@ -29,8 +25,7 @@ class RecordsTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $husbandMock->shouldReceive('whereIn')
-            ->andReturnUsing(function ($attribute, $items) use ($test, $husbandMock)
-            {
+            ->andReturnUsing(function ($attribute, $items) use ($test, $husbandMock) {
                 $test->assertEquals('id', $attribute);
                 $test->assertEquals([1, 2], $items);
                 return $husbandMock;
@@ -51,6 +46,11 @@ class RecordsTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('Illuminate\Support\Collection', $records);
         $this->assertEquals('item1', $records->first());
         $this->assertEquals('item2', $records[1]);
+    }
+
+    protected function tearDown()
+    {
+        m::close();
     }
 
 }

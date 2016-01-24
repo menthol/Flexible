@@ -2,7 +2,8 @@
 
 use Menthol\Flexible\Traits\SearchableTrait;
 
-class Husband extends Illuminate\Database\Eloquent\Model {
+class Husband extends Illuminate\Database\Eloquent\Model
+{
 
     use SearchableTrait;
 
@@ -41,9 +42,9 @@ class Husband extends Illuminate\Database\Eloquent\Model {
         return $this->hasMany('Child', 'father_id');
     }
 
-	public function getEsId()
-	{
-		return 'dummy_id';
-	}
+    public function getEsId()
+    {
+        return 'dummy_id';
+    }
 
 }

@@ -1,13 +1,14 @@
 <?php namespace Menthol\Flexible\Traits;
 
+use AspectMock\Test as am;
 use Husband;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Facade;
 use Menthol\Flexible\Proxy;
 use Mockery as m;
-use AspectMock\Test as am;
 
-class SearchableTraitTest extends \PHPUnit_Framework_TestCase {
+class SearchableTraitTest extends \PHPUnit_Framework_TestCase
+{
 
     protected function tearDown()
     {

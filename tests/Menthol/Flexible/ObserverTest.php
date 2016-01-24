@@ -1,13 +1,14 @@
 <?php namespace Menthol\Flexible;
 
+use AspectMock\Test as am;
 use Husband;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Facades\Queue;
 use Mockery as m;
-use AspectMock\Test as am;
 
-class ObserverTest extends \PHPUnit_Framework_TestCase {
+class ObserverTest extends \PHPUnit_Framework_TestCase
+{
 
     public static $functions;
 

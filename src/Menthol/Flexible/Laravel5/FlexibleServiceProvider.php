@@ -41,7 +41,7 @@ class FlexibleServiceProvider extends ServiceProvider
 
         $this->app['menthol.flexible.commands.paths'] = $this->app->share(function ($app) {
             $configPath = config_path() . '/config/flexible.php';
-            $publishConfigCallable = function($command) {
+            $publishConfigCallable = function ($command) {
                 $command->call('vendor:publish', ['--provider' => 'Menthol\\Flexible\FlexibleServiceProvider', '--tag' => 'config']);
             };
             return new PathsCommand($configPath, $publishConfigCallable);

@@ -1,17 +1,10 @@
 <?php namespace Menthol\Flexible\Commands;
 
-use Symfony\Component\Console\Input\InputOption;
 use Mockery as m;
+use Symfony\Component\Console\Input\InputOption;
 
-class ReindexCommandTest extends \PHPUnit_Framework_TestCase {
-
-    /**
-     *
-     */
-    protected function tearDown()
-    {
-        m::close();
-    }
+class ReindexCommandTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @test
@@ -127,8 +120,7 @@ class ReindexCommandTest extends \PHPUnit_Framework_TestCase {
         $model->shouldReceive('reindex')
             ->with(true, 750, null, \Mockery::type('closure'))
             ->times(5)
-            ->andReturnUsing(function ($relations, $batch, $mapping, $callback)
-            {
+            ->andReturnUsing(function ($relations, $batch, $mapping, $callback) {
                 $callback(1);
             });
 
@@ -190,6 +182,14 @@ class ReindexCommandTest extends \PHPUnit_Framework_TestCase {
         $model = $command->getModelInstance('Husband');
 
         $this->assertInstanceOf('Husband', $model);
+    }
+
+    /**
+     *
+     */
+    protected function tearDown()
+    {
+        m::close();
     }
 
 }

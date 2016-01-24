@@ -3,7 +3,8 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 
-class Proxy {
+class Proxy
+{
 
     /**
      * @var array
@@ -42,22 +43,6 @@ class Proxy {
     public function getModel()
     {
         return $this->config['model'];
-    }
-
-    /**
-     * @return Index
-     */
-    public function getIndex()
-    {
-        return $this->config['index'];
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getType()
-    {
-        return $this->config['type'];
     }
 
     /**
@@ -101,13 +86,29 @@ class Proxy {
     public function searchById($id)
     {
         return App::make('menthol.flexible.response.result', $this->config['client']->get(
-                [
-                    'index' => $this->getIndex()->getName(),
-                    'type' => $this->getType(),
-                    'id' => $id
-                ]
-            )
+            [
+                'index' => $this->getIndex()->getName(),
+                'type' => $this->getType(),
+                'id' => $id
+            ]
+        )
         );
+    }
+
+    /**
+     * @return Index
+     */
+    public function getIndex()
+    {
+        return $this->config['index'];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->config['type'];
     }
 
     /**
@@ -131,13 +132,11 @@ class Proxy {
         $index = App::make('menthol.flexible.index', array('name' => $newName, 'proxy' => $this));
         $index->create($mapping);
 
-        if ($index->aliasExists($name))
-        {
+        if ($index->aliasExists($name)) {
             $index->import($model, $relations, $batchSize, $callback);
             $remove = [];
 
-            foreach (Index::getAlias($name) as $index => $aliases)
-            {
+            foreach (Index::getAlias($name) as $index => $aliases) {
                 $remove = [
                     'remove' => [
                         'index' => $index,
@@ -157,8 +156,7 @@ class Proxy {
 
             Index::updateAliases(['actions' => $actions]);
             Index::clean($name);
-        } else
-        {
+        } else {
             if ($this->config['index']->exists()) $this->config['index']->delete();
 
             $actions[] =

@@ -3,7 +3,8 @@
 use Illuminate\Database\Eloquent\Model;
 use Menthol\Flexible\Response\Results;
 
-class Response {
+class Response
+{
 
     /**
      * @var \Illuminate\Database\Eloquent\Model
@@ -56,26 +57,15 @@ class Response {
      */
     public function getRecords()
     {
-        if (count($this->getHits()) > 0)
-        {
-            $ids = array_map(function ($hit)
-            {
+        if (count($this->getHits()) > 0) {
+            $ids = array_map(function ($hit) {
                 return $hit['_id'];
             }, $this->getHits());
 
             return call_user_func_array(array($this->model, 'whereIn'), array('id', $ids))->get();
-        } else
-        {
+        } else {
             return call_user_func(array($this->model, 'newCollection'));
         }
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTook()
-    {
-        return $this->response['took'];
     }
 
     /**
@@ -84,6 +74,14 @@ class Response {
     public function getHits()
     {
         return $this->response['hits']['hits'];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTook()
+    {
+        return $this->response['took'];
     }
 
     /**
@@ -124,23 +122,18 @@ class Response {
      */
     public function getSuggestions($fields = [])
     {
-        if (!empty($fields))
-        {
+        if (!empty($fields)) {
             $results = [];
-            foreach ($fields as $field)
-            {
-                foreach ($this->response['suggest'] as $key => $value)
-                {
-                    if (preg_match("/^${field}.*/", $key) !== false)
-                    {
+            foreach ($fields as $field) {
+                foreach ($this->response['suggest'] as $key => $value) {
+                    if (preg_match("/^${field}.*/", $key) !== false) {
                         $results[$field] = $value;
                     }
                 }
             }
 
             return $results;
-        } else
-        {
+        } else {
             return $this->response['suggest'];
         }
     }

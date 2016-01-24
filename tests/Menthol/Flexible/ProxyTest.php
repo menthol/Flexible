@@ -1,16 +1,17 @@
 <?php namespace Menthol\Flexible;
 
+use AspectMock\Test as am;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Facade;
 use Mockery as m;
-use AspectMock\Test as am;
 
 function date()
 {
     return ProxyTest::$functions->date();
 }
 
-class ProxyTest extends \PHPUnit_Framework_TestCase {
+class ProxyTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @var \Mockery\Mock
@@ -79,19 +80,19 @@ class ProxyTest extends \PHPUnit_Framework_TestCase {
     public function it_can_get_config()
     {
         $this->assertEquals([
-                'model' => $this->model,
-                'type' => 'Husband',
-                'client' => $this->client,
-                'index' => $this->index,
-                'autocomplete' => ['name', 'wife.name'],
-                'suggest' => ['name'],
-                'text_start' => ['name', 'wife.children.name'],
-                'text_middle' => ['name', 'wife.children.name'],
-                'text_end' => ['name', 'wife.children.name'],
-                'word_start' => ['name', 'wife.children.name'],
-                'word_middle' => ['name', 'wife.children.name'],
-                'word_end' => ['name', 'wife.children.name']
-            ],
+            'model' => $this->model,
+            'type' => 'Husband',
+            'client' => $this->client,
+            'index' => $this->index,
+            'autocomplete' => ['name', 'wife.name'],
+            'suggest' => ['name'],
+            'text_start' => ['name', 'wife.children.name'],
+            'text_middle' => ['name', 'wife.children.name'],
+            'text_end' => ['name', 'wife.children.name'],
+            'word_start' => ['name', 'wife.children.name'],
+            'word_middle' => ['name', 'wife.children.name'],
+            'word_end' => ['name', 'wife.children.name']
+        ],
             $this->proxy->getConfig());
     }
 
@@ -336,8 +337,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase {
 
         $indexDouble->verifyInvoked('refresh', 'Husband');
         $indexDouble->verifyInvoked('clean', 'Husband');
-        $indexDouble->verifyInvoked('updateAliases', function ($calls) use ($test, $actions)
-        {
+        $indexDouble->verifyInvoked('updateAliases', function ($calls) use ($test, $actions) {
             $test->assertEquals($actions, $calls[0]);
         });
     }

@@ -3,12 +3,8 @@
 use Illuminate\Support\Facades\App;
 use Mockery as m;
 
-class TransformableTraitTest extends \PHPUnit_Framework_TestCase {
-
-    protected function tearDown()
-    {
-        m::close();
-    }
+class TransformableTraitTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @test
@@ -44,6 +40,11 @@ class TransformableTraitTest extends \PHPUnit_Framework_TestCase {
         $transformed = $husband->transform(true);
 
         $this->assertEquals('mock', $transformed);
+    }
+
+    protected function tearDown()
+    {
+        m::close();
     }
 
 }

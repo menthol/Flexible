@@ -1,15 +1,10 @@
 <?php namespace Menthol\Flexible\Jobs;
 
-use Mockery as m;
 use AspectMock\Test as am;
+use Mockery as m;
 
-class DeleteJobTest extends \PHPUnit_Framework_TestCase {
-
-    protected function tearDown()
-    {
-        m::close();
-        am::clean();
-    }
+class DeleteJobTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @test
@@ -21,10 +16,10 @@ class DeleteJobTest extends \PHPUnit_Framework_TestCase {
          * Set
          *
          */
-	    $app = m::mock('Illuminate\Foundation\Application');
-	    $config = m::mock('Menthol\Flexible\Config');
-	    $logger = m::mock('Monolog\Logger');
-	    am::double('Husband', ['deleteDoc' => true]);
+        $app = m::mock('Illuminate\Foundation\Application');
+        $config = m::mock('Menthol\Flexible\Config');
+        $logger = m::mock('Monolog\Logger');
+        am::double('Husband', ['deleteDoc' => true]);
 
         $job = m::mock('Illuminate\Queue\Jobs\Job');
         $models = [
@@ -47,6 +42,12 @@ class DeleteJobTest extends \PHPUnit_Framework_TestCase {
          *
          */
         with(new DeleteJob($app, $config))->fire($job, $models);
+    }
+
+    protected function tearDown()
+    {
+        m::close();
+        am::clean();
     }
 
 }

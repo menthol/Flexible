@@ -21,22 +21,11 @@ function config_path($config_path = null)
  * Class FlexibleServiceProviderTest
  * @group laravel5
  */
-class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
+class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase
+{
 
     public static $functions;
     protected static $providers_real_path;
-
-    protected function setUp()
-    {
-        self::$functions = m::mock();
-        self::$functions->shouldReceive('base_path')->andReturn('');
-        self::$providers_real_path = realpath(__DIR__ . '/../../../../src/Menthol/Flexible/Laravel5');
-    }
-
-    protected function tearDown()
-    {
-        m::close();
-    }
 
     /**
      * @test
@@ -58,15 +47,13 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
 
         $app->shouldReceive('share')
             ->once()
-            ->andReturnUsing(function ($closure) use ($app)
-            {
+            ->andReturnUsing(function ($closure) use ($app) {
                 $this->assertInstanceOf('Menthol\Flexible\Commands\ReindexCommand', $closure($app));
             });
 
         $app->shouldReceive('share')
             ->once()
-            ->andReturnUsing(function ($closure) use ($app)
-            {
+            ->andReturnUsing(function ($closure) use ($app) {
                 $this->assertInstanceOf('Menthol\Flexible\Commands\PathsCommand', $closure($app));
             });
 
@@ -114,6 +101,18 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
          */
         $sp = new FlexibleServiceProvider($app);
         $this->assertEquals([], $sp->provides());
+    }
+
+    protected function setUp()
+    {
+        self::$functions = m::mock();
+        self::$functions->shouldReceive('base_path')->andReturn('');
+        self::$providers_real_path = realpath(__DIR__ . '/../../../../src/Menthol/Flexible/Laravel5');
+    }
+
+    protected function tearDown()
+    {
+        m::close();
     }
 
 }

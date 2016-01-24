@@ -6,22 +6,11 @@ use Mockery as m;
  * Class FlexibleServiceProviderTest
  * @group laravel4
  */
-class FlexibleServiceProviderLaravel4Test extends \PHPUnit_Framework_TestCase {
+class FlexibleServiceProviderLaravel4Test extends \PHPUnit_Framework_TestCase
+{
 
     public static $functions;
     protected static $providers_real_path;
-
-    protected function setUp()
-    {
-        self::$functions = m::mock();
-        self::$functions->shouldReceive('base_path')->andReturn('');
-        self::$providers_real_path = realpath(__DIR__ . '/../../../src/Menthol/Flexible');
-    }
-
-    protected function tearDown()
-    {
-        m::close();
-    }
 
     /**
      * @test
@@ -76,5 +65,17 @@ class FlexibleServiceProviderLaravel4Test extends \PHPUnit_Framework_TestCase {
          * Assertions
          */
         $sp->bootContainerBindings();
+    }
+
+    protected function setUp()
+    {
+        self::$functions = m::mock();
+        self::$functions->shouldReceive('base_path')->andReturn('');
+        self::$providers_real_path = realpath(__DIR__ . '/../../../src/Menthol/Flexible');
+    }
+
+    protected function tearDown()
+    {
+        m::close();
     }
 }

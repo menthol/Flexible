@@ -1,15 +1,10 @@
 <?php namespace Menthol\Flexible;
 
-use Mockery as m;
 use AspectMock\Test as am;
+use Mockery as m;
 
-class QueryTest extends \PHPUnit_Framework_TestCase {
-
-    protected function tearDown()
-    {
-        m::close();
-        am::clean();
-    }
+class QueryTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @test
@@ -33,8 +28,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $client->shouldReceive('search')
-            ->andReturnUsing(function ($params) use ($test)
-            {
+            ->andReturnUsing(function ($params) use ($test) {
                 $test->assertEquals(json_decode(
                         '{
                       "index": "Husband",
@@ -87,6 +81,43 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
+     * Construct an helper mocks
+     *
+     * @return array
+     */
+    private function getMocks()
+    {
+        $client = m::mock('Elasticsearch\Client');
+        $model = m::mock('Illuminate\Database\Eloquent\Model');
+
+        $proxy = m::mock('Menthol\Flexible\Proxy');
+        $proxy->shouldReceive('getClient')
+            ->andReturn($client);
+        $proxy->shouldReceive('getModel')
+            ->andReturn($model);
+        $proxy->shouldReceive('getIndex->getName')
+            ->andReturn('Husband');
+        $proxy->shouldReceive('getType')
+            ->andReturn('Husband');
+        $proxy->shouldReceive('getConfig')
+            ->andReturn([
+                'autocomplete' => ['name', 'wife.name'],
+
+                'suggest' => ['name'],
+
+                'text_start' => ['name', 'wife.children.name'],
+                'text_middle' => ['name', 'wife.children.name'],
+                'text_end' => ['name', 'wife.children.name'],
+
+                'word_start' => ['name', 'wife.children.name'],
+                'word_middle' => ['name', 'wife.children.name'],
+                'word_end' => ['name', 'wife.children.name']
+            ]);
+
+        return [$proxy, $client, $model];
+    }
+
+    /**
      * @test
      */
     public function it_should_search_on_term_with_exact_field()
@@ -114,8 +145,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $client->shouldReceive('search')
-            ->andReturnUsing(function ($params) use ($test)
-            {
+            ->andReturnUsing(function ($params) use ($test) {
                 $test->assertEquals(json_decode(
                         '{
                       "index": "Husband",
@@ -185,10 +215,9 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $client->shouldReceive('search')
-            ->andReturnUsing(function ($params) use ($test)
-            {
+            ->andReturnUsing(function ($params) use ($test) {
                 $test->assertEquals(json_decode(
-                        '{
+                    '{
                       "index": "Husband",
                       "type": "Husband",
                       "body": {
@@ -289,8 +318,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $client->shouldReceive('search')
-            ->andReturnUsing(function ($params) use ($test)
-            {
+            ->andReturnUsing(function ($params) use ($test) {
                 $test->assertEquals(json_decode(
                         '{
                       "index": "Husband",
@@ -380,8 +408,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $client->shouldReceive('search')
-            ->andReturnUsing(function ($params) use ($test)
-            {
+            ->andReturnUsing(function ($params) use ($test) {
                 $test->assertEquals(json_decode(
                         '{
                       "index": "Husband",
@@ -446,8 +473,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $client->shouldReceive('search')
-            ->andReturnUsing(function ($params) use ($test)
-            {
+            ->andReturnUsing(function ($params) use ($test) {
                 $test->assertEquals(json_decode(
                         '{
                           "index": "Husband",
@@ -511,8 +537,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $client->shouldReceive('search')
-            ->andReturnUsing(function ($params) use ($test)
-            {
+            ->andReturnUsing(function ($params) use ($test) {
                 $test->assertEquals(json_decode(
                         '{
                       "index": "Husband",
@@ -596,8 +621,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $client->shouldReceive('search')
-            ->andReturnUsing(function ($params) use ($test)
-            {
+            ->andReturnUsing(function ($params) use ($test) {
                 $test->assertEquals(json_decode(
                         '{
                           "index": "Husband",
@@ -683,8 +707,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $client->shouldReceive('search')
-            ->andReturnUsing(function ($params) use ($test)
-            {
+            ->andReturnUsing(function ($params) use ($test) {
                 $query = json_decode(
                     '{
                       "index": "Husband",
@@ -780,10 +803,9 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $client->shouldReceive('search')
-            ->andReturnUsing(function ($params) use ($test)
-            {
+            ->andReturnUsing(function ($params) use ($test) {
                 $test->assertEquals(json_decode(
-                        '{
+                    '{
                       "index": "Husband",
                       "type": "Husband",
                       "body": {
@@ -873,10 +895,9 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $client->shouldReceive('search')
-            ->andReturnUsing(function ($params) use ($test)
-            {
+            ->andReturnUsing(function ($params) use ($test) {
                 $test->assertEquals(json_decode(
-                        '{
+                    '{
                       "index": "Husband",
                       "type": "Husband",
                       "body": {
@@ -931,8 +952,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
          */
 
         $client->shouldReceive('search')
-            ->andReturnUsing(function ($params) use ($test)
-            {
+            ->andReturnUsing(function ($params) use ($test) {
                 $test->assertEquals(json_decode(
                     '{
                         "index": "Husband",
@@ -1013,41 +1033,10 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
         $query->execute();
     }
 
-    /**
-     * Construct an helper mocks
-     *
-     * @return array
-     */
-    private function getMocks()
+    protected function tearDown()
     {
-        $client = m::mock('Elasticsearch\Client');
-        $model = m::mock('Illuminate\Database\Eloquent\Model');
-
-        $proxy = m::mock('Menthol\Flexible\Proxy');
-        $proxy->shouldReceive('getClient')
-            ->andReturn($client);
-        $proxy->shouldReceive('getModel')
-            ->andReturn($model);
-        $proxy->shouldReceive('getIndex->getName')
-            ->andReturn('Husband');
-        $proxy->shouldReceive('getType')
-            ->andReturn('Husband');
-        $proxy->shouldReceive('getConfig')
-            ->andReturn([
-                'autocomplete' => ['name', 'wife.name'],
-
-                'suggest' => ['name'],
-
-                'text_start' => ['name', 'wife.children.name'],
-                'text_middle' => ['name', 'wife.children.name'],
-                'text_end' => ['name', 'wife.children.name'],
-
-                'word_start' => ['name', 'wife.children.name'],
-                'word_middle' => ['name', 'wife.children.name'],
-                'word_end' => ['name', 'wife.children.name']
-            ]);
-
-        return [$proxy, $client, $model];
+        m::close();
+        am::clean();
     }
 
 }

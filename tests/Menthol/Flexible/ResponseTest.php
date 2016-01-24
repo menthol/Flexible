@@ -2,7 +2,8 @@
 
 use Mockery as m;
 
-class ResponseTest extends \PHPUnit_Framework_TestCase {
+class ResponseTest extends \PHPUnit_Framework_TestCase
+{
 
     private $responseFixture = [
         'took' => 'took',
@@ -24,11 +25,6 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
 
     ];
 
-    protected function tearDown()
-    {
-        m::close();
-    }
-
     /**
      * @test
      */
@@ -47,6 +43,20 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
          *
          */
         $this->assertEquals($model, $response->getModel());
+    }
+
+    /**
+     * Construct a Response mock
+     *
+     * @return array
+     */
+    private function getMocks()
+    {
+        $model = m::mock('Husband');
+
+        $response = m::mock('Menthol\Flexible\Response', array($model, $this->responseFixture))->makePartial();
+
+        return [$response, $model];
     }
 
     /**
@@ -335,19 +345,9 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(['named_aggregation' => 'named_aggregation'], $aggregations);
     }
 
-
-    /**
-     * Construct a Response mock
-     *
-     * @return array
-     */
-    private function getMocks()
+    protected function tearDown()
     {
-        $model = m::mock('Husband');
-
-        $response = m::mock('Menthol\Flexible\Response', array($model, $this->responseFixture))->makePartial();
-
-        return [$response, $model];
+        m::close();
     }
 
 

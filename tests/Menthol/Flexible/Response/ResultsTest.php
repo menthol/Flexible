@@ -2,12 +2,8 @@
 
 use Mockery as m;
 
-class ResultsTest extends \PHPUnit_Framework_TestCase {
-
-    protected function tearDown()
-    {
-        m::close();
-    }
+class ResultsTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @test
@@ -59,5 +55,10 @@ class ResultsTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertInstanceOf('Illuminate\Support\Collection', $results);
         $this->assertInstanceOf('Menthol\Flexible\Response\Result', $results->first());
+    }
+
+    protected function tearDown()
+    {
+        m::close();
     }
 }

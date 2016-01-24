@@ -3,7 +3,8 @@
 use Illuminate\Support\Collection;
 use Menthol\Flexible\Response;
 
-class Results extends Collection {
+class Results extends Collection
+{
 
     /**
      * Contains an Elasticsearch response wrapper
@@ -24,8 +25,7 @@ class Results extends Collection {
 
         parent::__construct(
             array_map(
-                function ($hit)
-                {
+                function ($hit) {
                     return new Result($hit);
                 },
                 $this->response->getHits()

@@ -16,7 +16,7 @@ $eloquent = __DIR__ . '/../vendor/illuminate/database/Illuminate/Database/Eloque
 
 $kernel->init([
     'debug' => true,
-    'cacheDir'  => '/tmp/flexible',
+    'cacheDir' => '/tmp/flexible',
     'includePaths' => [$src, $eloquent]
 ]);
 
@@ -25,9 +25,9 @@ $kernel->init([
 $capsule = new \Illuminate\Database\Capsule\Manager();
 
 $capsule->addConnection(array(
-        'driver'   => 'sqlite',
-        'database' => __DIR__ . '/database/testing.sqlite',
-        'prefix'   => '',
-    ));
+    'driver' => 'sqlite',
+    'database' => __DIR__ . '/database/testing.sqlite',
+    'prefix' => '',
+));
 
 $capsule->bootEloquent();

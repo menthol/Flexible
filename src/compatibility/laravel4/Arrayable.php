@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Contracts\ArrayableInterface;
 
-interface Arrayable extends ArrayableInterface {
+interface Arrayable extends ArrayableInterface
+{
 
 }

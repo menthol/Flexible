@@ -1,11 +1,12 @@
 <?php namespace Menthol\Flexible\Jobs;
 
-use Illuminate\Support\Facades\App;
-use Mockery as m;
 use AspectMock\Test as am;
+use Illuminate\Support\Facades\App;
 use Mockery;
+use Mockery as m;
 
-class ReindexJobTest extends \PHPUnit_Framework_TestCase {
+class ReindexJobTest extends \PHPUnit_Framework_TestCase
+{
 
     protected function tearDown()
     {

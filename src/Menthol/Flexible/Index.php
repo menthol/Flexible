@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 use Menthol\Flexible\Exceptions\ImportException;
 
-class Index {
+class Index
+{
 
     /**
      * Index name
@@ -77,8 +78,7 @@ class Index {
     {
         $batch = 0;
 
-        while (true)
-        {
+        while (true) {
             // Increase the batch number
             $batch += 1;
 
@@ -93,16 +93,14 @@ class Index {
             if (count($records) == 0) break;
 
             // Call the callback function to provide feedback on the import process
-            if ($callback)
-            {
+            if ($callback) {
                 $callback($batch);
             }
 
             // Transform each record before sending it to Elasticsearch
             $data = [];
 
-            foreach ($records as $record)
-            {
+            foreach ($records as $record) {
                 $data[] = [
                     'index' => [
                         '_id' => $record->getEsId()
@@ -293,14 +291,11 @@ class Index {
 
         $results = self::getClient()->bulk($params);
 
-        if ($results['errors'])
-        {
+        if ($results['errors']) {
             $errorItems = [];
 
-            foreach ($results['items'] as $item)
-            {
-                if (array_key_exists('error', $item['index']))
-                {
+            foreach ($results['items'] as $item) {
+                if (array_key_exists('error', $item['index'])) {
                     $errorItems[] = $item;
                 }
             }
@@ -320,10 +315,8 @@ class Index {
         if ($index_prefix && !Str::startsWith($name, $index_prefix)) $name = $index_prefix . $name;
 
         $indices = self::getClient()->indices()->getAliases();
-        foreach ($indices as $index => $value)
-        {
-            if (empty($value['aliases']) && preg_match("/^${name}_\\d{14,17}$/", $index))
-            {
+        foreach ($indices as $index => $value) {
+            if (empty($value['aliases']) && preg_match("/^${name}_\\d{14,17}$/", $index)) {
                 self::getClient()->indices()->delete(['index' => $index]);
             }
         }
@@ -349,10 +342,8 @@ class Index {
      */
     public static function updateAliases(array $actions)
     {
-        if (isset($actions['actions']) && ($index_prefix = self::$config->get('elasticsearch.index_prefix', '')))
-        {
-            foreach ($actions['actions'] as &$action)
-            {
+        if (isset($actions['actions']) && ($index_prefix = self::$config->get('elasticsearch.index_prefix', ''))) {
+            foreach ($actions['actions'] as &$action) {
                 list($verb, $data) = each($action);
                 if (!Str::startsWith($data['index'], $index_prefix)) $action[$verb]['index'] = $index_prefix . $data['index'];
                 if (!Str::startsWith($data['alias'], $index_prefix)) $action[$verb]['alias'] = $index_prefix . $data['alias'];
@@ -389,27 +380,24 @@ class Index {
 
         $mapping_options = array_combine(
             $analyzers,
-            array_map(function ($type)
-                {
-                    $config = $this->getProxy()->getConfig();
+            array_map(function ($type) {
+                $config = $this->getProxy()->getConfig();
 
-                    // Maintain backwards compatibility by allowing a plain array of analyzer => fields
-                    $field_mappings = Utils::findKey($config, $type, false) ?: [];
+                // Maintain backwards compatibility by allowing a plain array of analyzer => fields
+                $field_mappings = Utils::findKey($config, $type, false) ?: [];
 
-                    // Also read from a dedicated array key called 'analyzers'
-                    if (isset($config['analyzers']))
-                    {
-                        $field_mappings = array_merge($field_mappings, Utils::findKey($config['analyzers'], $type, false) ?: []);
-                    }
+                // Also read from a dedicated array key called 'analyzers'
+                if (isset($config['analyzers'])) {
+                    $field_mappings = array_merge($field_mappings, Utils::findKey($config['analyzers'], $type, false) ?: []);
+                }
 
-                    return $field_mappings;
-                },
+                return $field_mappings;
+            },
                 $analyzers
             )
         );
 
-        foreach (array_unique(array_flatten(array_values($mapping_options))) as $field)
-        {
+        foreach (array_unique(array_flatten(array_values($mapping_options))) as $field) {
             // Extract path segments from dot separated field
             $pathSegments = explode('.', $field);
 
@@ -432,10 +420,8 @@ class Index {
             ];
 
             // Check if we need to add additional mappings
-            foreach ($mapping_options as $type => $fields)
-            {
-                if (in_array($field, $fields))
-                {
+            foreach ($mapping_options as $type => $fields) {
+                if (in_array($field, $fields)) {
                     $fieldMapping['fields'][$type] = [
                         'type' => 'string',
                         'index' => 'analyzed',
@@ -444,14 +430,12 @@ class Index {
                 }
             }
 
-            if (!empty($pathSegments))
-            {
+            if (!empty($pathSegments)) {
                 $mapping = Utils::array_merge_recursive_distinct(
                     $mapping,
                     $this->getNestedFieldMapping($fieldName, $fieldMapping, $pathSegments)
                 );
-            } else
-            {
+            } else {
                 $mapping[$fieldName] = $fieldMapping;
             }
         }
@@ -484,8 +468,7 @@ class Index {
         ];
 
         // Add any additional levels
-        foreach (array_reverse($pathSegments) as $pathSegment)
-        {
+        foreach (array_reverse($pathSegments) as $pathSegment) {
             $nested[$pathSegment] = [
                 'type' => 'object',
                 'properties' => $nested

@@ -1,8 +1,8 @@
 <?php namespace Menthol\Flexible\Jobs;
 
+use Exception;
 use Illuminate\Foundation\Application;
 use Illuminate\Queue\Jobs\Job;
-use Exception;
 use Menthol\Flexible\Config;
 
 /**
@@ -10,7 +10,8 @@ use Menthol\Flexible\Config;
  *
  * @package Menthol\Flexible\Jobs
  */
-class ReindexJob {
+class ReindexJob
+{
 
     /**
      * @var Application
@@ -37,18 +38,15 @@ class ReindexJob {
         $loggerContainerBinding = $this->config->get('logger', 'menthol.flexible.logger');
         $logger = $this->app->make($loggerContainerBinding);
 
-        foreach ($models as $model)
-        {
+        foreach ($models as $model) {
             list($class, $id) = explode(':', $model);
 
             $logger->info('Indexing ' . $class . ' with ID: ' . $id);
 
-            try
-            {
+            try {
                 $model = $class::findOrFail($id);
                 $model->refreshDoc($model);
-            } catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 $logger->error('Indexing ' . $class . ' with ID: ' . $id . ' failed: ' . $e->getMessage());
 
                 $job->release(60);

@@ -3,7 +3,8 @@
 use Illuminate\Support\Collection;
 use Menthol\Flexible\Response;
 
-class Records extends Collection {
+class Records extends Collection
+{
 
     /**
      * Contains an Elasticsearch response wrapper
@@ -22,8 +23,7 @@ class Records extends Collection {
     {
         $this->response = $response;
 
-        $ids = array_map(function ($hit)
-        {
+        $ids = array_map(function ($hit) {
             return $hit['_id'];
         }, $this->response->getHits());
 

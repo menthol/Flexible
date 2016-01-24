@@ -7,22 +7,11 @@ use Mockery as m;
  * Class FlexibleServiceProviderTest
  * @group laravel4
  */
-class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
+class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase
+{
 
     public static $functions;
     protected static $providers_real_path;
-
-    protected function setUp()
-    {
-        self::$functions = m::mock();
-        self::$functions->shouldReceive('base_path')->andReturn('');
-        self::$providers_real_path = realpath(__DIR__ . '/../../../src/Menthol/Flexible');
-    }
-
-    protected function tearDown()
-    {
-        m::close();
-    }
 
     /**
      * @test
@@ -52,8 +41,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
         $app->shouldReceive('singleton')
             ->once()
             ->andReturnUsing(
-                function ($name, $closure) use ($app)
-                {
+                function ($name, $closure) use ($app) {
                     $this->assertEquals('Elasticsearch', $name);
                     $this->assertInstanceOf('Elasticsearch\Client', $closure($app));
                 }
@@ -79,8 +67,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
         $app->shouldReceive('singleton')
             ->once()
             ->andReturnUsing(
-                function ($name, $closure) use ($app)
-                {
+                function ($name, $closure) use ($app) {
                     $this->assertEquals('menthol.flexible.logger', $name);
                     $this->assertInstanceOf('Monolog\Logger', $closure($app));
                 }
@@ -134,8 +121,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
         $app->shouldReceive('bind')
             ->once()
             ->andReturnUsing(
-                function ($name, $closure) use ($app, $proxy)
-                {
+                function ($name, $closure) use ($app, $proxy) {
                     $this->assertEquals('menthol.flexible.index', $name);
                     $this->assertInstanceOf('Menthol\Flexible\Index',
                         $closure($app, ['proxy' => $proxy, 'name' => 'name']));
@@ -171,8 +157,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
         $app->shouldReceive('bind')
             ->once()
             ->andReturnUsing(
-                function ($name, $closure) use ($app, $proxy)
-                {
+                function ($name, $closure) use ($app, $proxy) {
                     $this->assertEquals('menthol.flexible.query', $name);
                     $this->assertInstanceOf('Menthol\Flexible\Query',
                         $closure($app, ['proxy' => $proxy, 'term' => 'term', 'options' => []]));
@@ -206,8 +191,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
         $app->shouldReceive('bind')
             ->once()
             ->andReturnUsing(
-                function ($name, $closure) use ($app, $model)
-                {
+                function ($name, $closure) use ($app, $model) {
                     $this->assertEquals('menthol.flexible.proxy', $name);
                     $this->assertInstanceOf('Menthol\Flexible\Proxy',
                         $closure($app, $model));
@@ -238,8 +222,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
         $app->shouldReceive('bind')
             ->once()
             ->andReturnUsing(
-                function ($name, $closure) use ($app)
-                {
+                function ($name, $closure) use ($app) {
                     $this->assertEquals('menthol.flexible.response.result', $name);
                     $this->assertInstanceOf('Menthol\Flexible\Response\Result',
                         $closure($app, []));
@@ -250,5 +233,17 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase {
          * Assertion
          */
         $sp->bindResult();
+    }
+
+    protected function setUp()
+    {
+        self::$functions = m::mock();
+        self::$functions->shouldReceive('base_path')->andReturn('');
+        self::$providers_real_path = realpath(__DIR__ . '/../../../src/Menthol/Flexible');
+    }
+
+    protected function tearDown()
+    {
+        m::close();
     }
 }

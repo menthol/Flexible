@@ -2,7 +2,8 @@
 
 use Menthol\Flexible\Traits\SearchableTrait;
 
-class Child extends Illuminate\Database\Eloquent\Model {
+class Child extends Illuminate\Database\Eloquent\Model
+{
 
     use SearchableTrait;
 

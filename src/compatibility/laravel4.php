@@ -1,8 +1,8 @@
 <?php
 
-spl_autoload_register(function($class) {
+spl_autoload_register(function ($class) {
     $class_map = [
-        'Menthol\Flexible\Contracts\Arrayable' => __DIR__.'/laravel4/Arrayable.php',
+        'Menthol\Flexible\Contracts\Arrayable' => __DIR__ . '/laravel4/Arrayable.php',
     ];
 
     if (isset($class_map[$class])) {

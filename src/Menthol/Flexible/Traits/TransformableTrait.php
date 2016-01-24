@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\App;
 
-trait TransformableTrait {
+trait TransformableTrait
+{
 
     /**
      * Transform the Person model and its relations to an Elasticsearch document.

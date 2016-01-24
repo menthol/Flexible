@@ -1,11 +1,12 @@
 <?php namespace Menthol\Flexible;
 
+use AspectMock\Test as am;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Facade;
 use Mockery as m;
-use AspectMock\Test as am;
 
-class IndexTest extends \PHPUnit_Framework_TestCase {
+class IndexTest extends \PHPUnit_Framework_TestCase
+{
 
     protected function tearDown()
     {
@@ -57,8 +58,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
          * Assertion
          *
          */
-        $index->import($model, [], 750, function ($batch) use ($test)
-        {
+        $index->import($model, [], 750, function ($batch) use ($test) {
             $test->assertEquals(1, $batch);
         });
     }
@@ -280,8 +280,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
                 ]]);
 
         $client->shouldReceive('indices->create')
-            ->andReturnUsing(function ($params) use ($test)
-            {
+            ->andReturnUsing(function ($params) use ($test) {
                 $test->assertEquals(json_decode(
                         '{
                           "index": "husband",
@@ -775,8 +774,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase {
 
 
         $client->shouldReceive('indices->create')
-            ->andReturnUsing(function ($params) use ($test)
-            {
+            ->andReturnUsing(function ($params) use ($test) {
                 $test->assertEquals(json_decode(
                         '{
                           "index": "bar_husband",

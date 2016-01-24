@@ -182,10 +182,10 @@ return array_merge($pathConfig, array(
                 ]
             ]
         ],
-	    
+
         'index_prefix' => ''
     ],
 
-	'logger' => 'menthol.flexible.logger'
+    'logger' => 'menthol.flexible.logger'
 
 ));

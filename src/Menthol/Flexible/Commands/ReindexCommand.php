@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\File;
 use Menthol\Flexible\Utils;
 use Symfony\Component\Console\Input\InputOption;
 
-class ReindexCommand extends Command {
+class ReindexCommand extends Command
+{
 
     /**
      * The console command name.
@@ -32,25 +33,21 @@ class ReindexCommand extends Command {
         $directoryModels = [];
         $models = $this->argument('model');
 
-        foreach ($models as $model)
-        {
+        foreach ($models as $model) {
             $instance = $this->getModelInstance($model);
             $this->reindexModel($instance);
         }
 
-        if ($directories = $this->option('dir'))
-        {
+        if ($directories = $this->option('dir')) {
             $directoryModels = array_diff(Utils::findSearchableModels($directories), $models);
 
-            foreach ($directoryModels as $model)
-            {
+            foreach ($directoryModels as $model) {
                 $instance = $this->getModelInstance($model);
                 $this->reindexModel($instance);
             }
         }
 
-        if (empty($models) && empty($directoryModels))
-        {
+        if (empty($models) && empty($directoryModels)) {
             $this->info('No models found.');
         }
     }
@@ -98,8 +95,7 @@ class ReindexCommand extends Command {
             $this->option('relations'),
             $this->option('batch'),
             $mapping,
-            function ($batch)
-            {
+            function ($batch) {
                 $this->info("* Batch ${batch}");
             }
         );

@@ -2,7 +2,8 @@
 
 use Menthol\Flexible\Contracts\Arrayable;
 
-class Result implements \ArrayAccess, Arrayable {
+class Result implements \ArrayAccess, Arrayable
+{
 
     /**
      * Contains an Elasticsearch hit response
@@ -85,8 +86,7 @@ class Result implements \ArrayAccess, Arrayable {
     public function getFields($fields = [])
     {
         $results = [];
-        foreach ($fields as $field)
-        {
+        foreach ($fields as $field) {
             $results[$field] = $this->hit['fields'][$field];
         }
 
@@ -110,23 +110,18 @@ class Result implements \ArrayAccess, Arrayable {
      */
     public function getHighlights($fields = [])
     {
-        if (!empty($fields))
-        {
+        if (!empty($fields)) {
             $results = [];
-            foreach ($fields as $field)
-            {
-                foreach ($this->hit['highlight'] as $key => $value)
-                {
-                    if (preg_match("/^${field}.*/", $key) === 1)
-                    {
+            foreach ($fields as $field) {
+                foreach ($this->hit['highlight'] as $key => $value) {
+                    if (preg_match("/^${field}.*/", $key) === 1) {
                         $results[$field] = $value;
                     }
                 }
             }
 
             return $results;
-        } else
-        {
+        } else {
             return $this->hit['highlight'];
         }
     }
@@ -146,16 +141,16 @@ class Result implements \ArrayAccess, Arrayable {
     }
 
     /**
-     * Whether or not an offset exists
+     * Check if the $offset parameter contains a dot and return the appropriate path
+     * in the array
      *
-     * @param mixed $offset
-     * @access      public
-     * @return boolean
-     * @abstracting ArrayAccess
+     * @access private
+     * @param $offset
+     * @return string
      */
-    public function offsetExists($offset)
+    private function getPath($offset)
     {
-        return (array_get($this->hit, $this->getPath($offset)) !== null);
+        return (strpos($offset, '.') !== false) ? $path = $offset : "_source.${offset}";
     }
 
     /**
@@ -169,6 +164,19 @@ class Result implements \ArrayAccess, Arrayable {
     public function offsetGet($offset)
     {
         return $this->offsetExists($offset) ? array_get($this->hit, $this->getPath($offset)) : null;
+    }
+
+    /**
+     * Whether or not an offset exists
+     *
+     * @param mixed $offset
+     * @access      public
+     * @return boolean
+     * @abstracting ArrayAccess
+     */
+    public function offsetExists($offset)
+    {
+        return (array_get($this->hit, $this->getPath($offset)) !== null);
     }
 
     /**
@@ -194,19 +202,6 @@ class Result implements \ArrayAccess, Arrayable {
     public function offsetUnset($offset)
     {
         // Not allowed for Elasticsearch responses, update the Eloquent model instead.
-    }
-
-    /**
-     * Check if the $offset parameter contains a dot and return the appropriate path
-     * in the array
-     *
-     * @access private
-     * @param $offset
-     * @return string
-     */
-    private function getPath($offset)
-    {
-        return (strpos($offset, '.') !== false) ? $path = $offset : "_source.${offset}";
     }
 
     /**
