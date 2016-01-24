@@ -1,9 +1,6 @@
 <?php namespace Menthol\Flexible;
 
-use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
-use Elasticsearch\Transport;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Menthol\Flexible\Response\Result;
 use Monolog\Handler\NullHandler;

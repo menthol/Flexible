@@ -1,7 +1,6 @@
 <?php namespace Menthol\Flexible\Traits;
 
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Config;
 use Mockery as m;
 
 class TransformableTraitTest extends \PHPUnit_Framework_TestCase {

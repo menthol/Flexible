@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Facade;
-use Illuminate\Support\Facades\Config;
 use Mockery as m;
 use AspectMock\Test as am;
 
