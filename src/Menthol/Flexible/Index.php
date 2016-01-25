@@ -77,6 +77,8 @@ class Index
     public function import(Model $model, $relations = [], $batchSize = 750, Callable $callback = null)
     {
         $batch = 0;
+        $asQueryLoggind = $model->getConnection()->logging();
+        $model->getConnection()->disableQueryLog();
 
         while (true) {
             // Increase the batch number
@@ -84,6 +86,7 @@ class Index
 
             // Load records from the database
             $records = $model
+                ->newInstance()
                 ->with($relations)
                 ->skip($batchSize * ($batch - 1))
                 ->take($batchSize)
@@ -112,6 +115,10 @@ class Index
 
             // Bulk import the data to Elasticsearch
             $this->bulk($data);
+        }
+
+        if ($asQueryLoggind) {
+            $model->getConnection()->enableQueryLog();
         }
     }
 

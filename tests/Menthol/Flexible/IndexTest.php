@@ -36,6 +36,9 @@ class IndexTest extends \PHPUnit_Framework_TestCase
         /* @var \Mockery\Mock $model */
         $model = m::mock('Illuminate\Database\Eloquent\Model')->makePartial();
 
+        $model->shouldReceive('newInstance')
+            ->andReturn($model);
+
         $model->shouldReceive('with->skip->take->get')
             ->twice()
             ->andReturn([
