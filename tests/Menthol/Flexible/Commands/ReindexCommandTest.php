@@ -109,6 +109,7 @@ class ReindexCommandTest extends \PHPUnit_Framework_TestCase
         /* @var \Mockery\Mock $command */
         $command = m::mock('Menthol\Flexible\Commands\ReindexCommand')->makePartial();
         $command->shouldAllowMockingProtectedMethods();
+        $connection = m::mock('Illuminate\Database\Connection');
 
         $model = m::mock('Husband');
 
@@ -133,6 +134,9 @@ class ReindexCommandTest extends \PHPUnit_Framework_TestCase
             ->with('dir')
             ->once()
             ->andReturn([__DIR__ . '/../../../Support/Stubs']);
+
+        $model->shouldReceive('getConnection')->andReturn($connection);
+        $connection->shouldReceive('disableQueryLog')->andReturn('true');
 
         $command->shouldReceive('option')
             ->with('mapping')
