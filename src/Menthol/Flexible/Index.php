@@ -110,7 +110,7 @@ class Index
                     ]
                 ];
 
-                $data[] = $record->transform(!empty($relations), false);
+                $data[] = $record->transform(!empty($relations));
             }
 
             // Bulk import the data to Elasticsearch
