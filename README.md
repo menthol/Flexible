@@ -2,6 +2,10 @@
 
 Flexible is a Laravel 4 and 5 package that aims to seamlessly integrate Elasticsearch functionality with the Eloquent ORM.
 
+# WIP
+The API can be changed (and will) without warning until the first beta tag.
+
+
 Features
 --------
 
