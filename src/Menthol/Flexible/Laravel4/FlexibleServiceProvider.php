@@ -3,6 +3,7 @@
 use Illuminate\Support\ServiceProvider;
 use Menthol\Flexible\Commands\PathsCommand;
 use Menthol\Flexible\Commands\ReindexCommand;
+use Menthol\Flexible\Config;
 
 class FlexibleServiceProvider extends ServiceProvider
 {
@@ -55,7 +56,7 @@ class FlexibleServiceProvider extends ServiceProvider
     {
         $app = $this->app;
         $this->app->singleton('flexible.config', function () use ($app) {
-            return new Config($app);
+            return new Config($app, 'flexible::flexible.');
         });
     }
 
