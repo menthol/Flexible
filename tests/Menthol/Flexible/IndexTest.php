@@ -2236,7 +2236,7 @@ class IndexTest extends \PHPUnit_Framework_TestCase
             ->with('Elasticsearch')
             ->andReturn($client);
         App::shouldReceive('make')
-            ->with('flexible.config')
+            ->with('Menthol\Flexible\Config')
             ->andReturn($config);
 
         $config->shouldReceive('get')

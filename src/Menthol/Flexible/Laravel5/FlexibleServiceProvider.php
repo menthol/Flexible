@@ -54,7 +54,7 @@ class FlexibleServiceProvider extends ServiceProvider
 
     protected function registerBindings()
     {
-        $this->app->singleton('flexible.config', function ($app) {
+        $this->app->singleton('Menthol\Flexible\Config', function ($app) {
             return new Config($app, 'flexible.');
         });
     }

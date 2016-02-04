@@ -13,7 +13,7 @@ trait TransformableTrait
      */
     public function transform($relations = false)
     {
-        $relations = $relations ? App::make('flexible.config')->get('paths.' . get_class($this)) : [];
+        $relations = $relations ? App::make('Menthol\Flexible\Config')->get('paths.' . get_class($this)) : [];
 
         $doc = $this->load($relations)->toArray();
 

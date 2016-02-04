@@ -30,7 +30,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase
          */
 
         $app->shouldReceive('make')
-            ->with('flexible.config')
+            ->with('Menthol\Flexible\Config')
             ->once()
             ->andReturn($config);
 
@@ -99,7 +99,7 @@ class FlexibleServiceProviderTest extends \PHPUnit_Framework_TestCase
         $config = m::mock('Menthol\Flexible\Config');
 
         App::shouldReceive('make')
-            ->with('flexible.config')
+            ->with('Menthol\Flexible\Config')
             ->once()
             ->andReturn($config);
 

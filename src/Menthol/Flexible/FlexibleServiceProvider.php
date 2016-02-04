@@ -102,7 +102,7 @@ class FlexibleServiceProvider extends ServiceProvider
     protected function bindElasticsearch()
     {
         $this->app->singleton('Elasticsearch', function ($app) {
-            $config = $app->make('flexible.config')->get('elasticsearch.params', []);
+            $config = $app->make('Menthol\Flexible\Config')->get('elasticsearch.params', []);
             return ClientBuilder::fromConfig($config);
         });
     }

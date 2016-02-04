@@ -125,7 +125,7 @@ class Proxy
         $name = $this->config['index']->getName();
 
         $newName = $name . '_' . date("YmdHis");
-        $relations = $relations ? App::make('flexible.config')->get('paths.' . get_class($model)) : [];
+        $relations = $relations ? App::make('Menthol\Flexible\Config')->get('paths.' . get_class($model)) : [];
 
         Index::clean($name);
 

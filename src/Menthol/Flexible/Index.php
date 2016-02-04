@@ -59,7 +59,7 @@ class Index
     public function __construct(Proxy $proxy, $name = '')
     {
         self::$client = App::make('Elasticsearch');
-        self::$config = App::make('flexible.config');
+        self::$config = App::make('Menthol\Flexible\Config');
 
         $this->setProxy($proxy);
         $this->setName($name ?: $proxy->getModel()->getTable());

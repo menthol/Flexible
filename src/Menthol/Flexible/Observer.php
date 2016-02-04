@@ -45,7 +45,7 @@ class Observer
         // Temporary array to store affected models
         $affectedModels = [];
 
-        $paths = App::make('flexible.config')->get('reversedPaths.' . get_class($model), []);
+        $paths = App::make('Menthol\Flexible\Config')->get('reversedPaths.' . get_class($model), []);
 
         foreach ((array)$paths as $path) {
             if (!empty($path)) {

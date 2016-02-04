@@ -28,7 +28,7 @@ class TransformableTraitTest extends \PHPUnit_Framework_TestCase
         $config = m::mock('Menthol\Flexible\Config');
 
         App::shouldReceive('make')
-            ->with('flexible.config')
+            ->with('Menthol\Flexible\Config')
             ->andReturn($config);
 
         $config->shouldReceive('get')->with('/paths\..*/')->once();
