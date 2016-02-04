@@ -14,6 +14,6 @@ class Config
 
     public function get($key, $default = null)
     {
-        return $this->app['config']->get('flexible.' . $key, $default);
+        return $this->app['config']->get($this->configPath . $key, $default);
     }
 }
