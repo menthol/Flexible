@@ -45,7 +45,9 @@ class ReindexJob
 
             try {
                 $model = $class::findOrFail($id);
-                $model->refreshDoc($model);
+                if (method_exists($model, 'getProxy')) {
+                    $model->refreshDoc($model);
+                }
             } catch (Exception $e) {
                 $logger->error('Indexing ' . $class . ' with ID: ' . $id . ' failed: ' . $e->getMessage());
 

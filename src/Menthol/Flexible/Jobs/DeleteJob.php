@@ -47,8 +47,10 @@ class DeleteJob
             $logger->info('Deleting ' . $class . ' with ID: ' . $id . ' from Elasticsearch');
 
             $model = new $class;
+            if (method_exists($model, 'getProxy')) {
+                $model->deleteDoc($id);
+            }
 
-            $model->deleteDoc($id);
         }
 
         $job->delete();
