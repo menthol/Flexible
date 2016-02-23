@@ -1,9 +1,8 @@
 <?php namespace Menthol\Flexible\Jobs;
 
 use Exception;
-use Illuminate\Foundation\Application;
 use Illuminate\Queue\Jobs\Job;
-use Menthol\Flexible\Config;
+use Menthol\Flexible\Utilities\QueryHelper;
 
 /**
  * Class ReindexJob
@@ -12,47 +11,19 @@ use Menthol\Flexible\Config;
  */
 class ReindexJob
 {
-
-    /**
-     * @var Application
-     */
-    private $app;
-
-    /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * @param Application $app
-     * @param Repository $config
-     */
-    public function __construct(Application $app, Config $config)
+    public function fire(Job $job, $modelDefinitions)
     {
-        $this->app = $app;
-        $this->config = $config;
-    }
+        foreach ($modelDefinitions as $modelName => $keys) {
 
-    public function fire(Job $job, $models)
-    {
-        $loggerContainerBinding = $this->config->get('logger', 'menthol.flexible.logger');
-        $logger = $this->app->make($loggerContainerBinding);
+            $model = new $modelName;
 
-        foreach ($models as $model) {
-            list($class, $id) = explode(':', $model);
+            $models = QueryHelper::findMany($model, $keys);
 
-            $logger->info('Indexing ' . $class . ' with ID: ' . $id);
-
-            try {
-                $model = $class::findOrFail($id);
-                if (method_exists($model, 'getProxy')) {
-                    $model->refreshDoc($model);
-                }
-            } catch (Exception $e) {
-                $logger->error('Indexing ' . $class . ' with ID: ' . $id . ' failed: ' . $e->getMessage());
-
-                $job->release(60);
+            foreach ($models as $model) {
+                $model->flexibleRefreshDoc();
             }
+
+            // refrechDoc
         }
 
         $job->delete();

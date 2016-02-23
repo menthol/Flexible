@@ -24,14 +24,16 @@
     "illuminate/config": "~4.2|~5.0",
     "elasticsearch/elasticsearch": "~2.0",
     "nikic/php-parser": "~0.9",
-    "monolog/monolog": "~1.6"
+    "monolog/monolog": "~1.6",
+    "symfony/class-loader": "~2.3"
   },
   "autoload": {
     "psr-0": {
       "Menthol\\Flexible": "src/"
-    },
+    }
+  },
+  "autoload-dev": {
     "classmap": [
-      "tests/Support/Stubs",
       "tests/Support"
     ]
   },
