@@ -1,6 +1,5 @@
 <?php namespace Menthol\Flexible\Jobs;
 
-use Exception;
 use Illuminate\Queue\Jobs\Job;
 use Menthol\Flexible\Utilities\QueryHelper;
 
@@ -15,15 +14,18 @@ class ReindexJob
     {
         foreach ($modelDefinitions as $modelName => $keys) {
 
-            $model = new $modelName;
+            $models = QueryHelper::findMany($modelName, $keys);
 
-            $models = QueryHelper::findMany($model, $keys);
-
-            foreach ($models as $model) {
-                $model->flexibleRefreshDoc();
+            foreach ($keys as $key) {
+                $model = $models->find($key);
+                if ($model) {
+                    // Index
+                    $i = 1;
+                } else {
+                    // Remove from index
+                    $i = 2;
+                }
             }
-
-            // refrechDoc
         }
 
         $job->delete();
