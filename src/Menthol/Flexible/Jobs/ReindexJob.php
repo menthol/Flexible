@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Facades\App;
 use Menthol\Flexible\Utilities\QueryHelper;
+use Menthol\Flexible\Utilities\TransformModel;
 
 /**
  * Class ReindexJob
@@ -26,7 +27,7 @@ class ReindexJob
                         'index' => $index_prefix.$model->getTable(),
                         'id' => $key,
                         'type' => str_singular($model->getTable()),
-                        'body' => [],
+                        'body' => TransformModel::transform($model),
                     ]);
                 } else {
                     $model = new $modelName;

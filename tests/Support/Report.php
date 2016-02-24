@@ -22,6 +22,16 @@ class Report extends Model
         'articles',
     ];
 
+    public function getMd5Attribute()
+    {
+        return md5($this->getKey());
+    }
+
+    public function getSha1Attribute()
+    {
+        return sha1($this->getKey());
+    }
+
     public function articles()
     {
         return $this->morphedByMany(Article::class, 'reportable');

@@ -22,6 +22,11 @@ class Author extends Model
 {
     use IndexableTrait;
 
+    public function getMd5Attribute()
+    {
+        return md5($this->getKey());
+    }
+
     public function articles()
     {
         return $this->hasMany(Article::class);

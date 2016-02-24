@@ -36,6 +36,28 @@ class Article extends Model
         'tags',
     ];
 
+    static public $flexibleAppends = [
+        'md5',
+        'author' => [
+            'md5'
+        ],
+        'author.user.reports' => [
+            'sha1',
+            Comment::class => 'md5',
+        ],
+    ];
+
+    static public $flexibleHidden = [
+        'author.user' => [
+            'password',
+        ],
+    ];
+
+    public function getMd5Attribute()
+    {
+        return md5($this->getKey());
+    }
+
     public function author()
     {
         return $this->belongsTo(Author::class);

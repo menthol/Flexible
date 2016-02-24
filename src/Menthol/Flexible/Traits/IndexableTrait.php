@@ -14,6 +14,72 @@ trait IndexableTrait
         }
     }
 
+    static public function getFlexibleAppendKeys($modelName, $relation = null)
+    {
+        if ( ! property_exists(static::class, 'flexibleAppends')) {
+            return [];
+        }
+
+        $appends = static::$flexibleAppends;
+
+        if ( ! empty($relation)) {
+            if (! array_key_exists($relation, $appends)) {
+                return [];
+            }
+
+            $appends = $appends[$relation];
+        }
+
+        $keys = [];
+
+        foreach ($appends as $append) {
+            if ( ! is_array($append)) {
+                $keys[] = $append;
+            }
+        }
+
+        if (array_key_exists($modelName, $appends)) {
+            foreach ($appends[$modelName] as $key) {
+                $keys[] = $key;
+            }
+        }
+
+        return $keys;
+    }
+
+    static public function getFlexibleHiddenKeys($modelName, $relation = null)
+    {
+        if ( ! property_exists(static::class, 'flexibleHidden')) {
+            return [];
+        }
+
+        $appends = static::$flexibleHidden;
+
+        if ( ! empty($relation)) {
+            if (! array_key_exists($relation, $appends)) {
+                return [];
+            }
+
+            $appends = $appends[$relation];
+        }
+
+        $keys = [];
+
+        foreach ($appends as $append) {
+            if ( ! is_array($append)) {
+                $keys[] = $append;
+            }
+        }
+
+        if (array_key_exists($modelName, $appends)) {
+            foreach ($appends[$modelName] as $key) {
+                $keys[] = $key;
+            }
+        }
+
+        return $keys;
+    }
+
     public function flexibleIsIndexable()
     {
         if (method_exists($this, 'trashed')) {
