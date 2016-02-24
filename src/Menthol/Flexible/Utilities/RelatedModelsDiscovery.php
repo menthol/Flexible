@@ -6,10 +6,8 @@ use Menthol\Flexible\Traits\IndexableTrait;
 
 class RelatedModelsDiscovery
 {
-    static public function getRelatedModels(Model $model)
+    static public function getRelatedModels(Model $model, $models = [])
     {
-        $models = [];
-
         $freshModel = QueryHelper::getFreshModel($model);
         $relations = QueryHelper::getRelationships(get_class($freshModel));
 

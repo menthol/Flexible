@@ -9,32 +9,40 @@ class Observer
 {
     public function created(Model $model)
     {
-        // Update all related model documents to reflect that $model has been removed
         Queue::push(ReindexJob::class, RelatedModelsDiscovery::getRelatedModels($model));
     }
 
     public function updating(Model $model)
     {
-        // Update all related model documents to reflect that $model has been removed
-        Queue::push(ReindexJob::class, RelatedModelsDiscovery::getRelatedModels($model));
+        $model->flexibleRelatedModels = RelatedModelsDiscovery::getRelatedModels($model);
     }
 
     public function updated(Model $model)
     {
-        // Update all related model documents to reflect that $model has been removed
-        Queue::push(ReindexJob::class, RelatedModelsDiscovery::getRelatedModels($model));
+        Queue::push(ReindexJob::class, RelatedModelsDiscovery::getRelatedModels($model, $model->flexibleRelatedModels));
+        $model->flexibleRelatedModels = [];
     }
 
     public function deleting(Model $model)
     {
-        // Update all related model documents to reflect that $model has been removed
-        Queue::push(ReindexJob::class, RelatedModelsDiscovery::getRelatedModels($model));
+        $model->flexibleRelatedModels = RelatedModelsDiscovery::getRelatedModels($model);
+    }
+
+    public function deleted(Model $model)
+    {
+        Queue::push(ReindexJob::class, RelatedModelsDiscovery::getRelatedModels($model, $model->flexibleRelatedModels));
+        $model->flexibleRelatedModels = [];
+    }
+
+    public function restoring()
+    {
+        $model->flexibleRelatedModels = RelatedModelsDiscovery::getRelatedModels($model);
     }
 
     public function restored(Model $model)
     {
-        // Update all related model documents to reflect that $model has been removed
-        Queue::push(ReindexJob::class, RelatedModelsDiscovery::getRelatedModels($model));
+        Queue::push(ReindexJob::class, RelatedModelsDiscovery::getRelatedModels($model, $model->flexibleRelatedModels));
+        $model->flexibleRelatedModels = [];
     }
 
 }
