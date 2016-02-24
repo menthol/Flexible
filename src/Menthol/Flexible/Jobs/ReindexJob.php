@@ -25,7 +25,7 @@ class ReindexJob
                 $model = $models->find($key);
                 if ($model && $model->flexibleIsIndexable()) {
                     $client->index([
-                        'index' => $index_prefix.str_singular($model->getTable()),
+                        'index' => $index_prefix.$model->getTable(),
                         'id' => $model->getKey(),
                         'type' => str_singular($model->getTable()),
                         'body' => [],
