@@ -5,8 +5,7 @@ use Symfony\Component\ClassLoader\ClassMapGenerator;
 
 class ModelDiscovery {
 
-    static public function discover($directory) {
-        $models = [];
+    static public function discover($directory, $models = []) {
 
         foreach (ClassMapGenerator::createMap($directory) as $model => $path) {
             $class_parents = @class_parents($model);
