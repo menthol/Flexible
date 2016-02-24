@@ -81,8 +81,11 @@ class QueryHelper
         return static::findMany($model, [$id])->first();
     }
 
-    static public function findMany(Model $model, $ids)
+    static public function findMany($model, $ids)
     {
+        if (is_string($model) && class_exists($model) && is_subclass_of($model, Model::class)) {
+            $model = new $model;
+        }
         $query = static::newQueryWithoutScopes($model);
         return $query->whereIn($model->getKeyName(), $ids)->get();
     }
