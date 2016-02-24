@@ -14,11 +14,6 @@ trait IndexableTrait
         }
     }
 
-    static public function getFlexibleModelToArray(Model $model)
-    {
-        return $model->toArray();
-    }
-
     public function flexibleRefreshDoc()
     {
 
