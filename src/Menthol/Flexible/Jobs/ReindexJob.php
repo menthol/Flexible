@@ -18,7 +18,7 @@ class ReindexJob
 
             foreach ($keys as $key) {
                 $model = $models->find($key);
-                if ($model) {
+                if ($model && $model->flexibleIsIndexable()) {
                     // Index
                     $i = 1;
                 } else {

@@ -14,9 +14,12 @@ trait IndexableTrait
         }
     }
 
-    public function flexibleRefreshDoc()
+    public function flexibleIsIndexable()
     {
-
+        if (method_exists($this, 'trashed')) {
+            return !$this->trashed();
+        }
+        return true;
     }
 
 }
