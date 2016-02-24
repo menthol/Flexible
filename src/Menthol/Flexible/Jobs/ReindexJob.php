@@ -14,12 +14,10 @@ class ReindexJob
 {
     public function fire(Job $job, $modelDefinitions)
     {
+        $client = App::make('Elasticsearch');
+        $index_prefix = App::make('Menthol\Flexible\Config')->get('elasticsearch.index_prefix', '');
         foreach ($modelDefinitions as $modelName => $keys) {
-
             $models = QueryHelper::findMany($modelName, $keys);
-            $client = App::make('Elasticsearch');
-            $index_prefix = App::make('Menthol\Flexible\Config')->get('elasticsearch.index_prefix', '');
-
             foreach ($keys as $key) {
                 /** @var Model|null $model */
                 $model = $models->find($key);
