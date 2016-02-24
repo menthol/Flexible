@@ -1,8 +1,6 @@
 <?php namespace Menthol\Flexible\Laravel5;
 
 use Illuminate\Support\ServiceProvider;
-use Menthol\Flexible\Commands\PathsCommand;
-use Menthol\Flexible\Commands\ReindexCommand;
 use Menthol\Flexible\Config;
 
 class FlexibleServiceProvider extends ServiceProvider

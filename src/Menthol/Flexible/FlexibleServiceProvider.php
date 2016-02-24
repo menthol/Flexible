@@ -2,6 +2,7 @@
 
 use Elasticsearch\ClientBuilder;
 use Illuminate\Support\ServiceProvider;
+use Menthol\Flexible\Commands\ReindexCommand;
 use Menthol\Flexible\Response\Result;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
@@ -56,7 +57,22 @@ class FlexibleServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerCommands();
         $this->provider->register();
+    }
+
+    /**
+     * Register the commands.
+     *
+     * @return void
+     */
+    protected function registerCommands()
+    {
+        $this->app['menthol.flexible.commands.reindex'] = $this->app->share(function ($app) {
+            return new ReindexCommand();
+        });
+
+        $this->commands('menthol.flexible.commands.reindex');
     }
 
     /**
