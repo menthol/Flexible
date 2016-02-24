@@ -26,13 +26,17 @@ class ReindexJob
                 if ($model && $model->flexibleIsIndexable()) {
                     $client->index([
                         'index' => $index_prefix.$model->getTable(),
-                        'id' => $model->getKey(),
+                        'id' => $key,
                         'type' => str_singular($model->getTable()),
                         'body' => [],
                     ]);
                 } else {
-                    // Remove from index
-                    $i = 2;
+                    $model = new $modelName;
+                    $client->delete([
+                        'index' => $index_prefix.$model->getTable(),
+                        'id' => $key,
+                        'type' => str_singular($model->getTable()),
+                    ]);
                 }
             }
         }
