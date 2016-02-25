@@ -4,8 +4,6 @@ use Elasticsearch\ClientBuilder;
 use Illuminate\Support\ServiceProvider;
 use Menthol\Flexible\Commands\ReindexCommand;
 use Menthol\Flexible\Response\Result;
-use Monolog\Handler\NullHandler;
-use Monolog\Logger;
 use RuntimeException;
 
 class FlexibleServiceProvider extends ServiceProvider
