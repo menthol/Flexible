@@ -98,4 +98,25 @@ trait IndexableTrait
         return true;
     }
 
+    public function getFlexibleIndexName()
+    {
+        $index_prefix = App::make('Menthol\Flexible\Config')->get('elasticsearch.index_prefix', '');
+        $modelName = get_class($this);
+        if (property_exists($modelName, 'flexibleIndexName')) {
+            return $index_prefix . ($modelName::$flexibleIndexName);
+        }
+
+        return $index_prefix . $this->getTable();
+    }
+
+    public function getFlexibleType()
+    {
+        $modelName = get_class($this);
+        if (property_exists($modelName, 'flexibleType')) {
+            return ($modelName::$flexibleType);
+        }
+
+        return str_singular($this->getTable());
+    }
+
 }
