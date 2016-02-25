@@ -16,7 +16,7 @@ trait IndexableTrait
 
     static public function getFlexibleAppendKeys($modelName, $relation = null)
     {
-        if ( ! property_exists(static::class, 'flexibleAppends')) {
+        if ( ! property_exists(get_called_class(), 'flexibleAppends')) {
             return [];
         }
 
@@ -49,7 +49,7 @@ trait IndexableTrait
 
     static public function getFlexibleHiddenKeys($modelName, $relation = null)
     {
-        if ( ! property_exists(static::class, 'flexibleHidden')) {
+        if ( ! property_exists(get_called_class(), 'flexibleHidden')) {
             return [];
         }
 

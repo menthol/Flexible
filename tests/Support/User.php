@@ -26,26 +26,26 @@ class User extends Model
 
     public function author()
     {
-        return $this->hasOne(Author::class);
+        return $this->hasOne('Menthol\Flexible\Tests\Author');
     }
 
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany('Menthol\Flexible\Tests\Comment');
     }
 
     public function likes()
     {
-        return $this->hasMany(Like::class);
+        return $this->hasMany('Menthol\Flexible\Tests\Like');
     }
 
     public function reports()
     {
-        return $this->hasMany(Report::class);
+        return $this->hasMany('Menthol\Flexible\Tests\Report');
     }
 
     public function reviews()
     {
-        return $this->hasMany(Review::class);
+        return $this->hasMany('Menthol\Flexible\Tests\Review');
     }
 }

@@ -2,7 +2,6 @@
 
 
 use Illuminate\Database\Eloquent\Model;
-use Menthol\Flexible\Traits\IndexableTrait;
 
 class RelatedModelsDiscovery
 {
@@ -14,7 +13,7 @@ class RelatedModelsDiscovery
         /** @var Model $relatedModel */
         foreach (QueryHelper::flattenModel($freshModel, $relations) as $relatedModel) {
             $relatedModelName = get_class($relatedModel);
-            if (in_array(IndexableTrait::class, class_uses_recursive($relatedModelName), true)) {
+            if (in_array('Menthol\Flexible\Traits\IndexableTrait', class_uses_recursive($relatedModelName), true)) {
                 $models[$relatedModelName][] = $relatedModel->getKey();
             }
         }

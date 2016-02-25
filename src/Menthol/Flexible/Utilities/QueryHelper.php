@@ -83,7 +83,7 @@ class QueryHelper
 
     static public function findMany($model, $ids)
     {
-        if (is_string($model) && class_exists($model) && is_subclass_of($model, Model::class)) {
+        if (is_string($model) && class_exists($model) && is_subclass_of($model, 'Illuminate\Database\Eloquent\Model')) {
             $model = new $model;
         }
         $query = static::newQueryWithoutScopes($model);

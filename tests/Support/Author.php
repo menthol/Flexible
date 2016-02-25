@@ -29,27 +29,27 @@ class Author extends Model
 
     public function articles()
     {
-        return $this->hasMany(Article::class);
+        return $this->hasMany('Menthol\Flexible\Tests\Article');
     }
 
     public function comments()
     {
-        return $this->hasManyThrough(Comment::class, Article::class);
+        return $this->hasManyThrough('Menthol\Flexible\Tests\Comment', 'Menthol\Flexible\Tests\Article');
     }
 
     public function likes()
     {
-        return $this->morphMany(Like::class, 'likeable');
+        return $this->morphMany('Menthol\Flexible\Tests\Like', 'likeable');
     }
 
     public function reports()
     {
-        return $this->morphToMany(Report::class, 'reportable');
+        return $this->morphToMany('Menthol\Flexible\Tests\Report', 'reportable');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo('Menthol\Flexible\Tests\User');
     }
 
 }

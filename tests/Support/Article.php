@@ -4,7 +4,6 @@ namespace Menthol\Flexible\Tests;
 
 use Illuminate\Database\Eloquent\Model;
 use Menthol\Flexible\Traits\IndexableTrait;
-use Menthol\Flexible\Traits\ObservableTrait;
 
 /**
  * Menthol\Flexible\Tests\Article
@@ -43,7 +42,7 @@ class Article extends Model
         ],
         'author.user.reports' => [
             'sha1',
-            Comment::class => 'md5',
+            'Menthol\Flexible\Tests\Comment' => 'md5',
         ],
     ];
 
@@ -60,36 +59,36 @@ class Article extends Model
 
     public function author()
     {
-        return $this->belongsTo(Author::class);
+        return $this->belongsTo('Menthol\Flexible\Tests\Author');
     }
 
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany('Menthol\Flexible\Tests\Comment');
     }
 
     public function likes()
     {
-        return $this->morphMany(Like::class, 'likeable');
+        return $this->morphMany('Menthol\Flexible\Tests\Like', 'likeable');
     }
 
     public function node()
     {
-        return $this->belongsTo(Node::class);
+        return $this->belongsTo('Menthol\Flexible\Tests\Node');
     }
 
     public function reports()
     {
-        return $this->morphToMany(Report::class, 'reportable');
+        return $this->morphToMany('Menthol\Flexible\Tests\Report', 'reportable');
     }
 
     public function review()
     {
-        return $this->morphOne(Review::class, 'reviewable');
+        return $this->morphOne('Menthol\Flexible\Tests\Review', 'reviewable');
     }
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany('Menthol\Flexible\Tests\Tag');
     }
 }

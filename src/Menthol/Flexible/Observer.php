@@ -3,13 +3,12 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Queue;
 use Menthol\Flexible\Utilities\RelatedModelsDiscovery;
-use Menthol\Flexible\Jobs\ReindexJob;
 
 class Observer
 {
     public function created(Model $model)
     {
-        Queue::push(ReindexJob::class, RelatedModelsDiscovery::getRelatedModels($model));
+        Queue::push('Menthol\Flexible\Jobs\ReindexJob', RelatedModelsDiscovery::getRelatedModels($model));
     }
 
     public function updating(Model $model)
@@ -19,7 +18,7 @@ class Observer
 
     public function updated(Model $model)
     {
-        Queue::push(ReindexJob::class, RelatedModelsDiscovery::getRelatedModels($model, $model->flexibleRelatedModels));
+        Queue::push('Menthol\Flexible\Jobs\ReindexJob', RelatedModelsDiscovery::getRelatedModels($model, $model->flexibleRelatedModels));
         $model->flexibleRelatedModels = [];
     }
 
@@ -30,7 +29,7 @@ class Observer
 
     public function deleted(Model $model)
     {
-        Queue::push(ReindexJob::class, RelatedModelsDiscovery::getRelatedModels($model, $model->flexibleRelatedModels));
+        Queue::push('Menthol\Flexible\Jobs\ReindexJob', RelatedModelsDiscovery::getRelatedModels($model, $model->flexibleRelatedModels));
         $model->flexibleRelatedModels = [];
     }
 
@@ -41,7 +40,7 @@ class Observer
 
     public function restored(Model $model)
     {
-        Queue::push(ReindexJob::class, RelatedModelsDiscovery::getRelatedModels($model, $model->flexibleRelatedModels));
+        Queue::push('Menthol\Flexible\Jobs\ReindexJob', RelatedModelsDiscovery::getRelatedModels($model, $model->flexibleRelatedModels));
         $model->flexibleRelatedModels = [];
     }
 

@@ -19,7 +19,7 @@ trait ObservableTrait
 
     static public function getFlexibleRelationships()
     {
-        $modelName = static::class;
+        $modelName = get_called_class();
         if (property_exists($modelName, 'flexibleRelationships')) {
             return $modelName::$flexibleRelationships;
         }

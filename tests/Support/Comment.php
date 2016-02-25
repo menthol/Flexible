@@ -25,27 +25,27 @@ class Comment extends Model
 
     public function article()
     {
-        return $this->belongsTo(Article::class);
+        return $this->belongsTo('Menthol\Flexible\Tests\Article');
     }
 
     public function likes()
     {
-        return $this->morphMany(Like::class, 'likeable');
+        return $this->morphMany('Menthol\Flexible\Tests\Like', 'likeable');
     }
 
     public function reports()
     {
-        return $this->morphToMany(Report::class, 'reportable');
+        return $this->morphToMany('Menthol\Flexible\Tests\Report', 'reportable');
     }
 
     public function review()
     {
-        return $this->morphOne(Review::class, 'reviewable');
+        return $this->morphOne('Menthol\Flexible\Tests\Review', 'reviewable');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo('Menthol\Flexible\Tests\User');
     }
 
 }

@@ -23,16 +23,16 @@ class Node extends Model
 
     public function articles()
     {
-        return $this->hasMany(Article::class);
+        return $this->hasMany('Menthol\Flexible\Tests\Article');
     }
 
     public function parent()
     {
-        return $this->belongsTo(Node::class);
+        return $this->belongsTo('Menthol\Flexible\Tests\Node');
     }
 
     public function children()
     {
-        return $this->hasMany(Node::class, 'parent_id');
+        return $this->hasMany('Menthol\Flexible\Tests\Node', 'parent_id');
     }
 }

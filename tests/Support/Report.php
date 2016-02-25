@@ -34,21 +34,21 @@ class Report extends Model
 
     public function articles()
     {
-        return $this->morphedByMany(Article::class, 'reportable');
+        return $this->morphedByMany('Menthol\Flexible\Tests\Article', 'reportable');
     }
 
     public function authors()
     {
-        return $this->morphedByMany(Author::class, 'reportable');
+        return $this->morphedByMany('Menthol\Flexible\Tests\Author', 'reportable');
     }
 
     public function comments()
     {
-        return $this->morphedByMany(Comment::class, 'reportable');
+        return $this->morphedByMany('Menthol\Flexible\Tests\Comment', 'reportable');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo('Menthol\Flexible\Tests\User');
     }
 }
