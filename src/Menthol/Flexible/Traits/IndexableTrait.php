@@ -2,6 +2,7 @@
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 
 trait IndexableTrait
 {
@@ -14,23 +15,22 @@ trait IndexableTrait
         }
     }
 
-    static public function getFlexibleIndexRelationships()
+    public function getFlexibleIndexRelationships()
     {
-        $modelName = get_called_class();
-        if (property_exists($modelName, 'flexibleIndexRelationships')) {
-            return $modelName::$flexibleIndexRelationships;
+        if (isset($this->flexibleIndexRelationships)) {
+            return $this->flexibleIndexRelationships;
         }
 
-        return static::getFlexibleRelationships();
+        return $this->getFlexibleRelationships();
     }
 
-    static public function getFlexibleAppendKeys($modelName, $relation = null)
+    public function getFlexibleAppendKeys($modelName, $relation = null)
     {
         if (!property_exists(get_called_class(), 'flexibleAppends')) {
             return [];
         }
 
-        $appends = static::$flexibleAppends;
+        $appends = $this->flexibleAppends;
 
         if (!empty($relation)) {
             if (!array_key_exists($relation, $appends)) {
@@ -57,13 +57,13 @@ trait IndexableTrait
         return $keys;
     }
 
-    static public function getFlexibleHiddenKeys($modelName, $relation = null)
+    public function getFlexibleHiddenKeys($modelName, $relation = null)
     {
         if (!property_exists(get_called_class(), 'flexibleHidden')) {
             return [];
         }
 
-        $appends = static::$flexibleHidden;
+        $appends = $this->flexibleHidden;
 
         if (!empty($relation)) {
             if (!array_key_exists($relation, $appends)) {
@@ -101,9 +101,8 @@ trait IndexableTrait
     public function getFlexibleIndexName()
     {
         $index_prefix = App::make('Menthol\Flexible\Config')->get('elasticsearch.index_prefix', '');
-        $modelName = get_class($this);
-        if (property_exists($modelName, 'flexibleIndexName')) {
-            return $index_prefix . ($modelName::$flexibleIndexName);
+        if (isset($this->flexibleIndexName)) {
+            return $index_prefix . $this->flexibleIndexName;
         }
 
         return $index_prefix . $this->getTable();
@@ -111,9 +110,8 @@ trait IndexableTrait
 
     public function getFlexibleType()
     {
-        $modelName = get_class($this);
-        if (property_exists($modelName, 'flexibleType')) {
-            return ($modelName::$flexibleType);
+        if (isset($this->flexibleType)) {
+            return $this->flexibleType;
         }
 
         return str_singular($this->getTable());

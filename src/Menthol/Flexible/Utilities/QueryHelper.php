@@ -19,7 +19,7 @@ class QueryHelper
 
         $builder = $model->newEloquentBuilder($baseQueryBuilder);
 
-        $builder->with(self::getRelationships(get_class($model), $index));
+        $builder->with(self::getRelationships($model, $index));
 
         return $builder->setModel($model);
     }
@@ -62,18 +62,18 @@ class QueryHelper
         return $models;
     }
 
-    static public function getRelationships($modelName, $index = false)
+    static public function getRelationships($model, $index = false)
     {
         if ($index) {
-            if (method_exists($modelName, 'getFlexibleIndexRelationships')) {
-                return $modelName::getFlexibleIndexRelationships();
+            if (method_exists($model, 'getFlexibleIndexRelationships')) {
+                return $model->getFlexibleIndexRelationships();
             }
 
             return [];
         }
 
-        if (method_exists($modelName, 'getFlexibleRelationships')) {
-            return $modelName::getFlexibleRelationships();
+        if (method_exists($model, 'getFlexibleRelationships')) {
+            return $model->getFlexibleRelationships();
         }
         return [];
     }

@@ -18,7 +18,7 @@ class Report extends Model
 {
     use ObservableTrait;
 
-    static public $flexibleRelationships = [
+    public $flexibleRelationships = [
         'articles',
     ];
 

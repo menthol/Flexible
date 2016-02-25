@@ -26,7 +26,7 @@ class Article extends Model
 {
     use IndexableTrait;
 
-    static public $flexibleRelationships = [
+    public $flexibleRelationships = [
         'author',
         'author.user.reports',
         'comments',
@@ -35,7 +35,7 @@ class Article extends Model
         'tags',
     ];
 
-    static public $flexibleAppends = [
+    public $flexibleAppends = [
         'md5',
         'author' => [
             'md5'
@@ -46,7 +46,7 @@ class Article extends Model
         ],
     ];
 
-    static public $flexibleHidden = [
+    public $flexibleHidden = [
         'author.user' => [
             'password',
         ],

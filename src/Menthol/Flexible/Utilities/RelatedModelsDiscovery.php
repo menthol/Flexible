@@ -8,7 +8,7 @@ class RelatedModelsDiscovery
     static public function getRelatedModels(Model $model, $models = [])
     {
         $freshModel = QueryHelper::getFreshModel($model);
-        $relations = QueryHelper::getRelationships(get_class($freshModel));
+        $relations = QueryHelper::getRelationships($freshModel);
 
         /** @var Model $relatedModel */
         foreach (QueryHelper::flattenModel($freshModel, $relations) as $relatedModel) {

@@ -17,11 +17,10 @@ trait ObservableTrait
         static::observe(new Observer);
     }
 
-    static public function getFlexibleRelationships()
+    public function getFlexibleRelationships()
     {
-        $modelName = get_called_class();
-        if (property_exists($modelName, 'flexibleRelationships')) {
-            return $modelName::$flexibleRelationships;
+        if (isset($this->flexibleRelationships)) {
+            return $this->flexibleRelationships;
         }
 
         return [];

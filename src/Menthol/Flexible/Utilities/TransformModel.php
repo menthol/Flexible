@@ -29,8 +29,7 @@ class TransformModel
             }
         }
 
-        $rootModelName = get_class($rootModel);
-        $appendKeys = $rootModelName::getFlexibleAppendKeys(get_class($model), $parentRelation);
+        $appendKeys = $rootModel->getFlexibleAppendKeys(get_class($model), $parentRelation);
         foreach ($appendKeys as $key) {
             $data[$key] = $model->getAttributeValue($key);
         }
@@ -39,7 +38,7 @@ class TransformModel
             $data[$field] = $value;
         }
 
-        $hiddenKeys = $rootModelName::getFlexibleHiddenKeys(get_class($model), $parentRelation);
+        $hiddenKeys = $rootModel->getFlexibleHiddenKeys(get_class($model), $parentRelation);
         foreach ($hiddenKeys as $key) {
             unset($data[$key]);
         }
