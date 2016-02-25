@@ -7,8 +7,10 @@ use Psr\Log\InvalidArgumentException;
 
 class QueryHelper
 {
-    static public function newQueryWithoutScopes(Model $model, $index = false)
+    static public function newQueryWithoutScopes($model, $index = false, $relationships = true)
     {
+        $model = self::getModel($model);
+
         $conn = $model->getConnection();
 
         $grammar = $conn->getQueryGrammar();
@@ -19,7 +21,9 @@ class QueryHelper
 
         $builder = $model->newEloquentBuilder($baseQueryBuilder);
 
-        $builder->with(self::getRelationships($model, $index));
+        if ($relationships) {
+            $builder->with(self::getRelationships($model, $index));
+        }
 
         return $builder->setModel($model);
     }
@@ -91,10 +95,20 @@ class QueryHelper
 
     static public function findMany($model, $ids, $index = false)
     {
-        if (is_string($model) && class_exists($model) && is_subclass_of($model, 'Illuminate\Database\Eloquent\Model')) {
-            $model = new $model;
-        }
         $query = static::newQueryWithoutScopes($model, $index);
-        return $query->whereIn($model->getKeyName(), $ids)->get();
+        return $query->whereIn(static::getModel($model)->getKeyName(), $ids)->get();
+    }
+
+    /**
+     * @param $model
+     * @return Model
+     */
+    protected static function getModel($model)
+    {
+        if (is_string($model) && class_exists($model) && is_subclass_of($model, 'Illuminate\Database\Eloquent\Model')) {
+            return new $model;
+        }
+
+        return $model;
     }
 }

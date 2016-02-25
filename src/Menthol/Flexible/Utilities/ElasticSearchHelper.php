@@ -22,9 +22,9 @@ class ElasticSearchHelper
     {
         static::getClient()->index([
             'index' => $model->getFlexibleIndexName(),
-            'type'  => $model->getFlexibleType(),
-            'id'    => $model->getKey(),
-            'body'  => TransformModel::transform($model),
+            'type' => $model->getFlexibleType(),
+            'id' => $model->getKey(),
+            'body' => TransformModel::transform($model),
         ]);
     }
 
@@ -34,8 +34,8 @@ class ElasticSearchHelper
         $model = new $modelName;
         static::getClient()->delete([
             'index' => $model->getFlexibleIndexName(),
-            'type'  => $model->getFlexibleType(),
-            'id'    => $key,
+            'type' => $model->getFlexibleType(),
+            'id' => $key,
         ]);
     }
 
@@ -52,7 +52,7 @@ class ElasticSearchHelper
             ]);
         }
 
-        $tmpAliasName = $model->getFlexibleIndexName().'_tmp';
+        $tmpAliasName = $model->getFlexibleIndexName() . '_tmp';
 
         if ($indices->existsAlias(['name' => $tmpAliasName])) {
             $indices->delete([
@@ -60,18 +60,51 @@ class ElasticSearchHelper
             ]);
         }
 
-        $uniqueIndexName = $model->getFlexibleIndexName().'_'.date('YmdHis');
-        $param = [
+        $uniqueIndexName = $model->getFlexibleIndexName() . '_' . date('YmdHis');
+        $params = [
             'index' => $uniqueIndexName,
-            'body' => [
-                'settings' => $model->getFlexibleIndexSettings(),
-            ],
+            'body' => $model->getFlexibleIndexSettings(),
         ];
 
-        $indices->create($param);
+        $indices->create($params);
         $indices->putAlias([
             'index' => $uniqueIndexName,
-            'name'  => $tmpAliasName,
+            'name' => $tmpAliasName,
         ]);
     }
+
+    public static function finalizeIndex($modelName)
+    {
+        /** @var Model|IndexableTrait $model */
+        $model = new $modelName;
+
+        $indices = static::getClient()->indices();
+
+        if ($indices->existsAlias(['name' => $model->getFlexibleIndexName()])) {
+            $indices->delete([
+                'index' => $model->getFlexibleIndexName(),
+            ]);
+        }
+
+        $indices->putAlias([
+            'index' => $model->getFlexibleIndexName() . '_tmp',
+            'name' => $model->getFlexibleIndexName(),
+        ]);
+
+        $indices->deleteAlias([
+            'index' => $model->getFlexibleIndexName(),
+            'name' => $model->getFlexibleIndexName() . '_tmp',
+        ]);
+
+
+    }
+
+    public static function bulk($params)
+    {
+        if (!empty($params['body'])) {
+            return static::getClient()->bulk($params);
+        }
+    }
+
+
 }

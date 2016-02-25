@@ -17,7 +17,7 @@ trait IndexableTrait
 
     public function getFlexibleIndexRelationships()
     {
-        if (isset($this->flexibleIndexRelationships)) {
+        if (property_exists($this, 'flexibleIndexRelationships')) {
             return $this->flexibleIndexRelationships;
         }
 
@@ -115,6 +115,11 @@ trait IndexableTrait
         }
 
         return str_singular($this->getTable());
+    }
+
+    public function getFlexibleIndexSettings()
+    {
+        return App::make('Menthol\Flexible\Config')->get('elasticsearch.defaults', []);
     }
 
 }

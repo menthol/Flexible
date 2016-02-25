@@ -24,6 +24,8 @@ class TransformModel
                     }
                     $data[$relation][] = static::transform($relatedModel, $rootModel, $relationName);
                 }
+            } elseif (is_null($collection)) {
+                $data[$relation] = null;
             } else {
                 throw new \LogicException;
             }
