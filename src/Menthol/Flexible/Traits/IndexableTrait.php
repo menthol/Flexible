@@ -17,7 +17,7 @@ trait IndexableTrait
     static public function getFlexibleIndexRelationships()
     {
         $modelName = get_called_class();
-        if (property_exists($modelName, 'FlexibleIndexRelationships')) {
+        if (property_exists($modelName, 'flexibleIndexRelationships')) {
             return $modelName::$flexibleIndexRelationships;
         }
 
