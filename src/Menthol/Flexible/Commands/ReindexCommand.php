@@ -1,8 +1,8 @@
 <?php namespace Menthol\Flexible\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\File;
+use Menthol\Flexible\Utilities\ModelDiscovery;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
 class ReindexCommand extends Command
@@ -29,20 +29,20 @@ class ReindexCommand extends Command
      */
     public function fire()
     {
-        $directoryModels = [];
-
-        if ($directories = $this->option('dir')) {
-            Utils::findSearchableModels($directories);
-
-            foreach ($directoryModels as $model) {
-                $instance = $this->getModelInstance($model);
-                $this->reindexModel($instance);
-            }
+        $models = [];
+        foreach ($this->argument('dir') as $dir) {
+            $models = ModelDiscovery::discover(base_path($dir), $models, 'Menthol\Flexible\Traits\IndexableTrait');
         }
 
-        if (empty($directoryModels)) {
-            $this->info('No models found.');
+        if (count($models) === 0) {
+            $this->info('No indexable models found.');
+            return;
         }
+
+        foreach ($models as $model) {
+            $this->reindexModel($model);
+        }
+
     }
 
     /**
@@ -52,9 +52,9 @@ class ReindexCommand extends Command
      */
     protected function getArguments()
     {
-        return array(
-            array('model', InputOption::VALUE_OPTIONAL, 'Eloquent model to reindex', null)
-        );
+        return [
+            ['dir', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Directory to scan for searchable models', null],
+        ];
     }
 
     /**
@@ -64,42 +64,19 @@ class ReindexCommand extends Command
      */
     protected function getOptions()
     {
-        return array(
-            array('dir', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Directory to scan for searchable models', null),
-            array('batch', null, InputOption::VALUE_OPTIONAL, 'The number of records to index in a single batch', 750),
-        );
+        return [
+            ['batch', null, InputOption::VALUE_OPTIONAL, 'The number of records to index in a single batch', 750],
+        ];
     }
 
     /**
      * Reindex a model to Elasticsearch
      *
-     * @param Model $model
+     * @param String $modelName
      */
-    protected function reindexModel(Model $model)
+    protected function reindexModel($modelName)
     {
-        $mapping = $this->option('mapping') ? json_decode(File::get($this->option('mapping')), true) : null;
-
-        $this->info('---> Reindexing ' . get_class($model));
-
-        $model->reindex(
-            $this->option('relations'),
-            $this->option('batch'),
-            $mapping,
-            function ($batch) {
-                $this->info("* Batch ${batch}");
-            }
-        );
-    }
-
-    /**
-     * Simple method to create instances of classes on the fly
-     * It's primarily here to enable unit-testing
-     *
-     * @param string $model
-     */
-    protected function getModelInstance($model)
-    {
-        return new $model;
+        $this->info('---> Reindexing ' . $modelName);
     }
 
 }
