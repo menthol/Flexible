@@ -16,14 +16,14 @@ trait IndexableTrait
 
     static public function getFlexibleAppendKeys($modelName, $relation = null)
     {
-        if ( ! property_exists(get_called_class(), 'flexibleAppends')) {
+        if (!property_exists(get_called_class(), 'flexibleAppends')) {
             return [];
         }
 
         $appends = static::$flexibleAppends;
 
-        if ( ! empty($relation)) {
-            if (! array_key_exists($relation, $appends)) {
+        if (!empty($relation)) {
+            if (!array_key_exists($relation, $appends)) {
                 return [];
             }
 
@@ -33,7 +33,7 @@ trait IndexableTrait
         $keys = [];
 
         foreach ($appends as $append) {
-            if ( ! is_array($append)) {
+            if (!is_array($append)) {
                 $keys[] = $append;
             }
         }
@@ -49,14 +49,14 @@ trait IndexableTrait
 
     static public function getFlexibleHiddenKeys($modelName, $relation = null)
     {
-        if ( ! property_exists(get_called_class(), 'flexibleHidden')) {
+        if (!property_exists(get_called_class(), 'flexibleHidden')) {
             return [];
         }
 
         $appends = static::$flexibleHidden;
 
-        if ( ! empty($relation)) {
-            if (! array_key_exists($relation, $appends)) {
+        if (!empty($relation)) {
+            if (!array_key_exists($relation, $appends)) {
                 return [];
             }
 
@@ -66,7 +66,7 @@ trait IndexableTrait
         $keys = [];
 
         foreach ($appends as $append) {
-            if ( ! is_array($append)) {
+            if (!is_array($append)) {
                 $keys[] = $append;
             }
         }

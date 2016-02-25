@@ -24,7 +24,7 @@ class ReindexJob
                 $model = $models->find($key);
                 if ($model && $model->flexibleIsIndexable()) {
                     $client->index([
-                        'index' => $index_prefix.$model->getTable(),
+                        'index' => $index_prefix . $model->getTable(),
                         'id' => $key,
                         'type' => str_singular($model->getTable()),
                         'body' => TransformModel::transform($model),
@@ -32,7 +32,7 @@ class ReindexJob
                 } else {
                     $model = new $modelName;
                     $client->delete([
-                        'index' => $index_prefix.$model->getTable(),
+                        'index' => $index_prefix . $model->getTable(),
                         'id' => $key,
                         'type' => str_singular($model->getTable()),
                     ]);

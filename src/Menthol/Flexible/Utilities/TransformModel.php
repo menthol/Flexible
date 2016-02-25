@@ -14,7 +14,7 @@ class TransformModel
         $data = [];
 
         foreach ($model->getRelations() as $relation => $collection) {
-            $relationName = $parentRelation ? $parentRelation.'.'.$relation : $relation;
+            $relationName = $parentRelation ? $parentRelation . '.' . $relation : $relation;
             if ($collection instanceof Model) {
                 $data[$relation] = static::transform($collection, $rootModel, $relationName);
             } elseif ($collection instanceof Collection) {
