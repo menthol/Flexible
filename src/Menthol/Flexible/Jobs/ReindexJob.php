@@ -18,7 +18,7 @@ class ReindexJob
         $client = App::make('Elasticsearch');
         $index_prefix = App::make('Menthol\Flexible\Config')->get('elasticsearch.index_prefix', '');
         foreach ($modelDefinitions as $modelName => $keys) {
-            $models = QueryHelper::findMany($modelName, $keys);
+            $models = QueryHelper::findMany($modelName, $keys, true);
             foreach ($keys as $key) {
                 /** @var Model|null $model */
                 $model = $models->find($key);

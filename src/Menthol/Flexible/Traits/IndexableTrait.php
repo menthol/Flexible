@@ -14,6 +14,16 @@ trait IndexableTrait
         }
     }
 
+    static public function getFlexibleIndexRelationships()
+    {
+        $modelName = get_called_class();
+        if (property_exists($modelName, 'FlexibleIndexRelationships')) {
+            return $modelName::$flexibleIndexRelationships;
+        }
+
+        return static::getFlexibleRelationships();
+    }
+
     static public function getFlexibleAppendKeys($modelName, $relation = null)
     {
         if (!property_exists(get_called_class(), 'flexibleAppends')) {

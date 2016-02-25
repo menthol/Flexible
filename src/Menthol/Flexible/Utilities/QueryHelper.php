@@ -7,7 +7,7 @@ use Psr\Log\InvalidArgumentException;
 
 class QueryHelper
 {
-    static public function newQueryWithoutScopes(Model $model)
+    static public function newQueryWithoutScopes(Model $model, $index = false)
     {
         $conn = $model->getConnection();
 
@@ -19,7 +19,7 @@ class QueryHelper
 
         $builder = $model->newEloquentBuilder($baseQueryBuilder);
 
-        $builder->with(self::getRelationships(get_class($model)));
+        $builder->with(self::getRelationships(get_class($model), $index));
 
         return $builder->setModel($model);
     }
@@ -62,31 +62,39 @@ class QueryHelper
         return $models;
     }
 
-    static public function getRelationships($modelName)
+    static public function getRelationships($modelName, $index = false)
     {
+        if ($index) {
+            if (method_exists($modelName, 'getFlexibleIndexRelationships')) {
+                return $modelName::getFlexibleIndexRelationships();
+            }
+
+            return [];
+        }
+
         if (method_exists($modelName, 'getFlexibleRelationships')) {
             return $modelName::getFlexibleRelationships();
         }
         return [];
     }
 
-    static public function getFreshModel(Model $model)
+    static public function getFreshModel(Model $model, $index = false)
     {
-        $query = static::newQueryWithoutScopes($model);
+        $query = static::newQueryWithoutScopes($model, $index);
         return $query->where($model->getKeyName(), $model->getKey())->first();
     }
 
-    static public function findOne($model, $id)
+    static public function findOne($model, $id, $index = false)
     {
-        return static::findMany($model, [$id])->first();
+        return static::findMany($model, [$id], $index)->first();
     }
 
-    static public function findMany($model, $ids)
+    static public function findMany($model, $ids, $index = false)
     {
         if (is_string($model) && class_exists($model) && is_subclass_of($model, 'Illuminate\Database\Eloquent\Model')) {
             $model = new $model;
         }
-        $query = static::newQueryWithoutScopes($model);
+        $query = static::newQueryWithoutScopes($model, $index);
         return $query->whereIn($model->getKeyName(), $ids)->get();
     }
 }
