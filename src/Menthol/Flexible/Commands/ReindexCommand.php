@@ -121,10 +121,7 @@ class ReindexCommand extends Command
         $this->output->write("\n");
         $this->output->write('<comment>Finalize index :</comment> ');
         ElasticSearchHelper::finalizeIndex($modelName);
-        $this->output->writeln("ok");
-
-
-        $this->output->write("\n\n");
+        $this->output->writeln("ok\n");
     }
 
 }

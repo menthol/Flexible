@@ -119,7 +119,29 @@ trait IndexableTrait
 
     public function getFlexibleIndexSettings()
     {
-        return App::make('Menthol\Flexible\Config')->get('elasticsearch.defaults', []);
+        $params = App::make('Menthol\Flexible\Config')->get('elasticsearch.defaults', []);
+        if (isset($this->flexibleIndexSettings)) {
+            foreach ($this->flexibleIndexSettings as $analyzer => $fields) {
+                foreach($fields as $field) {
+                    $fieldPath = str_replace('.', '.properties.', $field);
+                    array_set($params['mappings'][$this->getFlexibleType()]['properties'], $fieldPath, [
+                        'fields' => [
+                            'analyzed'   => [
+                                'type' => 'string',
+                            ],
+                            $analyzer => [
+                                'analyzer' => "flexible_{$analyzer}_index",
+                                'type'     => 'string',
+                            ],
+                        ],
+                        'index'  => 'not_analyzed',
+                        'type'   => 'string',
+                    ]);
+                }
+            }
+        }
+
+        return $params;
     }
 
 }
