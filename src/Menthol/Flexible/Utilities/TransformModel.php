@@ -10,6 +10,7 @@ class TransformModel
 {
     static public function transform(Model $model, Model $rootModel = null, $parentRelation = '')
     {
+        /** @var Model|IndexableTrait $rootModel */
         if (is_null($rootModel)) {
             $rootModel = $model;
         }
@@ -33,21 +34,27 @@ class TransformModel
             }
         }
 
-        $appendKeys = $rootModel->getFlexibleAppendKeys(get_class($model), $parentRelation);
+        $appendKeys = $rootModel->getFlexibleAppendKeys(get_class($model), $parentRelation) ?: [];
         foreach ($appendKeys as $key) {
             $data[$key] = $model->getAttributeValue($key);
         }
 
-        foreach ($model->getOriginal() as $field => $value) {
-            $data[$field] = $value;
+        $fields = array_keys($model->getOriginal());
+        if (is_array($rootModel->getFlexibleOnlyKeys(get_class($model), $parentRelation))) {
+            $fields = $rootModel->getFlexibleOnlyKeys(get_class($model), $parentRelation);
         }
 
-        $hiddenKeys = $rootModel->getFlexibleHiddenKeys(get_class($model), $parentRelation);
+        foreach ($fields as $field) {
+            $data[$field] = $model->getOriginal($field);
+        }
+
+        $hiddenKeys = $rootModel->getFlexibleHiddenKeys(get_class($model), $parentRelation) ?: [];
         foreach ($hiddenKeys as $key) {
             unset($data[$key]);
         }
 
         $data['_model'] = get_class($model);
+        $data[$model->getKeyName()] = $model->getKey();
 
         return $data;
     }

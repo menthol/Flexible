@@ -89,7 +89,7 @@ trait IndexableTrait
     public function getFlexibleAppendKeys($modelName, $relation = null)
     {
         if (!property_exists(get_called_class(), 'flexibleAppends')) {
-            return [];
+            return null;
         }
 
         $appends = $this->flexibleAppends;
@@ -122,29 +122,62 @@ trait IndexableTrait
     public function getFlexibleHiddenKeys($modelName, $relation = null)
     {
         if (!property_exists(get_called_class(), 'flexibleHidden')) {
-            return [];
+            return null;
         }
 
-        $appends = $this->flexibleHidden;
+        $hidden = $this->flexibleHidden;
 
         if (!empty($relation)) {
-            if (!array_key_exists($relation, $appends)) {
+            if (!array_key_exists($relation, $hidden)) {
                 return [];
             }
 
-            $appends = $appends[$relation];
+            $hidden = $hidden[$relation];
         }
 
         $keys = [];
 
-        foreach ($appends as $append) {
+        foreach ($hidden as $append) {
             if (!is_array($append)) {
                 $keys[] = $append;
             }
         }
 
-        if (array_key_exists($modelName, $appends)) {
-            foreach ($appends[$modelName] as $key) {
+        if (array_key_exists($modelName, $hidden)) {
+            foreach ($hidden[$modelName] as $key) {
+                $keys[] = $key;
+            }
+        }
+
+        return $keys;
+    }
+
+    public function getFlexibleOnlyKeys($modelName, $relation = null)
+    {
+        if (!property_exists(get_called_class(), 'flexibleOnly')) {
+            return null;
+        }
+
+        $only = $this->flexibleOnly;
+
+        if (!empty($relation)) {
+            if (!array_key_exists($relation, $only)) {
+                return [];
+            }
+
+            $only = $only[$relation];
+        }
+
+        $keys = [];
+
+        foreach ($only as $append) {
+            if (!is_array($append)) {
+                $keys[] = $append;
+            }
+        }
+
+        if (array_key_exists($modelName, $only)) {
+            foreach ($only[$modelName] as $key) {
                 $keys[] = $key;
             }
         }

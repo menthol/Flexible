@@ -3,7 +3,6 @@
 use Elasticsearch\ClientBuilder;
 use Illuminate\Support\ServiceProvider;
 use Menthol\Flexible\Commands\ReindexCommand;
-use Menthol\Flexible\Response\Result;
 use RuntimeException;
 
 class FlexibleServiceProvider extends ServiceProvider
