@@ -34,13 +34,13 @@ class TransformModel
             }
         }
 
-        $appendKeys = $rootModel->getFlexibleAppendKeys(get_class($model), $parentRelation) ?: [];
+        $appendKeys = $rootModel->getFlexibleAppendKeys(get_class($model), $parentRelation);
         foreach ($appendKeys as $key) {
             $data[$key] = $model->getAttributeValue($key);
         }
 
         $fields = array_keys($model->getOriginal());
-        if (is_array($rootModel->getFlexibleOnlyKeys(get_class($model), $parentRelation))) {
+        if (count($rootModel->getFlexibleOnlyKeys(get_class($model), $parentRelation)) > 0) {
             $fields = $rootModel->getFlexibleOnlyKeys(get_class($model), $parentRelation);
         }
 
@@ -48,7 +48,7 @@ class TransformModel
             $data[$field] = $model->getOriginal($field);
         }
 
-        $hiddenKeys = $rootModel->getFlexibleHiddenKeys(get_class($model), $parentRelation) ?: [];
+        $hiddenKeys = $rootModel->getFlexibleHiddenKeys(get_class($model), $parentRelation);
         foreach ($hiddenKeys as $key) {
             unset($data[$key]);
         }

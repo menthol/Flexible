@@ -89,7 +89,7 @@ trait IndexableTrait
     public function getFlexibleAppendKeys($modelName, $relation = null)
     {
         if (!property_exists(get_called_class(), 'flexibleAppends')) {
-            return null;
+            return [];
         }
 
         $appends = $this->flexibleAppends;
@@ -122,7 +122,7 @@ trait IndexableTrait
     public function getFlexibleHiddenKeys($modelName, $relation = null)
     {
         if (!property_exists(get_called_class(), 'flexibleHidden')) {
-            return null;
+            return [];
         }
 
         $hidden = $this->flexibleHidden;
@@ -155,7 +155,7 @@ trait IndexableTrait
     public function getFlexibleOnlyKeys($modelName, $relation = null)
     {
         if (!property_exists(get_called_class(), 'flexibleOnly')) {
-            return null;
+            return [];
         }
 
         $only = $this->flexibleOnly;
