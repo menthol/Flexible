@@ -36,7 +36,9 @@ class TransformModel
 
         $appendKeys = $rootModel->getFlexibleAppendKeys(get_class($model), $parentRelation);
         foreach ($appendKeys as $key) {
-            $data[$key] = $model->getAttributeValue($key);
+            if ($model->hasGetMutator($key)) {
+                $data[$key] = $model->getAttribute($key);
+            }
         }
 
         $fields = array_keys($model->getOriginal());
