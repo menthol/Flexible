@@ -1,8 +1,10 @@
 <?php namespace Menthol\Flexible\Utilities;
 
 
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Menthol\Flexible\Traits\IndexableTrait;
 
 class TransformModel
 {
@@ -46,8 +48,43 @@ class TransformModel
         }
 
         $data['_model'] = get_class($model);
-        $data['_key'] = $model->getKey();
 
         return $data;
+    }
+
+    static public function hydrate($attributes)
+    {
+        $modelName = $attributes['_model'];
+        unset($attributes['_model']);
+
+        /** @var Model|IndexableTrait $model */
+        $model = new $modelName;
+
+        foreach ($attributes as $key => $attribute) {
+            if ( ! is_array($attribute)) {
+                continue;
+            }
+
+            unset($attributes[$key]);
+
+            if (isset($attribute['_model'])) {
+                $relatedModel = static::hydrate($attribute);
+                $model->setRelation($key, $relatedModel);
+            }
+            else {
+                $collection = new EloquentCollection();
+
+                foreach ($attribute as $modelAttribute) {
+                    $collection->push(static::hydrate($modelAttribute));
+                }
+
+                $model->setRelation($key, $collection);
+            }
+        }
+
+        $model->setRawAttributes($attributes, true);
+        $model->exists = true;
+
+        return $model;
     }
 }

@@ -3,10 +3,72 @@
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Menthol\Flexible\FlexibleCollection;
+use Menthol\Flexible\Utilities\ElasticSearchHelper;
+use Menthol\Flexible\Utilities\TransformModel;
 
 trait IndexableTrait
 {
     use ObservableTrait;
+
+    public $flexibleRawResults = null;
+
+    static public function search($term)
+    {
+        $model = new static;
+        $result = ElasticSearchHelper::search([
+            'index' => $model->getFlexibleIndexName(),
+            'type' => $model->getFlexibleType(),
+            'body' => $term,
+        ]);
+        $collection = new FlexibleCollection();
+        $collection->setFlexibleRawResults($result);
+
+        if (isset($result['hits']['hits'])) {
+            foreach ($result['hits']['hits'] as $hit) {
+                $transformedModel = TransformModel::hydrate($hit['_source']);
+                $transformedModel->setFlexibleRawResults($hit);
+                $collection->add($transformedModel);
+            }
+        }
+
+        return $collection;
+    }
+
+    static public function searchById($id)
+    {
+        $model = new static;
+        $result = ElasticSearchHelper::get([
+            'index' => $model->getFlexibleIndexName(),
+            'type' => $model->getFlexibleType(),
+            'id' => $id,
+        ]);
+
+        if ( ! empty($result['found'])) {
+            /** @var Model|IndexableTrait $model */
+            $model =  TransformModel::hydrate($result['_source']);
+
+            $model->setFlexibleRawResults($result);
+            return $model;
+        }
+
+        return false;
+    }
+
+    public function setFlexibleRawResults($flexibleRawResults)
+    {
+        $this->flexibleRawResults = $flexibleRawResults;
+    }
+
+    public function getFlexibleRawResults()
+    {
+        return $this->flexibleRawResults;
+    }
+
+    public function getFlexibleScore()
+    {
+        return array_get($this->flexibleRawResults, '_score');
+    }
 
     static public function bootIndexableTrait()
     {

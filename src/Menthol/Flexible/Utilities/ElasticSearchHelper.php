@@ -54,7 +54,7 @@ class ElasticSearchHelper
 
         $tmpAliasName = $model->getFlexibleIndexName() . '_tmp';
 
-        if ($indices->existsAlias(['name' => $tmpAliasName])) {
+        if ($indices->exists(['index' => $tmpAliasName])) {
             $indices->delete([
                 'index' => $tmpAliasName,
             ]);
@@ -106,5 +106,11 @@ class ElasticSearchHelper
         }
     }
 
+    public static function get($params) {
+        return static::getClient()->get($params);
+    }
 
+    public static function search($params) {
+        return static::getClient()->search($params);
+    }
 }
