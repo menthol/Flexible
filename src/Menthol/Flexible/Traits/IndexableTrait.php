@@ -65,6 +65,11 @@ trait IndexableTrait
         return $this->flexibleRawResults;
     }
 
+    public function getFlexibleRawValue($key, $default = null)
+    {
+        return array_get($this->flexibleRawResults['_source'], $key, $default);
+    }
+
     public function getFlexibleScore()
     {
         return array_get($this->flexibleRawResults, '_score');

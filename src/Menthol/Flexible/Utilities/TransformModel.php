@@ -56,18 +56,27 @@ class TransformModel
         }
 
         $data['_model'] = get_class($model);
+        $data['_table'] = $model->getTable();
         $data[$model->getKeyName()] = $model->getKey();
 
         return $data;
     }
 
-    static public function hydrate($attributes)
+    static public function hydrate($attributes, Model $parent = null)
     {
         $modelName = $attributes['_model'];
         unset($attributes['_model']);
+        $table = $attributes['_table'];
+        unset($attributes['_table']);
 
-        /** @var Model|IndexableTrait $model */
-        $model = new $modelName;
+        if ($modelName == 'Illuminate\Database\Eloquent\Relations\Pivot') {
+            /** @var Model|IndexableTrait $model */
+            $model = new $modelName($parent, [], $table, true);
+        }
+        else {
+            /** @var Model|IndexableTrait $model */
+            $model = new $modelName;
+        }
 
         foreach ($attributes as $key => $attribute) {
             if ( ! is_array($attribute)) {
@@ -77,14 +86,14 @@ class TransformModel
             unset($attributes[$key]);
 
             if (isset($attribute['_model'])) {
-                $relatedModel = static::hydrate($attribute);
+                $relatedModel = static::hydrate($attribute, $model);
                 $model->setRelation($key, $relatedModel);
             }
             else {
                 $collection = new EloquentCollection();
 
                 foreach ($attribute as $modelAttribute) {
-                    $collection->push(static::hydrate($modelAttribute));
+                    $collection->push(static::hydrate($modelAttribute, $model));
                 }
 
                 $model->setRelation($key, $collection);
