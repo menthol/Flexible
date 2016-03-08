@@ -33,7 +33,7 @@ class Observer
         $model->flexibleRelatedModels = [];
     }
 
-    public function restoring()
+    public function restoring(Model $model)
     {
         $model->flexibleRelatedModels = RelatedModelsDiscovery::getRelatedModels($model);
     }

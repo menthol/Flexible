@@ -89,7 +89,7 @@ class ReindexCommand extends Command
         $this->output->writeln("ok");
 
         $keys = QueryHelper::newQueryWithoutScopes($modelName, true, false)->lists('id');
-        $this->output->write("\rIndex <info>{$modelName}</info> 0% [0 / " . count($keys) . ']');
+        $this->output->write("\r\033[KIndex <info>{$modelName}</info> 0% [0 / " . count($keys) . ']');
         foreach (array_chunk($keys, $this->option('batch')) as $chunkDelta => $chuckKeys) {
 
             /** @var Model[]|IndexableTrait[]|Collection $models */
