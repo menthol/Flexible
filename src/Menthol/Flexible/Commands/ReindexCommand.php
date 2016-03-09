@@ -1,5 +1,6 @@
 <?php namespace Menthol\Flexible\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -90,6 +91,7 @@ class ReindexCommand extends Command
 
         $keys = QueryHelper::newQueryWithoutScopes($modelName, true, false)->lists('id');
         $this->output->writeln("Index <info>{$modelName}</info> 0% [0 / " . count($keys) . ']');
+        $startTime = microtime(true);
         foreach (array_chunk($keys, $this->option('batch')) as $chunkDelta => $chuckKeys) {
 
             /** @var Model[]|IndexableTrait[]|Collection $models */
@@ -115,8 +117,12 @@ class ReindexCommand extends Command
 
             $processed = min(($chunkDelta + 1) * $this->option('batch'), count($keys));
             $percentage = round(($processed * 100) / count($keys));
-            $this->output->writeln("Index <info>{$modelName}</info> {$percentage}% [{$processed} / " . count($keys) . ']');
+            $timeRemaining = (microtime(true) - $startTime) * (1/$processed - 1);
+            $remainingString = Carbon::now()->addSeconds(round($timeRemaining))->diffForHumans(null, true);
+            $this->output->writeln("Index <info>{$modelName}</info> {$percentage}% [{$processed} / " . count($keys) . '] Time remaining : About '.$remainingString);
         }
+        $duration = Carbon::now()->addSeconds(round(microtime(true) - $startTime))->diffForHumans(null, true);
+        $this->output->writeln("<info>Takes : {$duration}</info>");
 
         $this->output->write('<comment>Finalize index :</comment> ');
         ElasticSearchHelper::finalizeIndex($modelName);
