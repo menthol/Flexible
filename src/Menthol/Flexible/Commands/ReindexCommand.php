@@ -43,6 +43,7 @@ class ReindexCommand extends Command
 
         if (count($models) === 0) {
             $this->info('No indexable models found.');
+
             return;
         }
 
@@ -72,7 +73,8 @@ class ReindexCommand extends Command
     protected function getOptions()
     {
         return [
-            ['batch', null, InputOption::VALUE_OPTIONAL, 'The number of records to index in a single batch', 750],
+            ['batch', 'b', InputOption::VALUE_OPTIONAL, 'The number of records to index in a single batch', 750],
+            ['simplified', 's', InputOption::VALUE_NONE, 'Use simplified batch display'],
         ];
     }
 
@@ -90,13 +92,11 @@ class ReindexCommand extends Command
         $this->output->writeln("ok");
 
         $keys = QueryHelper::newQueryWithoutScopes($modelName, true, false)->lists('id');
-        $this->output->writeln("Index <info>{$modelName}</info> 0% [0 / " . count($keys) . ']');
+        $numberOfModels = count($keys);
         $startTime = microtime(true);
         foreach (array_chunk($keys, $this->option('batch')) as $chunkDelta => $chuckKeys) {
-
             /** @var Model[]|IndexableTrait[]|Collection $models */
             $models = QueryHelper::findMany($modelName, $chuckKeys, true);
-
             $params = [];
 
             foreach ($models as $model) {
@@ -106,7 +106,7 @@ class ReindexCommand extends Command
                             '_index' => $model->getFlexibleIndexName() . '_tmp',
                             '_type' => $model->getFlexibleType(),
                             '_id' => $model->getKey(),
-                        ]
+                        ],
                     ];
 
                     $params['body'][] = TransformModel::transform($model);
@@ -115,11 +115,22 @@ class ReindexCommand extends Command
 
             ElasticSearchHelper::bulk($params);
 
-            $processed = min(($chunkDelta + 1) * $this->option('batch'), count($keys));
-            $percentage = round(($processed * 100) / count($keys));
-            $timeRemaining = (microtime(true) - $startTime) * (1/$processed - 1);
-            $remainingString = Carbon::now()->addSeconds(round($timeRemaining))->diffForHumans(null, true);
-            $this->output->writeln("Index <info>{$modelName}</info> {$percentage}% [{$processed} / " . count($keys) . '] Time remaining : About '.$remainingString);
+            $processed = min(($chunkDelta + 1) * $this->option('batch'), $numberOfModels);
+            $percentage = $processed / $numberOfModels;
+            $displayablePercentage = round($percentage * 100);
+
+            if ($this->option('simplified')) {
+                $this->output->writeln("Index <info>{$modelName}</info> {$displayablePercentage}% [{$processed} / {$numberOfModels}]");
+            } else {
+                $timeRemaining = ((microtime(true) - $startTime) / $percentage) - (microtime(true) - $startTime);
+                $remainingString = Carbon::now()->addSeconds(round($timeRemaining))->diffForHumans(null, true);
+                $this->output->write("\r\033[KIndex <info>{$modelName}</info> {$displayablePercentage}% [{$processed} / {$numberOfModels}] remaining {$remainingString}");
+            }
+        }
+
+        if (!$this->option('simplified')) {
+            $this->output->writeln("\r\033[KIndex <info>{$modelName}</info> {$displayablePercentage}% [{$processed} / {$numberOfModels}]");
+            $this->output->writeln('');
         }
         $duration = Carbon::now()->addSeconds(round(microtime(true) - $startTime))->diffForHumans(null, true);
         $this->output->writeln("<info>Takes : {$duration}</info>");
