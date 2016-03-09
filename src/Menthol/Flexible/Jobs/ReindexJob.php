@@ -17,15 +17,19 @@ class ReindexJob
     public function fire(Job $job, $modelDefinitions)
     {
         foreach ($modelDefinitions as $modelName => $keys) {
-            /** @var Collection $models */
-            $models = QueryHelper::findMany($modelName, $keys, true);
-            foreach ($keys as $key) {
-                /** @var Model|IndexableTrait|null $model */
-                $model = $models->find($key);
-                if ($model && $model->flexibleIsIndexable()) {
-                    ElasticSearchHelper::index($model);
-                } else {
-                    ElasticSearchHelper::delete($modelName, $key);
+            $chuncks = array_chunk($keys, 750);
+
+            foreach ($chuncks as $chunck) {
+                /** @var Collection $models */
+                $models = QueryHelper::findMany($modelName, $chunck, true);
+                foreach ($keys as $key) {
+                    /** @var Model|IndexableTrait|null $model */
+                    $model = $models->find($key);
+                    if ($model && $model->flexibleIsIndexable()) {
+                        ElasticSearchHelper::index($model);
+                    } else {
+                        ElasticSearchHelper::delete($modelName, $key);
+                    }
                 }
             }
         }
