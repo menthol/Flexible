@@ -89,7 +89,7 @@ class ReindexCommand extends Command
         $this->output->writeln("ok");
 
         $keys = QueryHelper::newQueryWithoutScopes($modelName, true, false)->lists('id');
-        $this->output->write("\r\033[KIndex <info>{$modelName}</info> 0% [0 / " . count($keys) . ']');
+        $this->output->writeln("Index <info>{$modelName}</info> 0% [0 / " . count($keys) . ']');
         foreach (array_chunk($keys, $this->option('batch')) as $chunkDelta => $chuckKeys) {
 
             /** @var Model[]|IndexableTrait[]|Collection $models */
@@ -115,10 +115,9 @@ class ReindexCommand extends Command
 
             $processed = min(($chunkDelta + 1) * $this->option('batch'), count($keys));
             $percentage = round(($processed * 100) / count($keys));
-            $this->output->write("\rIndex <info>{$modelName}</info> {$percentage}% [{$processed} / " . count($keys) . ']');
+            $this->output->writeln("Index <info>{$modelName}</info> {$percentage}% [{$processed} / " . count($keys) . ']');
         }
 
-        $this->output->write("\n");
         $this->output->write('<comment>Finalize index :</comment> ');
         ElasticSearchHelper::finalizeIndex($modelName);
         $this->output->writeln("ok\n");
