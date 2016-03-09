@@ -76,8 +76,8 @@ class QueryHelper
             return [];
         }
 
-        if (method_exists($model, 'getFlexibleRelationships')) {
-            return $model->getFlexibleRelationships();
+        if (method_exists($model, 'getFlexibleObservedRelationships')) {
+            return $model->getFlexibleObservedRelationships();
         }
         return [];
     }

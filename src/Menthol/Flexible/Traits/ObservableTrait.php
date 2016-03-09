@@ -17,13 +17,20 @@ trait ObservableTrait
         static::observe(new Observer);
     }
 
-    public function getFlexibleRelationships()
+    public function getFlexibleObservedRelationships()
     {
-        if (isset($this->flexibleRelationships)) {
-            return $this->flexibleRelationships;
+        $relationships = [];
+
+        if (method_exists($this, 'getFlexibleIndexRelationships'))
+        {
+            $relationships = $this->getFlexibleIndexRelationships();
         }
 
-        return [];
+        if (isset($this->flexibleObservedRelationships)) {
+            $relationships = array_merge($relationships, $this->flexibleObservedRelationships);
+        }
+
+        return array_unique($relationships);
     }
 
 

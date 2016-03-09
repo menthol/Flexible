@@ -26,7 +26,7 @@ class Article extends Model
 {
     use IndexableTrait;
 
-    public $flexibleRelationships = [
+    public $flexibleIndexRelationships = [
         'author',
         'author.user.reports',
         'comments',

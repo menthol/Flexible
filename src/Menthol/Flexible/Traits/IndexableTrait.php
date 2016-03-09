@@ -88,7 +88,7 @@ trait IndexableTrait
             return $this->flexibleIndexRelationships;
         }
 
-        return $this->getFlexibleRelationships();
+        return [];
     }
 
     public function getFlexibleAppendKeys($modelName, $relation = null)
